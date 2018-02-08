@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "angular-globalize", "angular-globalize.njsproj", "{3EF3AFC3-D5F6-4415-A5BB-306B20B3919D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3EF3AFC3-D5F6-4415-A5BB-306B20B3919D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF3AFC3-D5F6-4415-A5BB-306B20B3919D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EF3AFC3-D5F6-4415-A5BB-306B20B3919D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EF3AFC3-D5F6-4415-A5BB-306B20B3919D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C5018030-5D10-446A-8E21-9F363525F82A}
+	EndGlobalSection
+EndGlobal

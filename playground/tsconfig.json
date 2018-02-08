@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "noEmit": true,
+    "sourceMap": true,
+    "lib": [
+      "es5",
+      "dom"
+    ],
+    "target": "es5",
+    "skipLibCheck": true,
+    "types": ["globalize", "node", "webpack-env"],
+    "paths": {
+      "@code-art/angular-globalize": [ "../src/module.ts" ]
+    }
+  }
+}

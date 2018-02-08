@@ -1,0 +1,89 @@
+{
+  "name": "@code-art/angular-globalize",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Angular 5 pipes for localizing numbers and dates using Globalize.",
+  "main": "angular-globalize.umd.js",
+  "module": "index.js",
+  "jsnext:main": "index.js",
+  "typings": "index.d.ts",
+  "scripts": {
+    "test": "cd test && mocha --require mock-local-storage --require ts-node/register ./**/*.spec.ts",
+    "start": "cd playground && webpack --config webpack.config.vendor.js && webpack-dev-server --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sherif-elmetainy/angular-globalize.git"
+  },
+  "keywords": [
+    "angular",
+    "globalize"
+  ],
+  "author": "Sherif Elmetainy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sherif-elmetainy/angular-globalize/issues"
+  },
+  "homepage": "https://github.com/sherif-elmetainy/angular-globalize#readme",
+  "peerDependencies": {
+    "@angular/common": "^5.2.4",
+    "@angular/core": "^5.2.4",
+    "rxjs": "^5.5.0",
+    "cldr-data": "^32.0.1",
+    "globalize": "^1.3.0"
+  },
+  "devDependencies": {
+    "@angular/cli": "^1.6.8",
+    "@angular/common": "^5.2.4",
+    "@angular/compiler": "^5.2.4",
+    "@angular/compiler-cli": "^5.2.4",
+    "@angular/core": "^5.2.4",
+    "@angular/platform-browser": "^5.2.4",
+    "@angular/platform-browser-dynamic": "^5.2.4",
+    "@types/chai": "^4.1.2",
+    "@types/chai-datetime": "0.0.31",
+    "@types/globalize": "0.0.31",
+    "@types/mocha": "^2.2.48",
+    "@types/node": "^9.4.5",
+    "@types/webpack": "^3.8.5",
+    "@types/webpack-env": "^1.13.5",
+    "angular2-template-loader": "^0.6.2",
+    "awesome-typescript-loader": "^3.4.1",
+    "bootstrap": "^4.0.0",
+    "chai": "^4.1.2",
+    "chai-datetime": "^1.5.0",
+    "cldr-data": "^32.0.1",
+    "css-loader": "^0.28.9",
+    "del": "^3.0.0",
+    "es6-promise": "^4.2.4",
+    "es6-shim": "^0.35.3",
+    "event-source-polyfill": "0.0.12",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "globalize": "^1.3.0",
+    "gulp-json-modify": "^1.0.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-rollup": "^2.16.2",
+    "html-loader": "^0.5.5",
+    "iana-tz-data": "^2017.1.0",
+    "imports-loader": "^0.7.1",
+    "jquery": "^3.3.1",
+    "json-loader": "^0.5.7",
+    "mocha": "^5.0.0",
+    "mock-local-storage": "^1.0.5",
+    "normalize.css": "^7.0.0",
+    "popper.js": "^1.12.9",
+    "reflect-metadata": "^0.1.12",
+    "rollup": "^0.55.5",
+    "run-sequence": "^2.2.1",
+    "rxjs": "^5.5.6",
+    "ts-node": "^4.1.0",
+    "typescript": "^2.6.2",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1",
+    "webpack-hot-middleware": "^2.21.0",
+    "zone.js": "^0.8.20"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  }
+}
