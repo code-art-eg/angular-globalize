@@ -9,7 +9,7 @@ export const CANG_GLOBALIZE_STATIC = new InjectionToken<GlobalizeStatic>('CaAngu
 export const globalizeStatic = ((Globalize: GlobalizeStatic): GlobalizeStatic => {
     Globalize.load(require('cldr-data/supplemental/likelySubtags.json'));
     Globalize.load(require('cldr-data/supplemental/numberingSystems.json'));
-    
+
     return Globalize;
 
 })(require('globalize'));
@@ -113,13 +113,16 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             return undefined;
         }
         let locale: string;
-        if (typeof localeOrOptions === 'string') {
-            locale = localeOrOptions;
+        if (typeof localeOrOptions === 'string' || options) {
+            if (locale && typeof (localeOrOptions) !== 'string') {
+                throw `Invalid locale ${locale}`;
+            }
+            locale = (localeOrOptions as string) || this.cultureService.currentCulture;
         } else {
             locale = this.cultureService.currentCulture;
             options = localeOrOptions;
         }
-        return this.getGlobalizeInstance(locale).parseDate(val, options);
+        return this.getGlobalizeInstance(locale).parseDate(val, options || undefined);
     }
 
     formatDate(val: null, options?: DateFormatterOptions | undefined): null;
@@ -136,13 +139,16 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             return undefined;
         }
         let locale: string;
-        if (typeof localeOrOptions === 'string') {
-            locale = localeOrOptions;
+        if (typeof localeOrOptions === 'string' || options) {
+            if (locale && typeof (localeOrOptions) !== 'string') {
+                throw `Invalid locale ${locale}`;
+            }
+            locale = (localeOrOptions as string) || this.cultureService.currentCulture;
         } else {
             locale = this.cultureService.currentCulture;
             options = localeOrOptions;
         }
-        return this.getGlobalizeInstance(locale).formatDate(val, options);
+        return this.getGlobalizeInstance(locale).formatDate(val, options || undefined);
     }
 
     parseNumber(val: null, options?: NumberParserOptions | undefined): null;
@@ -159,13 +165,16 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             return undefined;
         }
         let locale: string;
-        if (typeof localeOrOptions === 'string') {
-            locale = localeOrOptions;
+        if (typeof localeOrOptions === 'string' || options) {
+            if (locale && typeof (localeOrOptions) !== 'string') {
+                throw `Invalid locale ${locale}`;
+            }
+            locale = (localeOrOptions as string) || this.cultureService.currentCulture;
         } else {
             locale = this.cultureService.currentCulture;
             options = localeOrOptions;
         }
-        return this.getGlobalizeInstance(locale).parseNumber(val, options);
+        return this.getGlobalizeInstance(locale).parseNumber(val, options || undefined);
     }
 
     formatNumber(val: null, options?: NumberFormatterOptions | undefined): null;
@@ -182,13 +191,16 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             return undefined;
         }
         let locale: string;
-        if (typeof localeOrOptions === 'string') {
-            locale = localeOrOptions;
+        if (typeof localeOrOptions === 'string' || options) {
+            if (locale && typeof (localeOrOptions) !== 'string') {
+                throw `Invalid locale ${locale}`;
+            }
+            locale = (localeOrOptions as string) || this.cultureService.currentCulture;
         } else {
             locale = this.cultureService.currentCulture;
             options = localeOrOptions;
         }
-        return this.getGlobalizeInstance(locale).formatNumber(val, options);
+        return this.getGlobalizeInstance(locale).formatNumber(val, options || undefined);
     }
 
     formatCurrency(val: null, currency: string, options?: CurrencyFormatterOptions | undefined): null;
@@ -205,13 +217,16 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             return undefined;
         }
         let locale: string;
-        if (typeof localeOrOptions === 'string') {
-            locale = localeOrOptions;
+        if (typeof localeOrOptions === 'string' || options) {
+            if (locale && typeof (localeOrOptions) !== 'string') {
+                throw `Invalid locale ${locale}`;
+            }
+            locale = (localeOrOptions as string) || this.cultureService.currentCulture;
         } else {
             locale = this.cultureService.currentCulture;
             options = localeOrOptions;
         }
-        return this.getGlobalizeInstance(locale).formatCurrency(val, currency, options);
+        return this.getGlobalizeInstance(locale).formatCurrency(val, currency, options || undefined);
     }
 
     getMonthName(month: undefined, locale?: string, type?: 'abbreviated' | 'narrow' | 'wide'): undefined;
@@ -237,11 +252,11 @@ export class DefaultGlobalizationService implements IGlobalizationService {
 
     getDayName(day: undefined, locale?: string, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): undefined;
     getDayName(day: null, locale?: string, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): null;
-    getDayName(day: number, locale?: string, type?: 'abbreviated' | 'short'| 'narrow' | 'wide'): string;
+    getDayName(day: number, locale?: string, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): string;
     getDayName(day: undefined, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): undefined;
     getDayName(day: null, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): null;
-    getDayName(day: number, type?: 'abbreviated' | 'short'| 'narrow' | 'wide'): string;
-    getDayName(day: number | undefined | null, locale?: string, type?: 'abbreviated'| 'short' | 'narrow' | 'wide'): string | null | undefined {
+    getDayName(day: number, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): string;
+    getDayName(day: number | undefined | null, locale?: string, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): string | null | undefined {
         if (day === null) {
             return null;
         }

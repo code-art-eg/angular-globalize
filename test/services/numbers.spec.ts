@@ -40,6 +40,22 @@ describe("Globalization number formatting", () => {
         expect(service.formatNumber(num, 'de', { style: 'decimal' })).equal('12.345,67');
     });
 
+    it("should format number using null culture", () => {
+        const num = 12345.67;
+
+        expect(service.formatNumber(num, null)).equal('12,345.67');
+        expect(service.formatNumber(num, null, { style: 'decimal', minimumFractionDigits: 3 })).equal('12,345.670');
+        expect(service.formatNumber(num, null, { style: 'decimal' })).equal('12,345.67');
+    });
+
+    it("should format number using null options", () => {
+        const num = 12345.67;
+
+        expect(service.formatNumber(num, undefined, null)).equal('12,345.67');
+        expect(service.formatNumber(num, 'de', null)).equal('12.345,67');
+        expect(service.formatNumber(num, null, null)).equal('12,345.67');
+    });
+
     it("should parse number null or undefined", () => {
         expect(service.parseNumber(null)).null;
         expect(service.parseNumber(undefined)).undefined;
@@ -74,7 +90,7 @@ describe("Globalization number formatting", () => {
         expect(service.formatCurrency(undefined, currency, 'de', { style: 'symbol' })).undefined;
     });
 
-    it("should format number using current culture", () => {
+    it("should format currency using current culture", () => {
         const num = 12345.67;
         const cldr = new Cldr('en-GB');
         const symbol = cldr.main(['numbers/currencies', currency, "symbol"]);
@@ -84,7 +100,7 @@ describe("Globalization number formatting", () => {
         expect(service.formatCurrency(num, currency, { style: 'symbol' })).equal(symbol + '12,345.67');
     });
 
-    it("should format number using provided culture", () => {
+    it("should format currency using provided culture", () => {
         const num = 12345.67;
         const cldr = new Cldr('de');
         const symbol = cldr.main(['numbers/currencies', currency, "symbol"]);
@@ -93,5 +109,27 @@ describe("Globalization number formatting", () => {
         expect(service.formatCurrency(num, currency, 'de')).equal('12.345,67' + sep + symbol);
         expect(service.formatCurrency(num, currency, 'de', { style: 'symbol', minimumFractionDigits: 3 })).equal('12.345,670' + sep + symbol);
         expect(service.formatCurrency(num, currency, 'de', { style: 'symbol' })).equal('12.345,67' + sep + symbol);
+    });
+
+    it("should format currency using null culture", () => {
+        const num = 12345.67;
+        const cldr = new Cldr('en-GB');
+        const symbol = cldr.main(['numbers/currencies', currency, "symbol"]);
+        const sep = cldr.main(['numbers', 'currencyFormats-numberSystem-latn', 'currencySpacing', 'afterCurrency']).insertBetween;
+
+        expect(service.formatCurrency(num, currency, null)).equal(symbol + '12,345.67');
+        expect(service.formatCurrency(num, currency, null, { style: 'symbol', minimumFractionDigits: 3 })).equal(symbol + '12,345.670');
+        expect(service.formatCurrency(num, currency, null, { style: 'symbol' })).equal(symbol + '12,345.67');
+    });
+
+    it("should format currency using null options", () => {
+        const num = 12345.67;
+        const cldr = new Cldr('en-GB');
+        const symbol = cldr.main(['numbers/currencies', currency, "symbol"]);
+        const sep = cldr.main(['numbers', 'currencyFormats-numberSystem-latn', 'currencySpacing', 'afterCurrency']).insertBetween;
+
+        expect(service.formatCurrency(num, currency, null, null)).equal(symbol + '12,345.67');
+        expect(service.formatCurrency(num, currency, 'en-GB', null)).equal(symbol + '12,345.67');
+        expect(service.formatCurrency(num, currency, undefined, null)).equal(symbol + '12,345.67');
     });
 });
