@@ -11,13 +11,34 @@ export interface ICalendarService {
 export class GregorianCalendarService implements ICalendarService {
 
     constructor(private readonly cldr: Cldr.CldrStatic) {
+        this.monthNames = {
+            abbreviated: this.getMonthNamesInternal('abbreviated'),
+            narrow: this.getMonthNamesInternal('narrow'),
+            wide: this.getMonthNamesInternal('wide')
+        };
 
+        this.dayNames = {
+            abbreviated: this.getDayNamesInternal('abbreviated'),
+            narrow: this.getDayNamesInternal('narrow'),
+            wide: this.getDayNamesInternal('wide'),
+            short: this.getDayNamesInternal('short'),
+        };
     }
 
     readonly name: string = 'Gregorian';
     private readonly monthDays: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    private readonly monthNames: { [key: string] : ReadonlyArray<string> };
+    private readonly dayNames: { [key: string] : ReadonlyArray<string> };
+    
+    getDayNames(type?: 'abbreviated' | 'narrow' | 'short' | 'wide'): ReadonlyArray<string>{
+        return this.dayNames[type || 'wide'];
+    }
 
-    getDayNames(type?: 'abbreviated' | 'narrow' | 'short' | 'wide'): ReadonlyArray<string> {
+    getMonthNames(type?: 'abbreviated' | 'narrow' | 'wide'): ReadonlyArray<string>{
+        return this.monthNames[type || 'wide'];
+    }
+
+    private getDayNamesInternal(type?: 'abbreviated' | 'narrow' | 'short' | 'wide'): ReadonlyArray<string> {
         type = type || 'wide';
         const days = this.cldr.main(['dates/calendars/gregorian/days', 'stand-alone', type]);
         if (!days)
@@ -25,7 +46,7 @@ export class GregorianCalendarService implements ICalendarService {
         return [days["sun"], days["mon"], days["tue"], days["wed"], days["thu"], days["fri"], days["sat"]];
     }
     
-    getMonthNames(type?: 'abbreviated' | 'narrow' | 'wide'): ReadonlyArray<string> {
+    private getMonthNamesInternal(type?: 'abbreviated' | 'narrow' | 'wide'): ReadonlyArray<string> {
         type = type || 'wide';
         const months = this.cldr.main(['dates/calendars/gregorian/months', 'stand-alone', type]);
         if (!months)

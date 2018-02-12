@@ -82,6 +82,22 @@ describe("Calendar Service", () => {
         throws(() => calendar.getDaysInMonth(2000, -1));
         throws(() => calendar.getDaysInMonth(2000, 12));
     });
+
+    it("should return month name", () => {
+        for (let i = 0; i < 12; i++) {
+            expect(service.getMonthName(i)).equal(englishMonthNames.wide[i]);
+            expect(service.getMonthName(i, 'de')).equal(germanMonthNames.wide[i]);
+            expect(service.getMonthName(i, 'de', 'abbreviated')).equal(germanMonthNames.abbreviated[i]);
+        }
+    });
+
+    it("should return day name", () => {
+        for (let i = 0; i < 12; i++) {
+            expect(service.getDayName(i)).equal(englishDayNames.wide[i]);
+            expect(service.getDayName(i, 'de')).equal(germanDayNames.wide[i]);
+            expect(service.getDayName(i, 'de', 'abbreviated')).equal(germanDayNames.abbreviated[i]);
+        }
+    });
     
     function generateIt(languageName: string, 
         daysOrMonths: 'months'|'days',

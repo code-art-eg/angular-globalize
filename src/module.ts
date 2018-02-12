@@ -5,6 +5,8 @@ import { GlobalizeDateTimePipe } from './pipes/globalize-datetime.pipe';
 import { GlobalizeTimePipe } from './pipes/globalize-time.pipe';
 import { GlobalizeCurrencyPipe } from './pipes/globalize-currency.pipe';
 import { GlobalizeNumberPipe } from './pipes/globalize-number.pipe';
+import { GlobalizeDayPipe } from './pipes/globalize-day.pipe';
+import { GlobalizeMonthPipe } from './pipes/globalize-month.pipe';
 
 import { CANG_CULTURE_SERVICE, 
     CANG_SUPPORTED_CULTURES, 
@@ -35,14 +37,18 @@ export * from './services/current-culture.service';
         GlobalizeDateTimePipe,
         GlobalizeTimePipe,
         GlobalizeCurrencyPipe,
-        GlobalizeNumberPipe
+        GlobalizeNumberPipe,
+        GlobalizeMonthPipe,
+        GlobalizeDayPipe
     ],
     exports: [
         GlobalizeDatePipe,
         GlobalizeDateTimePipe,
         GlobalizeTimePipe,
         GlobalizeCurrencyPipe,
-        GlobalizeNumberPipe
+        GlobalizeNumberPipe,
+        GlobalizeMonthPipe,
+        GlobalizeDayPipe
     ]
 })
 export class GlobalizationModule {

@@ -50,6 +50,12 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\pipes\globalize-currency.pipe.ts" />
+    <TypeScriptCompile Include="src\pipes\globalize-day.pipe.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\pipes\globalize-month.pipe.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\pipes\globalize-number.pipe.ts" />
     <TypeScriptCompile Include="src\pipes\globalize-datetime.pipe.ts" />
     <TypeScriptCompile Include="src\pipes\globalize-time.pipe.ts" />

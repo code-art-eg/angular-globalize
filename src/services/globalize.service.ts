@@ -58,6 +58,20 @@ export interface IGlobalizationService {
     formatCurrency(val: number, currency: string, locale: string, options?: CurrencyFormatterOptions | undefined): string;
 
     getCalendar(locale?: string, calendarName?: string): ICalendarService;
+
+    getMonthName(month: undefined, locale?: string, type?: 'abbreviated' | 'narrow' | 'wide'): undefined;
+    getMonthName(month: null, locale?: string, type?: 'abbreviated' | 'narrow' | 'wide'): null;
+    getMonthName(month: number, locale?: string, type?: 'abbreviated' | 'narrow' | 'wide'): string;
+    getMonthName(month: undefined, type?: 'abbreviated' | 'narrow' | 'wide'): undefined;
+    getMonthName(month: null, type?: 'abbreviated' | 'narrow' | 'wide'): null;
+    getMonthName(month: number, type?: 'abbreviated' | 'narrow' | 'wide'): string;
+
+    getDayName(day: undefined, locale?: string, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): undefined;
+    getDayName(day: null, locale?: string, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): null;
+    getDayName(day: number, locale?: string, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): string;
+    getDayName(day: undefined, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): undefined;
+    getDayName(day: null, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): null;
+    getDayName(day: number, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): string;
 }
 
 /**
@@ -200,6 +214,48 @@ export class DefaultGlobalizationService implements IGlobalizationService {
         return this.getGlobalizeInstance(locale).formatCurrency(val, currency, options);
     }
 
+    getMonthName(month: undefined, locale?: string, type?: 'abbreviated' | 'narrow' | 'wide'): undefined;
+    getMonthName(month: null, locale?: string, type?: 'abbreviated' | 'narrow' | 'wide'): null;
+    getMonthName(month: number, locale?: string, type?: 'abbreviated' | 'narrow' | 'wide'): string;
+    getMonthName(month: undefined, type?: 'abbreviated' | 'narrow' | 'wide'): undefined;
+    getMonthName(month: null, type?: 'abbreviated' | 'narrow' | 'wide'): null;
+    getMonthName(month: number, type?: 'abbreviated' | 'narrow' | 'wide'): string;
+    getMonthName(month: number | undefined | null, locale?: string, type?: 'abbreviated' | 'narrow' | 'wide'): string | null | undefined {
+        if (month === null) {
+            return null;
+        }
+        if (month === undefined) {
+            return undefined;
+        }
+        if (!type && (locale === 'abbreviated' || locale === 'narrow' || locale === 'wide')) {
+            type = locale;
+            locale = null;
+        }
+        const calendar = this.getCalendar(locale);
+        return calendar.getMonthNames(type)[month];
+    }
+
+    getDayName(day: undefined, locale?: string, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): undefined;
+    getDayName(day: null, locale?: string, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): null;
+    getDayName(day: number, locale?: string, type?: 'abbreviated' | 'short'| 'narrow' | 'wide'): string;
+    getDayName(day: undefined, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): undefined;
+    getDayName(day: null, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): null;
+    getDayName(day: number, type?: 'abbreviated' | 'short'| 'narrow' | 'wide'): string;
+    getDayName(day: number | undefined | null, locale?: string, type?: 'abbreviated'| 'short' | 'narrow' | 'wide'): string | null | undefined {
+        if (day === null) {
+            return null;
+        }
+        if (day === undefined) {
+            return undefined;
+        }
+        if (!type && (locale === 'abbreviated' || locale === 'short' || locale === 'narrow' || locale === 'wide')) {
+            type = locale;
+            locale = null;
+        }
+        const calendar = this.getCalendar(locale);
+        return calendar.getDayNames(type)[day];
+    }
+
     getCalendar(locale?: string, calendarName?: string): ICalendarService {
         if (!locale) {
             locale = this.cultureService.currentCulture;
@@ -208,6 +264,12 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             if (calendarName.toLowerCase() !== "gregorian")
                 throw `Only gregorian calendar is supported`;
         }
-        return new GregorianCalendarService(this.getGlobalizeInstance(locale).cldr);
+        const globalizeInstance = this.getGlobalizeInstance(locale);
+        if (globalizeInstance['calendarService']) {
+            return globalizeInstance['calendarService'];
+        }
+        const calendar = new GregorianCalendarService(globalizeInstance.cldr);
+        globalizeInstance['calendarService'] = calendar;
+        return calendar;
     }
 }
