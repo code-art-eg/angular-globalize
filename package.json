@@ -1,0 +1,23 @@
+{
+  "name": "@code-art/angular-datepicker",
+  "version": "1.0.0",
+  "description": "A datepicker for angular 5",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sherif-elmetainy/angular-datepicker.git"
+  },
+  "keywords": [
+    "angular",
+    "datepicker"
+  ],
+  "author": "Sherif Elmetainy (Code Art)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sherif-elmetainy/angular-datepicker/issues"
+  },
+  "homepage": "https://github.com/sherif-elmetainy/angular-datepicker#readme"
+}
