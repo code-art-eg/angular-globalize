@@ -1,6 +1,7 @@
 ﻿import { InjectionToken, Inject, Injectable } from '@angular/core';
 
 import { ICultureService, CANG_CULTURE_SERVICE } from './current-culture.service';
+import { ICalendarService, GregorianCalendarService } from './calendar.service';
 
 export const CANG_GLOBALIZATION_SERVICE = new InjectionToken<IGlobalizationService>('CaAngularGlobalizeService');
 export const CANG_GLOBALIZE_STATIC = new InjectionToken<GlobalizeStatic>('CaAngularGlobalizeStatic');
@@ -12,6 +13,8 @@ export const globalizeStatic = ((Globalize: GlobalizeStatic): GlobalizeStatic =>
     return Globalize;
 
 })(require('globalize'));
+
+export { ICalendarService } from './calendar.service';
 
 /**
  * Interface for number and date formatting and parsing.
@@ -53,6 +56,8 @@ export interface IGlobalizationService {
     formatCurrency(val: null, currency: string, locale: string, options?: CurrencyFormatterOptions | undefined): null;
     formatCurrency(val: undefined, currency: string, locale: string, options?: CurrencyFormatterOptions | undefined): undefined;
     formatCurrency(val: number, currency: string, locale: string, options?: CurrencyFormatterOptions | undefined): string;
+
+    getCalendar(locale?: string, calendarName?: string): ICalendarService;
 }
 
 /**
@@ -193,5 +198,16 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             options = localeOrOptions;
         }
         return this.getGlobalizeInstance(locale).formatCurrency(val, currency, options);
+    }
+
+    getCalendar(locale?: string, calendarName?: string): ICalendarService {
+        if (!locale) {
+            locale = this.cultureService.currentCulture;
+        }
+        if (calendarName) {
+            if (calendarName.toLowerCase() !== "gregorian")
+                throw `Only gregorian calendar is supported`;
+        }
+        return new GregorianCalendarService(this.getGlobalizeInstance(locale).cldr);
     }
 }

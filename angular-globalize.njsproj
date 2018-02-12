@@ -56,6 +56,9 @@
     <TypeScriptCompile Include="src\pipes\globalize-date.pipe.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\services\calendar.service.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\services\current-culture.service.ts" />
     <TypeScriptCompile Include="src\services\globalize.service.ts">
       <SubType>Code</SubType>
@@ -67,6 +70,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="test\services\angular-default-locale-provider.spec.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="test\services\calendar-service.spec.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="test\services\cookie-locale-provider.spec.ts">

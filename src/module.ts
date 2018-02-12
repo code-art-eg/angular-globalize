@@ -28,6 +28,7 @@ export * from './services/globalize.service';
 export * from './services/type-conversion.service';
 export * from './services/current-culture.service';
 
+
 @NgModule({
     declarations: [
         GlobalizeDatePipe,
