@@ -80,23 +80,125 @@ export interface IGlobalizationService {
 @Injectable()
 export class DefaultGlobalizationService implements IGlobalizationService {
 
-    private readonly globalizeInstances: { [key: string]: GlobalizeStatic };
+    private static readonly globalizeInstances: { [key: string]: GlobalizeStatic } = {};
+    private static readonly numberParsers: { [key: string]: (n: string) => number } = {};
+    private static readonly dateParsers: { [key: string]: (n: string) => Date } = { };
+    private static readonly numberFormatters: { [key: string]: (n: number) => string } = { };
+    private static readonly currencyFormatters: { [key: string]: (n: number) => string } = { };
+    private static readonly dateFormatters: { [key: string]: (n: Date) => string } = { };
+
     private readonly globalize: GlobalizeStatic;
 
     // using any for globaize parameter in the constructor because the angular compiler complains about GlobalizeStatic type
     constructor( @Inject(CANG_GLOBALIZE_STATIC) globalize: any,
         @Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService) {
-        this.globalizeInstances = {};
         this.globalize = globalize as GlobalizeStatic;
     }
 
     private getGlobalizeInstance(locale: string): GlobalizeStatic {
-        let instance = this.globalizeInstances[locale];
+        let instance = DefaultGlobalizationService.globalizeInstances[locale];
         if (!instance) {
             instance = new this.globalize(locale);
-            this.globalizeInstances[locale] = instance;
+            DefaultGlobalizationService.globalizeInstances[locale] = instance;
         }
         return instance;
+    }
+
+    private parseNumberInternal(val: string, locale: string, options: NumberParserOptions): number {
+        let key = DefaultGlobalizationService.getNumberParserKey(locale, options);
+        let parser = DefaultGlobalizationService.numberParsers[key];
+        if (!parser) {
+            let instance = this.getGlobalizeInstance(locale);
+            parser = instance.numberParser(options);
+            DefaultGlobalizationService.numberParsers[key] = parser;
+        }
+        return parser(val);
+    }
+
+    private parseDateInternal(val: string, locale: string, options: DateFormatterOptions): Date {
+        let key = DefaultGlobalizationService.getDateFormatterKey(locale, options);
+        let parser = DefaultGlobalizationService.dateParsers[key];
+        if (!parser) {
+            let instance = this.getGlobalizeInstance(locale);
+            parser = instance.dateParser(options);
+            DefaultGlobalizationService.dateParsers[key] = parser;
+        }
+        return parser(val);
+    }
+
+    private formatNumberInternal(val: number, locale: string, options: NumberFormatterOptions): string {
+        let key = DefaultGlobalizationService.getNumberFormatterKey(locale, options);
+        let formatter = DefaultGlobalizationService.numberFormatters[key];
+        if (!formatter) {
+            let instance = this.getGlobalizeInstance(locale);
+            formatter = instance.numberFormatter(options);
+            DefaultGlobalizationService.numberFormatters[key] = formatter;
+        }
+        return formatter(val);
+    }
+
+    private formatDateInternal(val: Date, locale: string, options: DateFormatterOptions): string {
+        let key = DefaultGlobalizationService.getDateFormatterKey(locale, options);
+        let formatter = DefaultGlobalizationService.dateFormatters[key];
+        if (!formatter) {
+            let instance = this.getGlobalizeInstance(locale);
+            formatter = instance.dateFormatter(options);
+            DefaultGlobalizationService.dateFormatters[key] = formatter;
+        }
+        return formatter(val);
+    }
+
+    private formatCurrencyInternal(val: number, currency: string, locale: string, options: CurrencyFormatterOptions): string {
+        let key = DefaultGlobalizationService.getCurrencyFormatterKey(locale, currency, options);
+        let formatter = DefaultGlobalizationService.currencyFormatters[key];
+        if (!formatter) {
+            let instance = this.getGlobalizeInstance(locale);
+            formatter = instance.currencyFormatter(currency, options);
+            DefaultGlobalizationService.currencyFormatters[key] = formatter;
+        }
+        return formatter(val);
+    }
+
+    private static getDateFormatterKey(locale: string, options?: DateFormatterOptions) {
+        let key = locale.toLowerCase();
+        key = key + '|' + (options && options.date ? options.date.toLowerCase() : '');
+        key = key + '|' + (options && options.datetime ? options.datetime.toLowerCase() : '');
+        key = key + '|' + (options && options.time ? options.time.toLowerCase() : '');
+        key = key + '|' + (options && options.raw ? options.raw.toLowerCase() : '');
+        key = key + '|' + (options && options.skeleton ? options.skeleton.toLowerCase() : '');
+        key = key + '|' + (options && options.timeZone ? options.timeZone.toLowerCase() : '');
+        return key;
+    }
+
+    private static getCommonNumberFormatterKey(locale: string, options?: CommonNumberFormatterOptions) {
+        let key = locale.toLowerCase();
+        key = key + '|' + (options ? options.maximumFractionDigits : '');
+        key = key + '|' + (options ? options.maximumSignificantDigits : '');
+        key = key + '|' + (options ? options.minimumFractionDigits : '');
+        key = key + '|' + (options ? options.minimumIntegerDigits : '');
+        key = key + '|' + (options ? options.minimumSignificantDigits : '');
+        key = key + '|' + (options && options.round ? options.round.toLocaleLowerCase() : '');
+        key = key + '|' + (options && typeof options.useGrouping === 'boolean' ? options.useGrouping : '');
+        return key;
+    }
+
+    private static getNumberFormatterKey(locale: string, options?: NumberFormatterOptions) {
+        let key = DefaultGlobalizationService.getCommonNumberFormatterKey(locale, options);
+        key = key + '|' + (options && options.style ? options.style.toLowerCase() : '');
+        return key;
+    }
+
+    private static getCurrencyFormatterKey(locale: string, currency: string, options?: CurrencyFormatterOptions) {
+        let key = DefaultGlobalizationService.getCommonNumberFormatterKey(locale, options);
+        key = key + '|' + (options && options.style ? options.style.toLowerCase() : '');
+        key = key + '|' + currency;
+        return key;
+    }
+
+    private static getNumberParserKey(locale: string, options?: NumberParserOptions) {
+        let key = locale.toLowerCase();
+        key = key + '|' + (options && options.style ? options.style.toLowerCase() : '');
+        return key;
     }
 
     parseDate(val: null, options?: DateFormatterOptions | undefined): null;
@@ -122,7 +224,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             locale = this.cultureService.currentCulture;
             options = localeOrOptions;
         }
-        return this.getGlobalizeInstance(locale).parseDate(val, options || undefined);
+        return this.parseDateInternal(val, locale, options || undefined);
     }
 
     formatDate(val: null, options?: DateFormatterOptions | undefined): null;
@@ -148,7 +250,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             locale = this.cultureService.currentCulture;
             options = localeOrOptions;
         }
-        return this.getGlobalizeInstance(locale).formatDate(val, options || undefined);
+        return this.formatDateInternal(val, locale, options || undefined);
     }
 
     parseNumber(val: null, options?: NumberParserOptions | undefined): null;
@@ -174,7 +276,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             locale = this.cultureService.currentCulture;
             options = localeOrOptions;
         }
-        return this.getGlobalizeInstance(locale).parseNumber(val, options || undefined);
+        return this.parseNumberInternal(val, locale, options || undefined);
     }
 
     formatNumber(val: null, options?: NumberFormatterOptions | undefined): null;
@@ -200,7 +302,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             locale = this.cultureService.currentCulture;
             options = localeOrOptions;
         }
-        return this.getGlobalizeInstance(locale).formatNumber(val, options || undefined);
+        return this.formatNumberInternal(val, locale, options || undefined);
     }
 
     formatCurrency(val: null, currency: string, options?: CurrencyFormatterOptions | undefined): null;
@@ -226,7 +328,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             locale = this.cultureService.currentCulture;
             options = localeOrOptions;
         }
-        return this.getGlobalizeInstance(locale).formatCurrency(val, currency, options || undefined);
+        return this.formatCurrencyInternal(val, currency, locale, options || undefined);
     }
 
     getMonthName(month: undefined, locale?: string, type?: 'abbreviated' | 'narrow' | 'wide'): undefined;
