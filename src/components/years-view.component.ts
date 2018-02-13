@@ -19,6 +19,7 @@ export class YearsViewComponent implements OnInit {
         this._ranges = null;
         this._nextPrevText = null;
         this.focusRange = null;
+        this.handleKeyboardEvents = false;
     }
 
     ngOnInit(): void {
@@ -222,15 +223,15 @@ export class YearsViewComponent implements OnInit {
         return i === this.selectedRange;
     }
 
-    get startYear(): number {
+    private get startYear(): number {
         return this.year - this.year % (this.numberOfYears * 10);
     }
 
-    getYear(i: number): number {
+    private getYear(i: number): number {
         return this.startYear + i * this.numberOfYears;
     }
 
-    get selectedRange(): number {
+    private get selectedRange(): number {
         const d = Math.floor((this.year - this.startYear) % (this.numberOfYears * 10) / this.numberOfYears);
         return d;
     }
