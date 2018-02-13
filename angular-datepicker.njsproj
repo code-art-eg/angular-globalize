@@ -66,6 +66,7 @@
     <Folder Include="test\" />
     <Folder Include="src\" />
     <Folder Include="playground\" />
+    <Folder Include="test\components\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="playground\app.component.ts" />
@@ -89,6 +90,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\module.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="test\components\next-prev-component.spec.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="test\date-util.spec.ts">

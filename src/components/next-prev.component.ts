@@ -12,10 +12,10 @@ export class NextPreviousComponent {
 
     constructor() {
         this.locale = null;
-        this.nextArrow = NextPreviousComponent.rightArrow;
-        this.prevArrow = NextPreviousComponent.leftArrow;
         this.clicked = new EventEmitter<NextPrevAction>();
         this.text = null;
+        this.resetButton = true;
+        this.homeButton = true;
     }
 
     private _locale: string;
@@ -27,13 +27,7 @@ export class NextPreviousComponent {
     resetButton: boolean;
 
     @Input()
-    set locale(val: string) {
-        this._locale = val;
-    }
-
-    get locale(): string {
-        return this._locale;
-    }
+    locale: string;
 
     getClass(type: 'next'|'prev'): string {
         if (type === 'next') {
@@ -43,8 +37,6 @@ export class NextPreviousComponent {
             return isRightToLeft(this.locale) ? NextPreviousComponent.rightArrow: NextPreviousComponent.leftArrow;
     }
 
-    nextArrow: string;
-    prevArrow: string;
     @Input()
     text: string;
 
