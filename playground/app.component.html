@@ -1,2 +1,3 @@
-﻿<datepicker></datepicker>
+﻿<datepicker [maxDate]="date" [(ngModel)]="val" ></datepicker>
+{{ val | gdate:'full' }}
 <language-switch></language-switch>

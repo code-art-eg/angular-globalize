@@ -1,0 +1,25 @@
+﻿
+<table class="next-prev-container">
+    <colgroup>
+        <col />
+        <col *ngIf="homeButton" />
+        <col *ngIf="restButton" />
+        <col colspan="5" />
+        <col />
+    </colgroup>
+    <tr>
+        <td class="prev" (click)="clicked.emit('prev')">
+            <span class="glyphicon" [ngClass]="getClass('prev')"></span>
+        </td>
+        <td *ngIf="homeButton" (click)="clicked.emit('home')">
+            <span class="glyphicon glyphicon-home home-button"></span>
+        </td>
+        <td *ngIf="resetButton" (click)="clicked.emit('reset')">
+            <span class="glyphicon glyphicon-remove reset-button"></span>
+        </td>
+        <td class="next-prev-title" (click)="clicked.emit('text')" colspan="5">{{ text }}</td>
+        <td class="next" (click)="clicked.emit('next')">
+            <span class="glyphicon" [ngClass]="getClass('next')"></span>
+        </td>
+    </tr>
+</table>

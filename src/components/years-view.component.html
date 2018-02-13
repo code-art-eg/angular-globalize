@@ -1,0 +1,13 @@
+﻿
+
+<div class="year-month-view-container" [ngClass]="{'isrtl': dir === 'rtl'}">
+    <next-prev [locale]="locale" 
+               [homeButton]="homeButton"
+               [resetButton]="resetButton"
+               (clicked)="onNextPrevClicked($event)" 
+               [text]="nextPrevText"></next-prev>
+    <span *ngFor="let r of ranges; let i = index" 
+          [ngClass]="{'selected': isSelected(i), 'other': isOther(i), 'disabled': isDisabled(i), 'range': isRange(i), 'focused': i === focusRange}" (click)="rangeClick(i)">
+        {{ r }}
+    </span>
+</div>

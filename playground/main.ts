@@ -2,6 +2,7 @@
 import 'zone.js';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
@@ -23,7 +24,7 @@ import { LanguageSwitchComponent } from './language-switch.component';
     bootstrap: [AppComponent],
     declarations: [AppComponent, LanguageSwitchComponent],
     imports: [
-        BrowserModule,
+        BrowserModule, FormsModule,
         // Specify the library's modules as imports
         GlobalizationModule, GlobalizationServicesModule, DatePickerModule
         ],

@@ -10,10 +10,9 @@ import 'rxjs/add/operator/map';
 export class AppComponent
 {
     constructor() {
-        this.jsDate = new Date();
-        this.currentTime = Observable.timer(0, 1000).map(v => new Date());
+        this.date = new Date();
+        this.val = new Date();
     }
-
-    jsDate: Date;
-    currentTime: Observable<Date>;
+    date: Date;
+    val: any;
 }
