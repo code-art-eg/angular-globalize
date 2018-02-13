@@ -56,6 +56,9 @@
     </Content>
     <Content Include="src\util.ts" />
     <Content Include="src\tsconfig.lib.json" />
+    <Content Include="test\tsconfig.json">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +89,12 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\module.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="test\date-util.spec.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="test\load-globalize-data.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>

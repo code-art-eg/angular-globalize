@@ -1,0 +1,293 @@
+﻿import { expect } from 'chai';
+const chai: Chai.ChaiStatic = require('chai');
+chai.use(require('chai-datetime'));
+import { IGlobalizationService, ICultureService, DefaultGlobalizationService } from '@code-art/angular-globalize';
+import { loadedGlobalize } from './load-globalize-data';
+
+import { datesEqual, createDate, similarInUtc, similarInLocal, addDays, isRightToLeft, formatYear, stripTime, minDate, maxDate, dateInRange, numArray, sixArray, sevenArray, twelveArray } from '../src/util';
+
+describe("Utils datesEqual", () => {
+
+    it("should treat null and undefined as equal", () => {
+        expect(datesEqual(null, null)).true;
+        expect(datesEqual(null, undefined)).true;
+        expect(datesEqual(undefined, null)).true;
+        expect(datesEqual(undefined, undefined)).true;
+    });
+
+    it("should treat null and date as not equal", () => {
+        expect(datesEqual(null, new Date())).false;
+        expect(datesEqual(undefined, new Date())).false;
+        expect(datesEqual(new Date(), null)).false;
+        expect(datesEqual(new Date(), undefined)).false;
+    });
+
+    it("should compare 2 dates with same value", () => {
+        let d = new Date();
+        expect(datesEqual(d, d)).true;
+        expect(datesEqual(d, new Date(d.valueOf()))).true;
+    });
+
+    it("should compare 2 dates with different values", () => {
+        let d = new Date();
+        let d2 = new Date(d.valueOf() + 1);
+        expect(datesEqual(d, d2)).false;
+    });
+
+});
+
+describe("Utils createDate", () => {
+
+    it("should default to today", () => {
+        let d = new Date();
+        let res = createDate();
+        expect(res.getUTCFullYear()).equal(d.getFullYear());
+        expect(res.getUTCMonth()).equal(d.getMonth());
+        expect(res.getUTCDate()).equal(d.getDate());
+        expect(res.getUTCHours()).equal(0);
+        expect(res.getUTCMinutes()).equal(0);
+        expect(res.getUTCSeconds()).equal(0);
+        expect(res.getUTCMilliseconds()).equal(0);
+    });
+
+    it("should create utc date", () => {
+        let res = createDate(2018, 2, 18);
+        expect(res.getUTCFullYear()).equal(2018);
+        expect(res.getUTCMonth()).equal(2);
+        expect(res.getUTCDate()).equal(18);
+        expect(res.getUTCHours()).equal(0);
+        expect(res.getUTCMinutes()).equal(0);
+        expect(res.getUTCSeconds()).equal(0);
+        expect(res.getUTCMilliseconds()).equal(0);
+    });
+
+     it("should create utc date before 1000 A.D", () => {
+        let res = createDate(800, 2, 18);
+        expect(res.getUTCFullYear()).equal(800);
+        expect(res.getUTCMonth()).equal(2);
+        expect(res.getUTCDate()).equal(18);
+        expect(res.getUTCHours()).equal(0);
+        expect(res.getUTCMinutes()).equal(0);
+        expect(res.getUTCSeconds()).equal(0);
+        expect(res.getUTCMilliseconds()).equal(0);
+    });
+});
+
+describe("Util similarInUtc", () => {
+    it("should return null or undefined", () => {
+        expect(similarInUtc(null)).null;
+        expect(similarInUtc(undefined)).undefined;
+    });
+
+    it("should return similalUtc", () => {
+        let d = new Date();
+        let res = similarInUtc(d);
+        expect(res.getUTCFullYear()).equal(d.getFullYear());
+        expect(res.getUTCMonth()).equal(d.getMonth());
+        expect(res.getUTCDate()).equal(d.getDate());
+        expect(res.getUTCHours()).equal(0);
+        expect(res.getUTCMinutes()).equal(0);
+        expect(res.getUTCSeconds()).equal(0);
+        expect(res.getUTCMilliseconds()).equal(0);
+    });
+});
+
+describe("Util similarInLocal", () => {
+    it("should return null or undefined", () => {
+        expect(similarInLocal(null)).null;
+        expect(similarInLocal(undefined)).undefined;
+    });
+
+    it("should return similarInLocal", () => {
+        let d = new Date();
+        let res = similarInLocal(d);
+        expect(res.getFullYear()).equal(d.getUTCFullYear());
+        expect(res.getMonth()).equal(d.getUTCMonth());
+        expect(res.getDate()).equal(d.getUTCDate());
+        expect(res.getHours()).equal(0);
+        expect(res.getMinutes()).equal(0);
+        expect(res.getSeconds()).equal(0);
+        expect(res.getMilliseconds()).equal(0);
+    });
+});
+
+describe("Util addDays", () => {
+    it("should add days", () => {
+        let d = createDate();
+        let d2 = addDays(d, 1);
+        expect(d2.valueOf() - d.valueOf()).equal(24 * 3600 * 1000);
+    });
+
+    it("should subtract days", () => {
+        let d = createDate();
+        let d2 = addDays(d, -1);
+        expect(d.valueOf() - d2.valueOf()).equal(24 * 3600 * 1000);
+    });
+});
+
+describe("Util isRightToLeft", () => {
+    it("should return true for Arabic", () => {
+        expect(isRightToLeft('ar')).true;
+        expect(isRightToLeft('Ar')).true;
+        expect(isRightToLeft('AR')).true;
+        expect(isRightToLeft('AR-EG')).true;
+        expect(isRightToLeft('ar-EG')).true;
+        expect(isRightToLeft('ar-SA')).true;
+        expect(isRightToLeft('Ar-Sa')).true;
+    });
+
+    it("should return true for Hebrew", () => {
+        expect(isRightToLeft('he')).true;
+        expect(isRightToLeft('He')).true;
+        expect(isRightToLeft('He')).true;
+        expect(isRightToLeft('He-IL')).true;
+        expect(isRightToLeft('he-il')).true;
+        expect(isRightToLeft('he-Il')).true;
+        expect(isRightToLeft('He-IL')).true;
+    });
+
+    it("should return false for others", () => {
+        expect(isRightToLeft('en')).false;
+        expect(isRightToLeft('en-EG')).false;
+        expect(isRightToLeft('de')).false;
+        expect(isRightToLeft(null)).false;
+    });
+});
+
+describe("Util formatYear", () => {
+    const service = new DefaultGlobalizationService(loadedGlobalize, {
+        cultureObservable: null,
+        currentCulture: 'en-GB'
+    });
+
+    it("should format latin", () => {
+        expect(formatYear(service, 2000)).equal('2000');
+        expect(formatYear(service, 2000, 'de')).equal('2000');
+        expect(formatYear(service, 2000, 'en-GB')).equal('2000');
+    });
+
+    it("should format non latin", () => {
+        expect(formatYear(service, 2000, 'ar-EG')).equal('٢٠٠٠');
+    });
+
+    it("should add trailing zeros ", () => {
+        expect(formatYear(service, 200, 'ar-EG')).equal('٠٢٠٠');
+        expect(formatYear(service, 200, 'de')).equal('0200');
+        expect(formatYear(service, 200, 'en-GB')).equal('0200');
+        expect(formatYear(service, 200)).equal('0200');
+        expect(formatYear(service, 0, 'ar-EG')).equal('٠٠٠٠');
+        expect(formatYear(service, 0, 'de')).equal('0000');
+        expect(formatYear(service, 0, 'en-GB')).equal('0000');
+        expect(formatYear(service, 0)).equal('0000');
+    });
+});
+
+describe("Util stripTime", () => {
+    it("should return null or undefined", () => {
+        expect(stripTime(null)).null;
+        expect(stripTime(undefined)).undefined;
+    });
+
+    it("should return strip time", () => {
+        const d = createDate();
+        d.setUTCHours(10);
+        d.setUTCMinutes(20);
+        d.setUTCSeconds(30);
+        d.setUTCMilliseconds(10);
+        const res = stripTime(d);
+        expect(res.getUTCFullYear()).equal(d.getUTCFullYear());
+        expect(res.getUTCMonth()).equal(d.getUTCMonth());
+        expect(res.getUTCDate()).equal(d.getUTCDate());
+        expect(res.getUTCHours()).equal(0);
+        expect(res.getUTCMinutes()).equal(0);
+        expect(res.getUTCSeconds()).equal(0);
+        expect(res.getUTCMilliseconds()).equal(0);
+    });
+});
+
+describe("Util minDate and maxDate and range", () => {
+    it("should return null or undefined", () => {
+        expect(minDate(null, new Date())).null;
+        expect(minDate(undefined, new Date())).undefined;
+        expect(maxDate(null, new Date())).null;
+        expect(maxDate(undefined, new Date())).undefined;
+
+        expect(minDate(null, new Date())).null;
+        expect(minDate(undefined, new Date())).undefined;
+        expect(maxDate(null, new Date())).null;
+        expect(maxDate(undefined, new Date())).undefined;
+    });
+
+    it("should return minDate", () => {
+        const d = new Date();
+        const d1 = new Date(d.valueOf() + 100);
+        const d2 = new Date(d.valueOf() + 200);
+        
+        expect(minDate(d)).equalTime(d);
+        expect(minDate(d, d1, d2)).equalTime(d);
+        expect(minDate(d1, d, d2)).equalTime(d);
+        expect(minDate(d, d1)).equalTime(d);
+        expect(minDate(d2, d1, d)).equalTime(d);
+    });
+
+    it("should return maxDate", () => {
+        const d = new Date();
+        const d1 = new Date(d.valueOf() - 100);
+        const d2 = new Date(d.valueOf() - 200);
+        
+        expect(maxDate(d)).equalTime(d);
+        expect(maxDate(d, d1, d2)).equalTime(d);
+        expect(maxDate(d1, d, d2)).equalTime(d);
+        expect(maxDate(d, d1)).equalTime(d);
+        expect(maxDate(d2, d1, d)).equalTime(d);
+    });
+
+    it("should check Range", () => {
+        const d = new Date();
+        const d1 = new Date(d.valueOf() + 100);
+        const d2 = new Date(d.valueOf() + 200);
+
+        expect(dateInRange(d, null, null)).true;
+        expect(dateInRange(d, undefined, undefined)).true;
+        expect(dateInRange(d, null, undefined)).true;
+        expect(dateInRange(d, undefined, null)).true;
+        expect(dateInRange(null, null, null)).true;
+        expect(dateInRange(null, undefined, undefined)).true;
+        expect(dateInRange(null, null, undefined)).true;
+        expect(dateInRange(null, undefined, null)).true;
+        expect(dateInRange(undefined, null, null)).true;
+        expect(dateInRange(undefined, undefined, undefined)).true;
+        expect(dateInRange(undefined, null, undefined)).true;
+        expect(dateInRange(undefined, undefined, null)).true;
+        
+        expect(dateInRange(undefined, d1, d2)).true;
+        expect(dateInRange(null, d1, d2)).true;
+
+
+        expect(dateInRange(d, d2, d1)).false;
+        expect(dateInRange(d1, d2, d)).false;
+        expect(dateInRange(d1, d, d2)).true;
+    });
+});
+
+describe("Util numArray", () => {
+    it("should return correct length", () => {
+        let x = 13;
+        let res = numArray(x);
+        expect(Array.isArray(res)).true;
+        expect(res).lengthOf(x);
+        for (let i = 0; i < res.length; i++) {
+            expect(res[i]).equal(i);
+        }
+    });
+
+    it("built in correct lengths", () => {
+        expect(Array.isArray(sevenArray)).true;
+        expect(Array.isArray(sixArray)).true;
+        expect(Array.isArray(twelveArray)).true;
+    
+        expect(sevenArray).lengthOf(7);
+        expect(sixArray).lengthOf(6);
+        expect(twelveArray).lengthOf(12);
+    });
+});
