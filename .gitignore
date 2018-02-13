@@ -267,5 +267,6 @@ obj/
 /playground/vendor-manifest.json
 /playground/main-client.js
 /playground/vendor.css
+/playground/*.svg
 /build
 /dist

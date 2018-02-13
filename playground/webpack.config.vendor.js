@@ -19,8 +19,6 @@ var modules = [
     'es6-promise',
     'es6-shim',
     'event-source-polyfill',
-    'normalize.css/normalize.css',
-    'bootstrap/dist/css/bootstrap-reboot.css',
     'bootstrap/dist/css/bootstrap.css',
     'iana-tz-data/iana-tz-data.json',
     'cldr-data/supplemental/likelySubtags.json',
@@ -66,7 +64,8 @@ module.exports = {
         rules: [
             { test: /(^|\/|\\|(\s+))globalize/i, loader: 'imports-loader?define=>false' },
             { test: /\.json$/, loader: 'json-loader' },
-            { test: /\.css(\?|$)/, use: extractCSS.extract({ use: 'css-loader' }) }
+            { test: /\.css(\?|$)/, use: extractCSS.extract({ use: 'css-loader' }) },
+            { test: /\.(png|woff|woff2|eot|ttf|svg)(\?|$)/, use: 'url-loader?limit=100000' }
         ]
     },
     plugins: [

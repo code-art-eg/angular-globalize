@@ -24,6 +24,7 @@ module.exports = {
         rules: [
             { test: /\.ts$/, use: ['awesome-typescript-loader?silent=true', 'angular2-template-loader']},
             { test: /\.html/, use: 'html-loader?minimize=false' },
+            { test: /\.less$/, use: ['to-string-loader', 'css-loader', 'less-loader'] },
             { test: /(^|\/|(\s+))globalize/i, loader: 'imports-loader?define=>false' }
         ]
     },
