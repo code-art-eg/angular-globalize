@@ -61,9 +61,28 @@ describe("Utils createDate", () => {
         expect(res.getUTCMilliseconds()).equal(0);
     });
 
-     it("should create utc date before 1000 A.D", () => {
+    it("should create utc date before 1000 A.D", () => {
         let res = createDate(800, 2, 18);
         expect(res.getUTCFullYear()).equal(800);
+        expect(res.getUTCMonth()).equal(2);
+        expect(res.getUTCDate()).equal(18);
+        expect(res.getUTCHours()).equal(0);
+        expect(res.getUTCMinutes()).equal(0);
+        expect(res.getUTCSeconds()).equal(0);
+        expect(res.getUTCMilliseconds()).equal(0);
+
+
+        res = createDate(0, 2, 18);
+        expect(res.getUTCFullYear()).equal(0);
+        expect(res.getUTCMonth()).equal(2);
+        expect(res.getUTCDate()).equal(18);
+        expect(res.getUTCHours()).equal(0);
+        expect(res.getUTCMinutes()).equal(0);
+        expect(res.getUTCSeconds()).equal(0);
+        expect(res.getUTCMilliseconds()).equal(0);
+
+        res = createDate(-100, 2, 18);
+        expect(res.getUTCFullYear()).equal(-100);
         expect(res.getUTCMonth()).equal(2);
         expect(res.getUTCDate()).equal(18);
         expect(res.getUTCHours()).equal(0);
@@ -89,6 +108,18 @@ describe("Util similarInUtc", () => {
         expect(res.getUTCMinutes()).equal(0);
         expect(res.getUTCSeconds()).equal(0);
         expect(res.getUTCMilliseconds()).equal(0);
+
+        d.setFullYear(1);
+        res = similarInUtc(d);
+        expect(res.getUTCFullYear()).equal(1);
+
+        d.setFullYear(0);
+        res = similarInUtc(d);
+        expect(res.getUTCFullYear()).equal(0);
+
+        d.setFullYear(-100);
+        res = similarInUtc(d);
+        expect(res.getUTCFullYear()).equal(-100);
     });
 });
 
@@ -222,7 +253,7 @@ describe("Util minDate and maxDate and range", () => {
         const d = new Date();
         const d1 = new Date(d.valueOf() + 100);
         const d2 = new Date(d.valueOf() + 200);
-        
+
         expect(minDate(d)).equalTime(d);
         expect(minDate(d, d1, d2)).equalTime(d);
         expect(minDate(d1, d, d2)).equalTime(d);
@@ -234,7 +265,7 @@ describe("Util minDate and maxDate and range", () => {
         const d = new Date();
         const d1 = new Date(d.valueOf() - 100);
         const d2 = new Date(d.valueOf() - 200);
-        
+
         expect(maxDate(d)).equalTime(d);
         expect(maxDate(d, d1, d2)).equalTime(d);
         expect(maxDate(d1, d, d2)).equalTime(d);
@@ -259,7 +290,7 @@ describe("Util minDate and maxDate and range", () => {
         expect(dateInRange(undefined, undefined, undefined)).true;
         expect(dateInRange(undefined, null, undefined)).true;
         expect(dateInRange(undefined, undefined, null)).true;
-        
+
         expect(dateInRange(undefined, d1, d2)).true;
         expect(dateInRange(null, d1, d2)).true;
 
@@ -285,7 +316,7 @@ describe("Util numArray", () => {
         expect(Array.isArray(sevenArray)).true;
         expect(Array.isArray(sixArray)).true;
         expect(Array.isArray(twelveArray)).true;
-    
+
         expect(sevenArray).lengthOf(7);
         expect(sixArray).lengthOf(6);
         expect(twelveArray).lengthOf(12);

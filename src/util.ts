@@ -20,7 +20,7 @@ export function createDate(year?: number, month?: number, date?: number): Date {
         date = d.getDate();
     }
     d = new Date(Date.UTC(year, month, date));
-    if (year >= 0 && year < 1000) {
+    if (d.getUTCFullYear() !== year) {
         d.setUTCFullYear(year);
     }
     return d;
@@ -49,7 +49,11 @@ export function similarInLocal(date: Date|null|undefined): Date|null|undefined {
     if (date === undefined) {
         return undefined;
     }
-    return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+    let d = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+    if (date.getUTCFullYear() !== d.getFullYear()) {
+        d.setFullYear(date.getUTCFullYear())
+    }
+    return d;
 }
 
 export function addDays(date: Date, days: number): Date {
