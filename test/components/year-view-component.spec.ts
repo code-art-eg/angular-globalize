@@ -529,4 +529,29 @@ describe("YearsViewComponent", () => {
         expect(e.reset).not.true;
         sub.unsubscribe();
     });
+
+    it("reverses keyboard arrows in right to left locales", () => {
+        const c = new YearsViewComponent(globalizeService);
+        c.minYear = 1;
+        c.year = 2018;
+        c.maxYear = 9999;
+        c.numberOfYears = 1;
+        c.handleKeyboardEvents = true;
+        c.locale = 'ar-EG';
+        expect(c.focusRange).null;
+
+        let e: IMonthYearSelection = null;
+        let sub = c.command.asObservable().subscribe(ev => {
+            e = ev;
+        });
+        c.keyEvent({ keyCode: KEY_CODE.LEFT_ARROW } as KeyboardEvent);
+        expect(e).null;
+        expect(c.focusRange).equal(8); // 2018
+        c.keyEvent({ keyCode: KEY_CODE.LEFT_ARROW } as KeyboardEvent);
+        expect(e).null;
+        expect(c.focusRange).equal(9); // 2017
+        c.keyEvent({ keyCode: KEY_CODE.RIGHT_ARROW } as KeyboardEvent);
+        expect(e).null;
+        expect(c.focusRange).equal(8); // 2017
+    });
 });

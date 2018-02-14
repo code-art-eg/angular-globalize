@@ -1,6 +1,6 @@
 ﻿import { Input, Component, Inject, EventEmitter, Output, HostListener, OnInit } from '@angular/core';
 import { IGlobalizationService, CANG_GLOBALIZATION_SERVICE } from '@code-art/angular-globalize';
-import { IMonthYearSelection, twelveArray, formatYear, KEY_CODE, NextPrevAction, createDate } from '../util';
+import { IMonthYearSelection, twelveArray, formatYear, KEY_CODE, NextPrevAction, createDate, isRightToLeft } from '../util';
 
 @Component({
     selector: 'months-view',
@@ -39,9 +39,9 @@ export class MonthsViewComponent implements OnInit {
             return;
         }
         if (event.keyCode === KEY_CODE.LEFT_ARROW) {
-            this.addFocusMonth(-1);
+            this.addFocusMonth(isRightToLeft(this.locale) ? 1 : -1);
         } else if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
-            this.addFocusMonth(1);
+            this.addFocusMonth(isRightToLeft(this.locale) ? -1 : 1);
         } else if (event.keyCode === KEY_CODE.UP_ARROW) {
             this.addFocusMonth(-3);
         } else if (event.keyCode === KEY_CODE.DOWN_ARROW) {

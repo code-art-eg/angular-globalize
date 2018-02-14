@@ -1,6 +1,6 @@
 ﻿import { Input, Component, Inject, EventEmitter, Output, OnInit, HostListener } from '@angular/core';
 import { IGlobalizationService, CANG_GLOBALIZATION_SERVICE } from '@code-art/angular-globalize';
-import { IMonthYearSelection, twelveArray, formatYear, ViewType, KEY_CODE, NextPrevAction } from '../util';
+import { IMonthYearSelection, twelveArray, formatYear, ViewType, KEY_CODE, NextPrevAction, isRightToLeft } from '../util';
 
 @Component({
     selector: 'years-view',
@@ -35,9 +35,9 @@ export class YearsViewComponent implements OnInit {
             return;
         }
         if (event.keyCode === KEY_CODE.LEFT_ARROW) {
-            this.addRange(-1);
+            this.addRange(isRightToLeft(this.locale) ? 1 : -1);
         } else if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
-            this.addRange(1);
+            this.addRange(isRightToLeft(this.locale) ? -1 : 1);
         } else if (event.keyCode === KEY_CODE.UP_ARROW) {
             this.addRange(-3);
         } else if (event.keyCode === KEY_CODE.DOWN_ARROW) {

@@ -224,10 +224,36 @@ describe("MonthsViewComponent", () => {
         expect(e.view).equal('days');
         expect(e.year).undefined;
         expect(e.reset).not.true;
-        expect(c.focusMonth).null; 
+        expect(c.focusMonth).null;
 
         sub.unsubscribe();
     });
+
+    it("reverse keyboard arrows in right to left locales", () => {
+        const c = new MonthsViewComponent(globalizeService);
+        c.year = 2018;
+        c.month = 1;
+        c.handleKeyboardEvents = true;
+        c.locale = 'ar-EG'
+        expect(c.focusMonth).null;
+        let e: IMonthYearSelection = null;
+        let sub = c.command.asObservable().subscribe(ev => {
+            e = ev;
+        });
+        c.keyEvent({ keyCode: KEY_CODE.LEFT_ARROW } as KeyboardEvent);
+        expect(c.focusMonth).equal(c.month);
+        expect(e).null;
+
+        c.keyEvent({ keyCode: KEY_CODE.LEFT_ARROW } as KeyboardEvent);
+        expect(e).null;
+        expect(c.focusMonth).equal(2); // 0
+
+        c.keyEvent({ keyCode: KEY_CODE.RIGHT_ARROW } as KeyboardEvent);
+        expect(e).null;
+        expect(c.focusMonth).equal(1); // 0
+        sub.unsubscribe();
+    });
+
 
     it("handles keyboard enter without focus", () => {
         const c = new MonthsViewComponent(globalizeService);
@@ -245,7 +271,7 @@ describe("MonthsViewComponent", () => {
         expect(e.view).equal('days');
         expect(e.year).undefined;
         expect(e.reset).not.true;
-        expect(c.focusMonth).null; 
+        expect(c.focusMonth).null;
 
         sub.unsubscribe();
     });
