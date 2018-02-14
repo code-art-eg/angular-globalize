@@ -35,7 +35,11 @@ describe("Conversion Service", () => {
     });
 
     it("converts date to string", () => {
-        expect(typeConverter.convertToString(new Date(2018, 1, 18))).equal('18/02/2018');
+        expect(typeConverter.convertToString(new Date(2018, 1, 18))).equal('18/02/2018, 00:00');
+    });
+
+    it("converts date to string locale", () => {
+        expect(typeConverter.convertToString(new Date(2018, 1, 18), 'de')).equal('18.02.18, 00:00');
     });
 
     it("converts string to string", () => {
@@ -108,6 +112,26 @@ describe("Conversion Service", () => {
         expect(typeConverter.convertToNumber(n)).equal(n);
     });
 
+    it("converts string to number", () => {
+        const n = 123;
+        expect(typeConverter.convertToNumber('123')).equal(n);
+    });
+
+    it("converts string to number locale", () => {
+        const n = 123.2;
+        expect(typeConverter.convertToNumber('123,2', 'de')).equal(n);
+    });
+
+    it("converts number to string", () => {
+        const n = 123;
+        expect(typeConverter.convertToString(n)).equal('123');
+    });
+
+    it("converts number to string locale", () => {
+        const n = 123.5;
+        expect(typeConverter.convertToString(n, 'de')).equal('123,5');
+    });
+
     it("fails to converts object to number ", () => {
         throws(() => typeConverter.convertToBoolean({}));
     });
@@ -121,8 +145,16 @@ describe("Conversion Service", () => {
     });
 
     it("converts string to date", () => {
-        var d = new Date(2018, 1, 18);
-        expect(typeConverter.convertToDate('18/02/2018')).equalTime(d);
+        var d = new Date(2018, 1, 18, 20, 12);
+        expect(typeConverter.convertToDate('18/02/2018')).equalDate(d);
+        expect(typeConverter.convertToDate('18/02/2018, 20:12')).equalTime(d);
+    });
+
+    it("converts string to date locale", () => {
+        var d = new Date(2018, 1, 18, 20, 12);
+        expect(typeConverter.convertToDate('18.02.2018', 'de')).equalDate(d);
+        expect(typeConverter.convertToDate('18.02.18, 20:12', 'de')).equalTime(d);
+        expect(typeConverter.convertToDate('18.02.2018, 20:12:00', 'de')).equalTime(d);
     });
     
     it("converts date to date", () => {

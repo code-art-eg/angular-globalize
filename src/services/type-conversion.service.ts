@@ -8,7 +8,7 @@ export interface ITypeConverterService {
      * Convert a value to string
      * @param val
      */
-    convertToString(val: any): string | null;
+    convertToString(val: any, locale?: string): string | null;
     /**
      * converts a value to boolean
      * @param val
@@ -18,12 +18,12 @@ export interface ITypeConverterService {
      * Converts a value to a number
      * @param val
      */
-    convertToNumber(val: any): number | null;
+    convertToNumber(val: any, locale?: string): number | null;
     /**
      * Converts a value to a date
      * @param val
      */
-    convertToDate(val: any): Date | null;
+    convertToDate(val: any, locale?: string): Date | null;
 }
 
 @Injectable()
@@ -37,11 +37,22 @@ export class TypeConverterService implements ITypeConverterService {
 
     }
 
+    private static readonly optionsOrder: DateFormatterOptions[] = [
+        { 'date': 'short' },
+        { 'datetime': 'short' },
+        { 'datetime': 'medium' },
+        { 'datetime': 'long' },
+        { 'datetime': 'full' },
+        { 'date': 'medium' },
+        { 'date': 'long' },
+        { 'date': 'full' }
+    ];
+
     /**
      * Convert a value to string
      * @param val
      */
-    convertToString(val: any): string | null {
+    convertToString(val: any, locale?: string): string | null {
         if (val === null || val === undefined) {
             return '';
         }
@@ -49,13 +60,13 @@ export class TypeConverterService implements ITypeConverterService {
             return val;
         }
         if (typeof val === 'number') {
-            return this.globalizationService.formatNumber(val);
+            return this.globalizationService.formatNumber(val, locale);
         }
         if (typeof val === 'boolean') {
             return val ? 'true' : 'false';
         }
         if (val instanceof Date) {
-            return this.globalizationService.formatDate(val);
+            return this.globalizationService.formatDate(val, locale, { datetime: 'short' });
         }
         return val.toString();
     }
@@ -84,7 +95,7 @@ export class TypeConverterService implements ITypeConverterService {
      * Converts a value to a number
      * @param val
      */
-    convertToNumber(val: any): number | null {
+    convertToNumber(val: any, locale?: string): number | null {
         if (val === null || val === undefined) {
             return null;
         }
@@ -95,7 +106,7 @@ export class TypeConverterService implements ITypeConverterService {
             return val;
         }
         if (typeof val === 'string') {
-            return this.globalizationService.parseNumber(val);
+            return this.globalizationService.parseNumber(val, locale);
         }
         if (val instanceof Date) {
             return val.valueOf();
@@ -107,7 +118,7 @@ export class TypeConverterService implements ITypeConverterService {
      * Converts a value to a date
      * @param val
      */
-    convertToDate(val: any): Date | null {
+    convertToDate(val: any, locale?: string): Date | null {
         if (val === null || val === undefined) {
             return null;
         }
@@ -115,11 +126,33 @@ export class TypeConverterService implements ITypeConverterService {
             return new Date(val);
         }
         if (typeof val === 'string') {
-            return this.globalizationService.parseDate(val);
+            if (val === '') {
+                return null;
+            }
+            let d = this.parseDate(val, locale);
+            if (d === null) {
+                `Cannot convert value ${val} of type ${typeof val} to Date.`;
+            }
+            return d;
         }
         if (val instanceof Date) {
             return val;
         }
         throw `Cannot convert value ${val} of type ${typeof val} to Date.`;
+    }
+
+    private parseDateWithOptions(val: string, locale: string, options: DateFormatterOptions): Date {
+        return this.globalizationService.parseDate(val, locale, options);
+    }
+
+    private parseDate(val: string, locale: string): Date {
+        for (let i = 0; i < TypeConverterService.optionsOrder.length; i++) {
+            const options = TypeConverterService.optionsOrder[i];
+            const d = this.parseDateWithOptions(val, locale, options);
+            if (d) {
+                return d;
+            }
+        }
+        return null;
     }
 }
