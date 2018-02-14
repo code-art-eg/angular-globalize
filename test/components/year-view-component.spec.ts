@@ -433,7 +433,7 @@ describe("YearsViewComponent", () => {
         expect(e.year).equal(2600);
     });
 
-    it("ignores keyboard events when handleKeyboardEvents is fale", () => {
+    it("ignores keyboard events when handleKeyboardEvents is false", () => {
         const c = new YearsViewComponent(globalizeService);
         c.minYear = 1;
         c.year = 2018;

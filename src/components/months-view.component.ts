@@ -16,6 +16,7 @@ export class MonthsViewComponent implements OnInit {
         this.nextPrevText = undefined;
         this.command = new EventEmitter<IMonthYearSelection>();
         this.focusMonth = null;
+        this.handleKeyboardEvents = false;
     }
 
     ngOnInit(): void {
@@ -108,9 +109,6 @@ export class MonthsViewComponent implements OnInit {
     }
 
     nextPrevText: string;
-
-    @Input()
-    dir: string;
 
     readonly months = twelveArray;
 
