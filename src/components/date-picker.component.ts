@@ -2,7 +2,7 @@
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
 
-import { Component, Input, Inject, OnDestroy, forwardRef } from '@angular/core';
+import { Component, Input, Inject, OnDestroy, forwardRef, ElementRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { CANG_CULTURE_SERVICE, ICultureService, ITypeConverterService, CANG_TYPE_CONVERTER_SERVICE } from '@code-art/angular-globalize';

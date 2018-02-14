@@ -7,10 +7,24 @@ import { DaysViewComponent } from './components/days-view.component';
 import { MonthsViewComponent } from './components/months-view.component';
 import { YearsViewComponent } from './components/years-view.component';
 import { NextPreviousComponent } from './components/next-prev.component';
+import { DatePickerDirective } from './directives/date-picker.directive';
+import { DatePickerPopupComponent } from './components/date-picker-popup.component';
+
+import { InputAddonDirective } from './directives/input-addon.directive';
 
 @NgModule({
-    declarations: [ DatePickerComponent, DaysViewComponent, MonthsViewComponent, NextPreviousComponent, YearsViewComponent ],
-    exports: [ DatePickerComponent ],
+    declarations: [ 
+        DatePickerComponent, 
+        DaysViewComponent, 
+        MonthsViewComponent, 
+        NextPreviousComponent, 
+        YearsViewComponent,
+        InputAddonDirective,
+        DatePickerDirective,
+        DatePickerPopupComponent
+        ],
+    exports: [ DatePickerComponent, InputAddonDirective, DatePickerDirective ],
+    entryComponents: [ DatePickerPopupComponent ],
     imports: [ GlobalizationServicesModule, GlobalizationModule, CommonModule ]
 })
 export class DatePickerModule {

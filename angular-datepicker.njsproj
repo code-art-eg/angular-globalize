@@ -32,6 +32,12 @@
     <Content Include="src\components\common.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\components\date-picker-popup.component.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\components\date-picker-popup.component.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\components\date-picker.component.html">
       <SubType>Code</SubType>
     </Content>
@@ -63,15 +69,20 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\components\" />
+    <Folder Include="src\directives\" />
     <Folder Include="test\" />
     <Folder Include="src\" />
     <Folder Include="playground\" />
     <Folder Include="test\components\" />
+    <Folder Include="test\directives\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="playground\app.component.ts" />
     <TypeScriptCompile Include="playground\language-switch.component.ts" />
     <TypeScriptCompile Include="playground\main.ts" />
+    <TypeScriptCompile Include="src\components\date-picker-popup.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\components\date-picker.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -87,6 +98,12 @@
       <TestFramework>ExportRunner</TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\components\years-view.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\directives\date-picker.directive.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\directives\input-addon.directive.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\module.ts">

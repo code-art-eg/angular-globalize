@@ -1,3 +1,5 @@
-﻿<datepicker  [(ngModel)]="val" [handleKeyboardEvents]="true"></datepicker>
+﻿<datepicker [(ngModel)]="val" [handleKeyboardEvents]="true"></datepicker>
 {{ val | gdate:'full' }}
+
+<input class="form-control" [caInputAddon]="'chevron-right'" caDatePicker />
 <language-switch></language-switch>
