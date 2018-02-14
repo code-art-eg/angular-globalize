@@ -92,6 +92,7 @@
     <TypeScriptCompile Include="src\module.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="test\components\date-picker-component.spec.ts" />
     <TypeScriptCompile Include="test\components\days-view-component.spec.ts" />
     <TypeScriptCompile Include="test\components\month-view-component.spec.ts">
       <SubType>Code</SubType>

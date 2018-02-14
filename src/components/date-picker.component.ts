@@ -1,12 +1,11 @@
 ﻿import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import 'rxjs/add/observable/combineLatest';
 
 import { Component, Input, Inject, OnDestroy, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { CANG_CULTURE_SERVICE, ICultureService, IGlobalizationService, CANG_GLOBALIZATION_SERVICE } from '@code-art/angular-globalize';
+import { CANG_CULTURE_SERVICE, ICultureService, ITypeConverterService, CANG_TYPE_CONVERTER_SERVICE } from '@code-art/angular-globalize';
 import { isRightToLeft, IMonthYearSelection, ViewType, stripTime, maxDate, minDate, dateInRange, createDate, similarInUtc, similarInLocal, IDateRange, datesEqual } from '../util';
 
 @Component({
@@ -23,23 +22,24 @@ export class DatePickerComponent implements OnDestroy, ControlValueAccessor {
     private static readonly minimumYear = 0;
     private static readonly defaultMaxDate = createDate(DatePickerComponent.maximumYear, 11, 31);
     private static readonly defaultMinDate = createDate(DatePickerComponent.minimumYear, 0, 1);
-
+    
+    private _localeSubject = new ReplaySubject<string>();
+    private _localeObservable = this._localeSubject.asObservable();
+    private _localeSubscription = Observable.combineLatest(this._localeObservable, this.cultureService.cultureObservable)
+            .subscribe({ next: vals => {
+                const [localeVal, cultureVal] = vals;
+                this.effectiveLocale = localeVal || cultureVal;
+                this.dir = isRightToLeft(this.effectiveLocale) ? 'rtl' : 'ltr';
+            }
+        });
+    
     constructor( @Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
-        @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) private readonly converterService: ITypeConverterService
     ) {
         this.selectionStartInternal = null;
         this.selectionEndInternal = null;
         this.dir = isRightToLeft(this.cultureService.currentCulture) ? 'rtl' : 'ltr';
-        this._localeSubject = new ReplaySubject<string>();
         this.locale = null;
-        this._localeObservable = this._localeSubject.asObservable();
-
-        this._localeSubscription = combineLatest(this._localeObservable, this.cultureService.cultureObservable)
-            .subscribe(vals => {
-                const [localeVal, cultureVal] = vals;
-                this.effectiveLocale = localeVal || cultureVal;
-                this.dir = isRightToLeft(this.effectiveLocale) ? 'rtl' : 'ltr';
-            });
         this.rangeSelection = false;
         this.effectiveLocale = this.cultureService.currentCulture;
         this.month = this.todayDate.getUTCMonth();
@@ -49,22 +49,13 @@ export class DatePickerComponent implements OnDestroy, ControlValueAccessor {
     }
 
     private tryGetDate(obj: any): Date {
-        if (typeof obj === 'undefined' || obj === null) {
-            return null;
-        } else if (typeof obj === 'string') {
-            try {
-                const d = this.globalizationService.parseDate(obj, this.locale, { date: 'short' });
-                return d;
-            } catch {
-                return null;
-            }
-        } else if (typeof obj === 'number') {
-            const d = new Date(obj);
+        try {
+            let d = this.converterService.convertToDate(obj, this.effectiveLocale);
             return d;
-        } else if (obj instanceof Date) {
-            return obj;
         }
-        return null;
+        catch {
+            return null;
+        }
     }
 
     writeValue(obj: any): void {
@@ -77,7 +68,7 @@ export class DatePickerComponent implements OnDestroy, ControlValueAccessor {
             }
         } else if (Array.isArray(obj)) {
             this.selectionEnd = null;
-            let d = obj.length > 0 ? this.tryGetDate(obj[0]) : null;
+            d = obj.length > 0 ? this.tryGetDate(obj[0]) : null;
             this.selectionStart = d;
             if (this.rangeSelection) {
                 this.selectionEnd = obj.length > 1 ? this.tryGetDate(obj[1]) || d : d;
@@ -188,9 +179,6 @@ export class DatePickerComponent implements OnDestroy, ControlValueAccessor {
         this.raiseOnTouch();
     }
 
-    private _localeSubject: ReplaySubject<string>;
-    private _localeObservable: Observable<string>;
-    private _localeSubscription: Subscription;
     private _locale: string;
     private _month: number;
     private _year: number;
@@ -232,6 +220,7 @@ export class DatePickerComponent implements OnDestroy, ControlValueAccessor {
     }
 
     @Input() set selectionStart(val: Date) {
+
         this.selectionStartInternal = similarInUtc(val);
     }
     
