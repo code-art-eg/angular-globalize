@@ -3,7 +3,7 @@ import { IGlobalizationService, CANG_GLOBALIZATION_SERVICE } from '@code-art/ang
 import { IMonthYearSelection, twelveArray, formatYear, KEY_CODE, NextPrevAction, createDate, isRightToLeft } from '../util';
 
 @Component({
-    selector: 'months-view',
+    selector: 'ca-months-view',
     templateUrl: './months-view.component.html',
     styleUrls: ['year-month-view.less']
 })

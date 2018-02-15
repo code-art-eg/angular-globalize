@@ -3,7 +3,7 @@ import { IGlobalizationService, CANG_GLOBALIZATION_SERVICE } from '@code-art/ang
 import { addDays, IMonthYearSelection, sevenArray, sixArray, formatYear, dateInRange, KEY_CODE, NextPrevAction, createDate, isRightToLeft } from '../util';
 
 @Component({
-    selector: 'days-view',
+    selector: 'ca-days-view',
     templateUrl: './days-view.component.html',
     styleUrls: ['./days-view.component.less']
 })

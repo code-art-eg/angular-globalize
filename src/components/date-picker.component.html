@@ -1,7 +1,7 @@
 ﻿
 <div [attr.dir]="dir" class="date-picker-container">
     <div class="picker">
-        <days-view [todayDate]="todayDate"
+        <ca-days-view [todayDate]="todayDate"
                    [selectionStart]="selectionStartInternal"
                    [selectionEnd]="selectionEndInternal"
                    (dateClicked)="onDaysViewDayClick($event)"
@@ -17,8 +17,8 @@
                    [minDate]="minDateInternal"
                    [maxDate]="maxDateInternal"
                    *ngIf="view === 'days'">
-        </days-view>
-        <months-view [month]="month"
+        </ca-days-view>
+        <ca-months-view [month]="month"
                      [dir]="dir"
                      [locale]="effectiveLocale"
                      [year]="year"
@@ -30,8 +30,8 @@
                      [minDate]="minDateInternal"
                      *ngIf="view === 'months'">
 
-        </months-view>
-        <years-view [month]="month"
+        </ca-months-view>
+        <ca-years-view [month]="month"
                     [dir]="dir"
                     [locale]="effectiveLocale"
                     [year]="year"
@@ -43,8 +43,8 @@
                     [minYear]="minYear"
                     [maxYear]="maxYear"
                     *ngIf="view === 'years'">
-        </years-view>
-        <years-view [month]="month"
+        </ca-years-view>
+        <ca-years-view [month]="month"
                     [dir]="dir"
                     [locale]="effectiveLocale"
                     [year]="year"
@@ -56,8 +56,8 @@
                     [minYear]="minYear"
                     [maxYear]="maxYear"
                     *ngIf="view === 'decades'">
-        </years-view>
-        <years-view [month]="month"
+        </ca-years-view>
+        <ca-years-view [month]="month"
                     [dir]="dir"
                     [locale]="effectiveLocale"
                     [year]="year"
@@ -69,7 +69,7 @@
                     [minYear]="minYear"
                     [maxYear]="maxYear"
                     *ngIf="view === 'centuries'">
-        </years-view>
+        </ca-years-view>
     </div>
     <div class="disabled-layer" *ngIf="disabled"></div>
 </div>

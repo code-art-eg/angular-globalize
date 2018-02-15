@@ -2,7 +2,7 @@
 import { isRightToLeft, NextPrevAction } from '../util';
 
 @Component({
-    selector: 'next-prev',
+    selector: 'ca-next-prev',
     templateUrl: 'next-prev.component.html',
     styleUrls: ['next-prev.component.less']
 })

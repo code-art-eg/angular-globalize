@@ -9,7 +9,7 @@ import { CANG_CULTURE_SERVICE, ICultureService, ITypeConverterService, CANG_TYPE
 import { isRightToLeft, IMonthYearSelection, ViewType, stripTime, maxDate, minDate, dateInRange, createDate, similarInUtc, similarInLocal, IDateRange, datesEqual } from '../util';
 
 @Component({
-    selector: 'datepicker',
+    selector: 'ca-datepicker',
     templateUrl: './date-picker.component.html',
     styleUrls: ['./date-picker.component.less'],
     providers: [{
