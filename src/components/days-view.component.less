@@ -59,21 +59,25 @@
                 }
             }
 
-
-            &.today {
-                background-color: @todayhighlight;
-
-                &:hover, &.focused {
-                    background-color: darken(@todayhighlight, 20%);
-                }
-            }
-
             &.selected {
                 background-color: @selectedColor;
                 .border-radius(0);
 
                 &:hover, &.focused {
                     background-color: darken(@selectedColor, 20%);
+                }
+            }
+
+            &.today {
+                background-color: @todayhighlight;
+                .border-radius(@dayBorderRadius);
+
+                &:hover, &.focused {
+                    background-color: darken(@todayhighlight, 20%);
+                }
+
+                &.selected {
+                    .border-radius(0);
                 }
             }
 
@@ -94,6 +98,38 @@
 
                 &:hover, &.focused {
                     background-color: darken(@selectionEnd, 20%);
+                }
+            }
+        }
+    }
+
+    &.ltr {
+        td {
+            &.day.multi {
+                &.selection-start {
+                    border-top-right-radius: 0;
+                    border-bottom-right-radius: 0;
+                }
+
+                &.selection-end {
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                }
+            }
+        }
+    }
+
+    &.rtl {
+        td {
+            &.day.multi {
+                &.selection-start {
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+                }
+
+                &.selection-end {
+                    border-top-right-radius: 0;
+                    border-bottom-right-radius: 0;
                 }
             }
         }

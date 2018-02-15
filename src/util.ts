@@ -61,10 +61,17 @@ export function addDays(date: Date, days: number): Date {
     return newDate;
 }
 
+const rtlLangs = ["ar", "dv", "fa", "he", "ku", "nqo", "pa", "prs", "ps", "sd", "syr", "tzm", "ug", "ur", "yi"];
+
 export function isRightToLeft(culture: string): boolean {
     if (!culture) return false;
     culture = culture.toLowerCase();
-    return culture.indexOf('ar') === 0 || culture.indexOf('he') === 0;
+    for (let i = 0; i < rtlLangs.length; i++) {
+        if (culture.indexOf(rtlLangs[i]) === 0) {
+            return true;
+        }
+    }
+    return false;
 }
 
 export function formatYear(service: IGlobalizationService, year: number, locale?: string): string {
@@ -157,6 +164,18 @@ export function numArray(length: number): number[] {
         result.push(i);
     }
     return result;
+}
+
+export function getMonthYear(month: number|null, year: number): [number|null, number] {
+    if (month === null || month === undefined) {
+        return [null, year];
+    }
+    if (month < 0 || month > 11) {
+        const dy = Math.floor(month / 12);
+        month = month - dy * 12;
+        year += dy;
+    }
+    return [month, year];
 }
 
 export type ViewType = 'days' | 'months' | 'years' | 'decades' | 'centuries' | 'home';

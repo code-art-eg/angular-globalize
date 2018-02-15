@@ -9,6 +9,7 @@ import { YearsViewComponent } from './components/years-view.component';
 import { NextPreviousComponent } from './components/next-prev.component';
 import { DatePickerDirective } from './directives/date-picker.directive';
 import { DatePickerPopupComponent } from './components/date-picker-popup.component';
+import { InputAddonHostComponent } from './components/input-addon-host.component';
 
 import { InputAddonDirective } from './directives/input-addon.directive';
 
@@ -21,10 +22,11 @@ import { InputAddonDirective } from './directives/input-addon.directive';
         YearsViewComponent,
         InputAddonDirective,
         DatePickerDirective,
-        DatePickerPopupComponent
+        DatePickerPopupComponent,
+        InputAddonHostComponent,
         ],
     exports: [ DatePickerComponent, InputAddonDirective, DatePickerDirective ],
-    entryComponents: [ DatePickerPopupComponent ],
+    entryComponents: [ DatePickerPopupComponent, InputAddonHostComponent ],
     imports: [ GlobalizationServicesModule, GlobalizationModule, CommonModule ]
 })
 export class DatePickerModule {

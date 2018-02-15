@@ -16,7 +16,7 @@
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
     <ToolsVersionPromptShown>0.0</ToolsVersionPromptShown>
-    <TypeScriptToolsVersion>2.6</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.7</TypeScriptToolsVersion>
     <Name>angular-datepicker</Name>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
@@ -46,6 +46,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\components\days-view.component.less">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\components\input-addon-host.component.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\components\months-view.component.html">
@@ -80,6 +83,9 @@
     <TypeScriptCompile Include="playground\app.component.ts" />
     <TypeScriptCompile Include="playground\language-switch.component.ts" />
     <TypeScriptCompile Include="playground\main.ts" />
+    <TypeScriptCompile Include="src\base-date-picker-accessor.ts" />
+    <TypeScriptCompile Include="src\base-date-range-accessor.ts" />
+    <TypeScriptCompile Include="src\base-value-accessor.ts" />
     <TypeScriptCompile Include="src\components\date-picker-popup.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -87,6 +93,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\components\days-view.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\components\input-addon-host.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\components\months-view.component.ts">

@@ -3,7 +3,6 @@ import { expect } from 'chai';
 import * as isPlainObject from 'is-plain-object';
 const chai: Chai.ChaiStatic = require('chai');
 chai.use(require('chai-datetime'));
-import 'is-plain-object';
 import { loadedGlobalize } from '../load-globalize-data';
 import {
     CurrentCultureService,
@@ -46,7 +45,6 @@ describe("DatePickerComponent", () => {
         expect(c.handleKeyboardEvents).false;
         expect(c.homeButton).true;
         expect(c.resetButton).true;
-        expect(c.maxMonths).equal(12);
         expect(c.locale).null;
         expect(c.maxYear).equal(9999);
         expect(c.minYear).equal(0);
@@ -88,47 +86,47 @@ describe("DatePickerComponent", () => {
 
     it("writes values", () => {
 
-        function writeAndtestExpectations(c: DatePickerComponent, val: any, expectedFrom: Date | null, expectedTo: Date | null) {
+        function testWriteValues(c: DatePickerComponent, val: any, expectedFrom: Date | null, expectedTo?: Date | null) {
             let d = new Date();
             c.selectionStart = d;
             c.selectionEnd = d;
-
+            
             c.writeValue(val);
 
             if (expectedFrom) {
-                expect(c.selectionStart).equalDate(expectedFrom);
+                expect(c.selectionStart).equalTime(expectedFrom);
             } else {
                 expect(c.selectionStart).null;
             }
 
             if (expectedTo) {
-                expect(c.selectionEnd).equalDate(expectedTo);
+                expect(c.selectionEnd).equalTime(expectedTo);
             } else {
                 expect(c.selectionEnd).null;
             }
-        }
 
-        function testWriteValues(c: DatePickerComponent, val: any, expectedFrom: Date | null, expectedTo?: Date | null) {
-            writeAndtestExpectations(c, val, expectedFrom, expectedTo);
             if (c.rangeSelection) {
-                return;
+                if (expectedFrom || expectedTo) {
+                    expect(c.value).not.null.and.not.undefined;
+                    expect(isPlainObject(c.value)).true;
+                    if (expectedFrom) {
+                        expect(c.value.from).equalTime(expectedFrom);
+                    } else {
+                        expect(c.value.from).null;
+                    }
+                    if (expectedTo) {
+                        expect(c.value.to).equalTime(expectedTo);
+                    } else {
+                        expect(c.value.to).null;
+                    }
+                } else {
+                    expect(c.value).null;
+                }
+            } else if (expectedFrom) {
+                expect(c.value).equalTime(expectedFrom);
             }
-            if (!val || (!Array.isArray(val) && !isPlainObject(val)) && !expectedTo) {
-                writeAndtestExpectations(c, [val], expectedFrom, expectedTo);
-                writeAndtestExpectations(c, [val, null], expectedFrom, expectedTo);
-                writeAndtestExpectations(c, [val, undefined], expectedFrom, expectedTo);
-                writeAndtestExpectations(c, [val, new Date()], expectedFrom, expectedTo);
-                writeAndtestExpectations(c, [val, 'bla'], expectedFrom, expectedTo);
-                writeAndtestExpectations(c, [val, '10/02/2019'], expectedFrom, expectedTo);
-                writeAndtestExpectations(c, [val, 10], expectedFrom, expectedTo);
-
-                writeAndtestExpectations(c, { from: val }, expectedFrom, expectedTo);
-                writeAndtestExpectations(c, { from: val, to: val }, expectedFrom, expectedTo);
-                writeAndtestExpectations(c, { from: val, to: null }, expectedFrom, expectedTo);
-                writeAndtestExpectations(c, { from: val, to: new Date() }, expectedFrom, expectedTo);
-                writeAndtestExpectations(c, { from: val, to: 'bla' }, expectedFrom, expectedTo);
-                writeAndtestExpectations(c, { from: val, to: '10/02/2019' }, expectedFrom, expectedTo);
-                writeAndtestExpectations(c, { from: val, to: 10 }, expectedFrom, expectedTo);
+            else {
+                expect(c.value).null;
             }
         }
 
@@ -136,25 +134,21 @@ describe("DatePickerComponent", () => {
         let d = new Date(2000, 4, 10);
         testWriteValues(c, null, null);
         testWriteValues(c, undefined, null);
-        testWriteValues(c, 'bla', null);
-        testWriteValues(c, d.valueOf(), d);
         testWriteValues(c, d, d);
+
+        testWriteValues(c, 'bla', null);
         testWriteValues(c, '10/05/2000', d);
+        testWriteValues(c, d.valueOf(), d);
         c.locale = 'de';
-        testWriteValues(c, '10.05.2000', d);
-        testWriteValues(c, [d, d], d);
-        testWriteValues(c, [d.valueOf(), d.valueOf()], d);
-        testWriteValues(c, ['10.05.2000', d], d);
-        testWriteValues(c, { from: d }, d);
-        testWriteValues(c, { from: d.valueOf() }, d);
+        testWriteValues(c, '10.5.00', d);
 
         c.rangeSelection = true;
         let d2 = addDays(d, 1);
         testWriteValues(c, [d, d2], d, d2);
         testWriteValues(c, { from: d, to: d2 }, d, d2);
-        testWriteValues(c, d, d, d);
         testWriteValues(c, null, null, null);
-        testWriteValues(c, undefined, null, null);
+        testWriteValues(c, { from: '10.5.00', to: '11.5.00' }, d, d2);
+        testWriteValues(c, ['10.5.00', '11.5.00'], d, d2);
     });
 
     it("raises onchange", () => {
@@ -163,7 +157,7 @@ describe("DatePickerComponent", () => {
             raised = true;
         }
         const c = new DatePickerComponent(cultureService, typeConverter);
-        
+
         c.registerOnChange(callback);
         let d = new Date();
         c.selectionStart = d;
@@ -171,6 +165,10 @@ describe("DatePickerComponent", () => {
         raised = false;
         c.selectionStart = d;
         expect(raised).false;
+        c.selectionEnd = d;
+        expect(raised).false;
+        c.rangeSelection = true;
+        c.selectionEnd = null;
         c.selectionEnd = d;
         expect(raised).true;
         raised = false;
@@ -184,7 +182,7 @@ describe("DatePickerComponent", () => {
             raised = true;
         }
         const c = new DatePickerComponent(cultureService, typeConverter);
-        
+
         c.registerOnTouched(callback);
         let d = new Date();
         c.onDaysViewDayClick(createDate());
@@ -198,7 +196,7 @@ describe("DatePickerComponent", () => {
 
     it("sets disabled ", () => {
         const c = new DatePickerComponent(cultureService, typeConverter);
-        
+
         c.setDisabledState(true);
         expect(c.disabled).true;
         c.setDisabledState(false);
@@ -207,7 +205,7 @@ describe("DatePickerComponent", () => {
 
     it("sets selection onclick", () => {
         const c = new DatePickerComponent(cultureService, typeConverter);
-        
+
         let d = createDate();
         c.onDaysViewDayClick(createDate());
         expect(c.selectionStartInternal).equalDate(d);

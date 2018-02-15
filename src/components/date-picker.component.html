@@ -1,7 +1,6 @@
-﻿
-<div [attr.dir]="dir" class="date-picker-container">
+﻿<div [attr.dir]="dir" class="date-picker-container">
     <div class="picker">
-        <ca-days-view [todayDate]="todayDate"
+        <ca-days-view [todayDate]="todayDateInternal"
                    [selectionStart]="selectionStartInternal"
                    [selectionEnd]="selectionEndInternal"
                    (dateClicked)="onDaysViewDayClick($event)"
@@ -9,13 +8,14 @@
                    [month]="month"
                    [year]="year"
                    [todayHighlight]="todayHighlight"
-                   [highlightDays]="65"
+                   [highlightDays]="highlightDays"
                    [handleKeyboardEvents]="handleKeyboardEvents"
                    [locale]="effectiveLocale"
                    [homeButton]="homeButton"
                    [resetButton]="resetButton"
                    [minDate]="minDateInternal"
                    [maxDate]="maxDateInternal"
+                   [dir]="dir"
                    *ngIf="view === 'days'">
         </ca-days-view>
         <ca-months-view [month]="month"

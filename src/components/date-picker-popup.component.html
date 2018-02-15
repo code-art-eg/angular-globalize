@@ -1,3 +1,17 @@
-﻿<div class="date-picker-popup dropdown-menu orient-left orient-top show">
-    <ca-datepicker></ca-datepicker>
+﻿<div class="div-inline">
+    <div class="div-inline" id="control-host"></div>
+    <div class="date-picker-popup dropdown-menu show" *ngIf="isVisible"
+         [ngClass]="{'orient-top': orientTop, 'orient-bottom': !orientTop, 'orient-left': !orientRight, 'orient-right': orientRight }">
+        <ca-datepicker [minDate]="minDate"
+                       [maxDate]="maxDate"
+                       [rangeSelection]="rangeSelection"
+                       [homeButton]="homeButton"
+                       [resetButton]="resetButton"
+                       [locale]="effectiveLocale"
+                       [handleKeyboardEvents]="handleKeyboardEvents"
+                       [todayHighlight]="todayHighlight"
+                       [todayDate]="todayDate"
+                       [highlightDays]="highlightDays"
+                       [(value)]="value"></ca-datepicker>
+    </div>
 </div>

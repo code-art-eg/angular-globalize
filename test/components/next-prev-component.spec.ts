@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 describe("NextPreviousComponent", () => {
 
-    it("should init correctly", () => {
+    it("inits correctly", () => {
         const c = new NextPreviousComponent();
         expect(c.locale).null;
         expect(NextPreviousComponent.leftArrow).not.equal(NextPreviousComponent.rightArrow);
@@ -12,7 +12,7 @@ describe("NextPreviousComponent", () => {
         expect(c.homeButton).true;
     });
 
-    it("should get correct arrows", () => {
+    it("gets correct arrows", () => {
         const c = new NextPreviousComponent();
         expect(c.getClass('next')).equal(NextPreviousComponent.rightArrow);
         expect(c.getClass('prev')).equal(NextPreviousComponent.leftArrow);

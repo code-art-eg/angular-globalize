@@ -1,5 +1,29 @@
-﻿<ca-datepicker [(ngModel)]="val" [handleKeyboardEvents]="true"></ca-datepicker>
-{{ val | gdate:'full' }}
-
-<input class="form-control" [caInputAddon]="'chevron-right'" caDatePicker />
-<language-switch></language-switch>
+﻿<div class="container">
+    <div class="col-sm-6">
+        <ca-datepicker 
+                       [handleKeyboardEvents]="true"
+                       [rangeSelection]="range"
+                       [highlightDays]="65"></ca-datepicker>
+        <div>
+            Val: {{ val | json }}
+            <br />
+            <input type="checkbox" [(ngModel)]="range" />
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div>
+            <br />
+        </div>
+        <input class="form-control"
+               caDatePicker
+               caInputAddon
+               [(ngModel)]="val"
+               [highlightDays]="65"
+               [homeButton]="false"
+               [rangeSelection]="range"
+               />
+    </div>
+    <div class="row col-sm-12">
+        <language-switch></language-switch>
+    </div>
+</div>

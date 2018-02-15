@@ -47,6 +47,7 @@ export class DaysViewComponent implements OnInit {
 
     readonly sevenArray = sevenArray;
     readonly sixArray = sixArray;
+    @Input() dir: string = 'ltr';
 
     @HostListener('window:keyup', ['$event'])
     keyEvent(event: KeyboardEvent) {
@@ -263,10 +264,16 @@ export class DaysViewComponent implements OnInit {
         if (this.selectionStart && this.selectionEnd &&
             date.valueOf() === this.selectionEnd.valueOf() && date.valueOf() !== this.selectionStart.valueOf()) {
             classes['selection-end'] = true;
+            if (this.selectionStart && this.selectionEnd.valueOf() !== this.selectionStart.valueOf()) {
+                classes['multi'] = true;
+            }
         }
         else if (this.selectionStart &&
             date.valueOf() === this.selectionStart.valueOf()) {
             classes['selection-start'] = true;
+            if (this.selectionEnd && this.selectionEnd.valueOf() !== this.selectionStart.valueOf()) {
+                classes['multi'] = true;
+            }
         }
         if (this.selectionStart && this.selectionEnd && dateInRange(date, this.selectionStart, this.selectionEnd)) {
             classes['selected'] = true;

@@ -1,61 +1,53 @@
-﻿import { Directive, ElementRef, Input, Inject, Renderer2, OnInit } from '@angular/core';
+﻿import { Directive, ElementRef, Input, Inject, Renderer2, OnInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, OnDestroy } from '@angular/core';
+import { InputAddonHostComponent } from '../components/input-addon-host.component';
 
 @Directive({
     selector: '[caInputAddon]'
 })
-export class InputAddonDirective implements OnInit {
+export class InputAddonDirective implements OnInit, OnDestroy {
 
-    private addonSpan: any;
+    private componentRef: ComponentRef<InputAddonHostComponent>;
 
-    constructor(@Inject(ElementRef) private readonly el: ElementRef,
-        @Inject(Renderer2) private readonly renderer: Renderer2) {
-        this.type = 'calendar';
+
+    constructor(@Inject(ComponentFactoryResolver) private readonly resolver: ComponentFactoryResolver,
+        @Inject(ViewContainerRef) private readonly viewContainerRef: ViewContainerRef,
+        @Inject(ElementRef) private readonly el: ElementRef) {
+        
+    }
+
+    ngOnDestroy(): void {
+        if (this.componentRef) {
+            this.componentRef.destroy();
+            this.componentRef = null;
+        }
     }
 
     ngOnInit() {
-        let parent = this.renderer.parentNode(this.el.nativeElement);
-        let container = this.renderer.createElement('span');
-        this.renderer.addClass(container, 'input-group');
-        this.renderer.insertBefore(parent, container, this.el.nativeElement);
 
-        this.renderer.appendChild(container, this.el.nativeElement); 
+        const factory = this.resolver.resolveComponentFactory(InputAddonHostComponent);
+        this.componentRef = this.viewContainerRef.createComponent(factory);
 
-        let element = this.renderer.createElement('span');
-        this.renderer.addClass(element, 'input-group-addon');
-        this.renderer.appendChild(container, element);
-
-        let childElement = this.renderer.createElement('span');
-        this.renderer.addClass(childElement, 'glyphicon');
-        this.renderer.appendChild(element, childElement);
-
-        this.addonSpan = childElement;
-
-        this.applyClass(null, this.type);
+        const renderer = this.componentRef.instance.renderer;
+        const addon = renderer.selectRootElement('#addon');
+        const parent = renderer.parentNode(addon);
+        let element = this.el.nativeElement;
+        while (element.newNativeElement) {
+            element = element.newNativeElement;
+        }
+        element.newNativeElement = parent;
+        this.componentRef.instance.renderer.insertBefore(parent, element, addon);
+        this.componentRef.instance.type = this.type;
     }
 
-    private applyClass(oldClass: string, newClass: string) {
-        if (!this.addonSpan) {
-            return;
-        }
-        if (oldClass) {
-            this.renderer.removeClass(this.addonSpan, 'glyphicon-' + oldClass);
-        }
-        if (newClass) {
-            this.renderer.addClass(this.addonSpan, 'glyphicon-' + newClass);
-        }
-    }
-
-
-    private _type: string;
-    @Input('caInputAddon') set type(val: string) {
-        let newType = val || 'calendar';
-        if (this._type !== newType) {
-            this.applyClass(this._type, newType);
-            this._type = newType;
-        }
-    };
-
+    private _type = 'calendar';
     get type(): string {
         return this._type;
+    }
+
+    set type(val: string) {
+        this._type = val;
+        if (this.componentRef) {
+            this.componentRef.instance.type = val;
+        }
     }
 }
