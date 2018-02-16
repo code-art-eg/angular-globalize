@@ -17,4 +17,5 @@ export class AppComponent
     valpr: any;
     vald: any;
     valp: any;
+    valt: number;
 }

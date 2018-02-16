@@ -73,7 +73,7 @@ export abstract class BaseDatePickerPopupComponent extends BaseDatePickerAccesso
 
 @Component({
     templateUrl: './templates/date-picker-popup.component.html',
-    styleUrls: [ './styles/date-picker-popup.component.less']
+    styleUrls: [ './styles/popup.less']
 })
 export class DatePickerPopupComponent extends BaseDatePickerPopupComponent {
     constructor(@Inject(Renderer2) renderer: Renderer2,
@@ -86,7 +86,7 @@ export class DatePickerPopupComponent extends BaseDatePickerPopupComponent {
 
 @Component({
     templateUrl: './templates/daterange-picker-popup.component.html',
-    styleUrls: ['./styles/date-picker-popup.component.less']
+    styleUrls: ['./styles/popup.less']
 })
 export class DateRangePickerPopupComponent extends BaseDatePickerPopupComponent {
     constructor(@Inject(Renderer2) renderer: Renderer2,

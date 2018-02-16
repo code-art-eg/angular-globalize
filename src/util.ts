@@ -29,7 +29,7 @@ export function createDate(year?: number, month?: number, date?: number): Date {
 export function similarInUtc(date: null): null;
 export function similarInUtc(date: undefined): undefined;
 export function similarInUtc(date: Date): Date;
-export function similarInUtc(date: Date|null|undefined): Date|null|undefined {
+export function similarInUtc(date: Date | null | undefined): Date | null | undefined {
     if (date === null) {
         return null;
     }
@@ -42,7 +42,7 @@ export function similarInUtc(date: Date|null|undefined): Date|null|undefined {
 export function similarInLocal(date: null): null;
 export function similarInLocal(date: undefined): undefined;
 export function similarInLocal(date: Date): Date;
-export function similarInLocal(date: Date|null|undefined): Date|null|undefined {
+export function similarInLocal(date: Date | null | undefined): Date | null | undefined {
     if (date === null) {
         return null;
     }
@@ -72,10 +72,19 @@ export function formatYear(service: IGlobalizationService, year: number, locale?
     return res;
 }
 
+export function formatTimeComponent(service: IGlobalizationService, val: number, locale?: string): string {
+    let res = service.formatNumber(val, locale, { useGrouping: false });
+    if (res.length < 2) {
+        const zero = service.formatNumber(0, locale, { useGrouping: false });
+        res = zero + res;
+    }
+    return res;
+}
+
 export function stripTime(val: undefined): undefined;
 export function stripTime(val: null): null;
 export function stripTime(val: Date): Date;
-export function stripTime(val: Date|null|undefined): Date|null|undefined {
+export function stripTime(val: Date | null | undefined): Date | null | undefined {
     if (val === null) {
         return null;
     }
@@ -86,10 +95,10 @@ export function stripTime(val: Date|null|undefined): Date|null|undefined {
 }
 
 
-export function minDate(val: null, ...args: (Date|null|undefined)[]) : null;
-export function minDate(val: undefined, ...args: (Date|null|undefined)[]) : undefined;
-export function minDate(val: Date, ...args: (Date|null|undefined)[]) : Date;
-export function minDate(val: Date|null|undefined, ...args: (Date|null|undefined)[]) : Date|null|undefined {
+export function minDate(val: null, ...args: (Date | null | undefined)[]): null;
+export function minDate(val: undefined, ...args: (Date | null | undefined)[]): undefined;
+export function minDate(val: Date, ...args: (Date | null | undefined)[]): Date;
+export function minDate(val: Date | null | undefined, ...args: (Date | null | undefined)[]): Date | null | undefined {
     if (val === null) {
         return null;
     }
@@ -110,10 +119,10 @@ export function minDate(val: Date|null|undefined, ...args: (Date|null|undefined)
     return min;
 }
 
-export function maxDate(val: null, ...args: (Date|null|undefined)[]) : null;
-export function maxDate(val: undefined, ...args: (Date|null|undefined)[]) : undefined;
-export function maxDate(val: Date, ...args: (Date|null|undefined)[]) : Date;
-export function maxDate(val: Date|null|undefined, ...args: (Date|null|undefined)[]) : Date|null|undefined {
+export function maxDate(val: null, ...args: (Date | null | undefined)[]): null;
+export function maxDate(val: undefined, ...args: (Date | null | undefined)[]): undefined;
+export function maxDate(val: Date, ...args: (Date | null | undefined)[]): Date;
+export function maxDate(val: Date | null | undefined, ...args: (Date | null | undefined)[]): Date | null | undefined {
     if (val === null) {
         return null;
     }
@@ -146,14 +155,14 @@ export function dateInRange(val: Date | null | undefined, min: Date | null | und
 }
 
 export function numArray(length: number): number[] {
-    const result:number[] = [];
+    const result: number[] = [];
     for (let i = 0; i < length; i++) {
         result.push(i);
     }
     return result;
 }
 
-export function getMonthYear(month: number|null, year: number): [number|null, number] {
+export function getMonthYear(month: number | null, year: number): [number | null, number] {
     if (month === null || month === undefined) {
         return [null, year];
     }
@@ -180,11 +189,11 @@ export const sixArray = numArray(6);
 export const twelveArray = numArray(12);
 
 export enum KEY_CODE {
-  RIGHT_ARROW = 39,
-  LEFT_ARROW = 37,
-  UP_ARROW = 38,
-  DOWN_ARROW = 40,
-  ENTER = 13
+    RIGHT_ARROW = 39,
+    LEFT_ARROW = 37,
+    UP_ARROW = 38,
+    DOWN_ARROW = 40,
+    ENTER = 13
 };
 
 export interface IDateRange {

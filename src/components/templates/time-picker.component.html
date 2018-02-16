@@ -1,0 +1,41 @@
+﻿
+<table dir="ltr">
+    <tbody>
+        <tr>
+            <td (click)="hours = hours - 1">
+                <span class="glyphicon glyphicon-chevron-up"></span>
+            </td>
+            <td (click)="decreaseMinutes()">
+                <span class="glyphicon glyphicon-chevron-up"></span>
+            </td>
+            <td (click)="decreaseSeconds()">
+                <span class="glyphicon glyphicon-chevron-up"></span>
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <input [(ngModel)]="hoursText" type="text" #hoursInput maxlength="2" />
+            </td>
+            <td>
+                <input [(ngModel)]="minutesText" type="text" #minutesInput maxlength="2"/>
+            </td>
+            <td>
+                <input [(ngModel)]="secondsText" type="text" #secondsInput maxlength="2"/>
+            </td>
+        </tr>
+        <tr>
+            <td (click)="hours = hours + 1">
+                <span class="glyphicon glyphicon-chevron-down"></span>
+            </td>
+            <td (click)="increaseMinutes()">
+                <span class="glyphicon glyphicon-chevron-down"></span>
+            </td>
+            <td (click)="increaseSeconds()">
+                <span class="glyphicon glyphicon-chevron-down"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+minutes {{minutes}} hours {{hours}} seconds {{seconds }} value {{ value }} minutesText {{minutesText}} hoursText {{ hoursText }} secondsText {{ secondsText}}
+minutesInc {{ minutesIncrement }} secondsInc {{ secondsIncrement }}

@@ -1,0 +1,32 @@
+﻿@import 'common.less';
+@padding: 2px;
+table {
+    td {
+        text-align: center;
+        min-width: 30px;
+        height: 30px;
+        padding: 2px;
+
+        span {
+            border: 1px transparent solid;
+            width: 100%;
+            display: inline-block;
+            margin: 0;
+            padding: 8px 0;
+            outline: 0;
+            color: #333;
+            cursor: pointer;
+
+            &:hover {
+                background-color: @hoverColor;
+                .border-radius(@dayBorderRadius);
+            }
+        }
+
+        input {
+            width: @timePickerCellSize - 2 * @padding;
+            text-align: center;
+            .border-radius(@dayBorderRadius);
+        }
+    }
+}

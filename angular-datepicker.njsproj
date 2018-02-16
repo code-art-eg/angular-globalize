@@ -32,10 +32,13 @@
     <Content Include="src\components\styles\common.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\components\styles\time-picker.component.less">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\components\templates\date-picker-popup.component.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\styles\date-picker-popup.component.less">
+    <Content Include="src\components\styles\popup.less">
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\components\templates\date-picker.component.html">
@@ -59,6 +62,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\components\styles\next-prev.component.less">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\components\templates\time-picker.component.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\components\templates\years-view.component.html">
@@ -109,6 +115,9 @@
       <SubType>Code</SubType>
       <TestFramework>ExportRunner</TestFramework>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\components\time-picker-component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\components\years-view.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -121,6 +130,7 @@
     <TypeScriptCompile Include="src\module.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\base-time-value-accessor.ts" />
     <TypeScriptCompile Include="test\components\date-picker-component.spec.ts" />
     <TypeScriptCompile Include="test\components\days-view-component.spec.ts" />
     <TypeScriptCompile Include="test\components\month-view-component.spec.ts">
