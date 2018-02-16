@@ -6,11 +6,11 @@ describe("Angular Default Locale Provider", () => {
     const testValue = "en-US";
     const service = new AngularDefaultLocaleProvider(testValue);
 
-    it("canWrite should be false", () => {
+    it("can't write", () => {
         expect(service.canWrite).false;
     });
 
-    it("locale should equal testValue", () => {
+    it("returns locale", () => {
         expect(service.locale).equals(testValue, "locale should equal value passed in constructor.")
     });
 });

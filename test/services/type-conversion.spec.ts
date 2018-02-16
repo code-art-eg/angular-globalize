@@ -9,7 +9,8 @@ describe("Conversion Service", () => {
 
     const mockCultureService: ICultureService = {
         currentCulture: 'en-GB',
-        cultureObservable: null
+        cultureObservable: null,
+        isRightToLeft: null
     };
     const globalizeService = new DefaultGlobalizationService(loadedGlobalize, mockCultureService);
     const typeConverter = new TypeConverterService(globalizeService);

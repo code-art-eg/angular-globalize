@@ -26,7 +26,7 @@ describe("Cookie Locale Provider", () => {
         });
     });
 
-    it("should not fail when document undefined", () => {
+    it("works without dom document undefined", () => {
         let mock = undefined;
         test(mock, () => {
             const service = new CookieLocaleProvider();

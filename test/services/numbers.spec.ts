@@ -8,13 +8,14 @@ describe("Globalization number formatting", () => {
 
     const mockCultureService: ICultureService = {
         currentCulture: 'en-GB',
-        cultureObservable: null
+        cultureObservable: null,
+        isRightToLeft: null
     };
 
     const service = new DefaultGlobalizationService(loadedGlobalize, mockCultureService);
     const currency = 'USD';
 
-    it("should format number null or undefined", () => {
+    it("formats number null or undefined", () => {
         expect(service.formatNumber(null)).null;
         expect(service.formatNumber(undefined)).undefined;
         expect(service.formatNumber(null, { style: 'decimal' })).null;
@@ -24,7 +25,7 @@ describe("Globalization number formatting", () => {
         expect(service.formatNumber(undefined, 'de', { style: 'decimal' })).undefined;
     });
 
-    it("should format number using current culture", () => {
+    it("formats number using current culture", () => {
         const num = 12345.67;
 
         expect(service.formatNumber(num)).equal('12,345.67');
@@ -32,7 +33,7 @@ describe("Globalization number formatting", () => {
         expect(service.formatNumber(num, { style: 'decimal' })).equal('12,345.67');
     });
 
-    it("should format number using provided culture", () => {
+    it("formats number using provided culture", () => {
         const num = 12345.67;
 
         expect(service.formatNumber(num, 'de')).equal('12.345,67');
@@ -40,7 +41,7 @@ describe("Globalization number formatting", () => {
         expect(service.formatNumber(num, 'de', { style: 'decimal' })).equal('12.345,67');
     });
 
-    it("should format number using null culture", () => {
+    it("formats number using null culture", () => {
         const num = 12345.67;
 
         expect(service.formatNumber(num, null)).equal('12,345.67');
@@ -48,7 +49,7 @@ describe("Globalization number formatting", () => {
         expect(service.formatNumber(num, null, { style: 'decimal' })).equal('12,345.67');
     });
 
-    it("should format number using null options", () => {
+    it("formats number using null options", () => {
         const num = 12345.67;
 
         expect(service.formatNumber(num, undefined, null)).equal('12,345.67');
@@ -56,7 +57,7 @@ describe("Globalization number formatting", () => {
         expect(service.formatNumber(num, null, null)).equal('12,345.67');
     });
 
-    it("should parse number null or undefined", () => {
+    it("parses number null or undefined", () => {
         expect(service.parseNumber(null)).null;
         expect(service.parseNumber(undefined)).undefined;
         expect(service.parseNumber(null, { style: 'decimal' })).null;
@@ -66,21 +67,21 @@ describe("Globalization number formatting", () => {
         expect(service.parseNumber(undefined, 'de', { style: 'decimal' })).undefined;
     });
 
-    it("should parse number using current culture", () => {
+    it("parses number using current culture", () => {
         const num = 12345.67;
 
         expect(service.parseNumber(service.formatNumber(num))).equal(num);
         expect(service.parseNumber(service.formatNumber(num, { style: 'decimal' }), { style: 'decimal' })).equal(num);
     });
 
-    it("should parse number using provided culture", () => {
+    it("parses number using provided culture", () => {
         const num = 12345.67;
 
         expect(service.parseNumber(service.formatNumber(num, 'de'), 'de')).equal(num);
         expect(service.parseNumber(service.formatNumber(num, 'de', { style: 'decimal' }), 'de', { style: 'decimal' })).equal(num);
     });
 
-    it("should format currency null or undefined", () => {
+    it("formats currency null or undefined", () => {
         expect(service.formatCurrency(null, currency)).null;
         expect(service.formatCurrency(undefined, currency)).undefined;
         expect(service.formatCurrency(null, currency, { style: 'symbol' })).null;
@@ -90,7 +91,7 @@ describe("Globalization number formatting", () => {
         expect(service.formatCurrency(undefined, currency, 'de', { style: 'symbol' })).undefined;
     });
 
-    it("should format currency using current culture", () => {
+    it("formats currency using current culture", () => {
         const num = 12345.67;
         const cldr = new Cldr('en-GB');
         const symbol = cldr.main(['numbers/currencies', currency, "symbol"]);
@@ -100,7 +101,7 @@ describe("Globalization number formatting", () => {
         expect(service.formatCurrency(num, currency, { style: 'symbol' })).equal(symbol + '12,345.67');
     });
 
-    it("should format currency using provided culture", () => {
+    it("formats currency using provided culture", () => {
         const num = 12345.67;
         const cldr = new Cldr('de');
         const symbol = cldr.main(['numbers/currencies', currency, "symbol"]);
@@ -111,7 +112,7 @@ describe("Globalization number formatting", () => {
         expect(service.formatCurrency(num, currency, 'de', { style: 'symbol' })).equal('12.345,67' + sep + symbol);
     });
 
-    it("should format currency using null culture", () => {
+    it("formats currency using null culture", () => {
         const num = 12345.67;
         const cldr = new Cldr('en-GB');
         const symbol = cldr.main(['numbers/currencies', currency, "symbol"]);
@@ -122,7 +123,7 @@ describe("Globalization number formatting", () => {
         expect(service.formatCurrency(num, currency, null, { style: 'symbol' })).equal(symbol + '12,345.67');
     });
 
-    it("should format currency using null options", () => {
+    it("formats currency using null options", () => {
         const num = 12345.67;
         const cldr = new Cldr('en-GB');
         const symbol = cldr.main(['numbers/currencies', currency, "symbol"]);

@@ -9,7 +9,7 @@ describe("Culture Service ", () => {
         locale: 'en-GB'
     };
 
-    it("should fail with null or null cultures", () => {
+    it("fails with null or null cultures", () => {
         throws(() => {
             new CurrentCultureService(null, [mockLocaleProvider]);
         });
@@ -21,7 +21,7 @@ describe("Culture Service ", () => {
         });
     });
 
-    it("should not fail with null or empty providers", () => {
+    it("works with null or empty providers", () => {
         doesNotThrow(() => {
             new CurrentCultureService(['en-GB', 'de', 'ar-EG'], null);
         });
@@ -55,7 +55,7 @@ describe("Culture Service ", () => {
         });
     });
 
-    it("should use provider culture", () => {
+    it("uses provider culture", () => {
         let mock: ILocaleProvider = {
             locale: 'DE',
             canWrite: true
@@ -63,7 +63,7 @@ describe("Culture Service ", () => {
         expect(new CurrentCultureService(['en-gb', 'de', 'ar-eg'], [mock]).currentCulture).equals('de');
     });
 
-    it("should use culture parent", () => {
+    it("uses culture parent", () => {
         let mock: ILocaleProvider = {
             locale: 'de-de',
             canWrite: true
@@ -71,7 +71,7 @@ describe("Culture Service ", () => {
         expect(new CurrentCultureService(['EN-GB', 'DE', 'AR-EG'], [mock]).currentCulture).equals('DE');
     });
 
-    it("should use culture child", () => {
+    it("uses culture child", () => {
         let mock: ILocaleProvider = {
             locale: 'de',
             canWrite: true
@@ -79,7 +79,7 @@ describe("Culture Service ", () => {
         expect(new CurrentCultureService(['en-GB', 'de-DE', 'ar-EG'], [mock]).currentCulture).equals('de-DE');
     });
 
-    it("should use culture with same parent", () => {
+    it("uses culture with same parent", () => {
         let mock: ILocaleProvider = {
             locale: 'ar-SA',
             canWrite: true
@@ -88,7 +88,7 @@ describe("Culture Service ", () => {
     });
 
 
-     it("should use first supported culture", () => {
+     it("uses first supported culture", () => {
         let mock: ILocaleProvider = {
             locale: 'es',
             canWrite: true
@@ -96,7 +96,7 @@ describe("Culture Service ", () => {
         expect(new CurrentCultureService(['en-GB', 'de', 'ar-EG'], [mock]).currentCulture).equals('en-GB');
     });
 
-    it("should update writable provider", () => {
+    it("updates writable provider", () => {
         let mock: ILocaleProvider = {
             locale: 'es',
             canWrite: true
@@ -107,7 +107,7 @@ describe("Culture Service ", () => {
         expect(mock.locale).equals('de');
     });
 
-    it("should not update readonly provider", () => {
+    it("doesn't update readonly provider", () => {
         let mock: ILocaleProvider = {
             locale: 'es',
             canWrite: false
@@ -118,7 +118,7 @@ describe("Culture Service ", () => {
         expect(mock.locale).equals('es');
     });
 
-    it("should not accept unsupported culture", () => {
+    it("doesn't accept unsupported culture", () => {
         let mock: ILocaleProvider = {
             locale: 'es',
             canWrite: false
@@ -137,7 +137,7 @@ describe("Culture Service ", () => {
         sub.unsubscribe();
     });
 
-    it("observable should emit only on change", () => {
+    it("emits only on change", () => {
         const res: string[] = [];
         const service = new CurrentCultureService(['en-GB', 'de', 'ar-EG']);
         const sub = service.cultureObservable.subscribe(v => res.push(v));

@@ -7,7 +7,7 @@ describe("Storage Locale Provider", () => {
     const localStorage = global['localStorage'] as Storage;
     const sessionStorage = global['sessionStorage'] as Storage;
 
-    it("canWrite should be true", () => {
+    it("can write", () => {
         const service = new StorageLocaleProvider();
         expect(service.canWrite).true;
     });
@@ -61,7 +61,7 @@ describe("Storage Locale Provider", () => {
         testGetAndSet(service, sessionStorage, localStorage, key);
     });
 
-    it("should not fail when local storage is undefined", () => {
+    it("works when local storage is undefined", () => {
         global['localStorage'] = undefined;
         global['sessionStorage'] = undefined;
         const service = new StorageLocaleProvider();

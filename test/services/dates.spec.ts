@@ -15,7 +15,7 @@ describe("Globalization date formatting", () => {
 
     const service = new DefaultGlobalizationService(loadedGlobalize, mockCultureService);
 
-    it("should format date null or undefined", () => {
+    it("formats date null or undefined", () => {
         expect(service.formatDate(null)).null;
         expect(service.formatDate(undefined)).undefined;
         expect(service.formatDate(null, { date: 'short' })).null;
@@ -25,7 +25,7 @@ describe("Globalization date formatting", () => {
         expect(service.formatDate(undefined, 'de', { date: 'short' })).undefined;
     });
 
-    it("should format date using current culture", () => {
+    it("formats date using current culture", () => {
         const date = new Date(2018, 1, 18, 19, 45, 57);
 
         expect(service.formatDate(date)).equal('18/02/2018');
@@ -33,7 +33,7 @@ describe("Globalization date formatting", () => {
         expect(service.formatDate(date, { datetime: 'short' })).equal('18/02/2018, 19:45');
     });
 
-    it("should format date using provided culture", () => {
+    it("formats date using provided culture", () => {
         const date = new Date(2018, 1, 18, 19, 45, 57);
 
         expect(service.formatDate(date, 'de')).equal('18.2.2018');
@@ -41,7 +41,7 @@ describe("Globalization date formatting", () => {
         expect(service.formatDate(date, 'de', { datetime: 'short' })).equal('18.02.18, 19:45');
     });
 
-    it("should format date using null culture", () => {
+    it("formats date using null culture", () => {
         const date = new Date(2018, 1, 18, 19, 45, 57);
 
         expect(service.formatDate(date, null)).equal('18/02/2018');
@@ -49,7 +49,7 @@ describe("Globalization date formatting", () => {
         expect(service.formatDate(date, null, { datetime: 'short' })).equal('18/02/2018, 19:45');
     });
 
-    it("should format date using null options", () => {
+    it("formats date using null options", () => {
         const date = new Date(2018, 1, 18, 19, 45, 57);
 
         expect(service.formatDate(date, undefined, null)).equal('18/02/2018');
@@ -57,7 +57,7 @@ describe("Globalization date formatting", () => {
         expect(service.formatDate(date, null, null)).equal('18/02/2018');
     });
 
-    it("should parse date null or undefined", () => {
+    it("parses date null or undefined", () => {
         expect(service.parseDate(null)).null;
         expect(service.parseDate(undefined)).undefined;
         expect(service.parseDate(null, { date: 'short' })).null;
@@ -67,7 +67,7 @@ describe("Globalization date formatting", () => {
         expect(service.parseDate(undefined, 'de', { date: 'short' })).undefined;
     });
 
-    it("should parse date using current culture", () => {
+    it("parses date using current culture", () => {
         const date = new Date(2018, 1, 18, 0, 0, 0);
 
         expect(service.parseDate(service.formatDate(date))).equalTime(date);
@@ -75,7 +75,7 @@ describe("Globalization date formatting", () => {
         expect(service.parseDate(service.formatDate(date, { date: 'short' }), { date: 'short' })).equalTime(date);
     });
 
-    it("should parse date using provided culture", () => {
+    it("parses date using provided culture", () => {
         const date = new Date(2018, 1, 18, 0, 0, 0);
 
         expect(service.parseDate(service.formatDate(date, 'de'), 'de')).equalTime(date);
