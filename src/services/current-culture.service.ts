@@ -18,6 +18,7 @@ export const CANG_DEFAULT_COOKIE_DURATION_DAYS = 365;
 export interface ICultureService {
     currentCulture: string;
     cultureObservable: Observable<string>;
+    isRightToLeft(locale?: string): boolean;
 }
 
 export interface ILocaleProvider {
@@ -306,5 +307,19 @@ export class CurrentCultureService implements ICultureService {
                 this.localeProviders[i].locale = val;
             }
         }
+    }
+
+
+    private static readonly rtlLangs = ["ar", "dv", "fa", "he", "ku", "nqo", "pa", "prs", "ps", "sd", "syr", "tzm", "ug", "ur", "yi"];
+
+    isRightToLeft(locale?: string): boolean {
+        locale = (locale || this.currentCulture).toLowerCase();
+        if (!locale) return false;
+        for (let i = 0; i < CurrentCultureService.rtlLangs.length; i++) {
+            if (locale.indexOf(CurrentCultureService.rtlLangs[i]) === 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }

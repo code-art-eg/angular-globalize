@@ -30,6 +30,22 @@ describe("Culture Service ", () => {
         });
     });
 
+    it("returns right to left", () => {
+        const service = new CurrentCultureService(['en-GB', 'de', 'ar-EG'], null);
+        expect(service.isRightToLeft()).false;
+        service.currentCulture = 'de';
+        expect(service.isRightToLeft()).false;
+        service.currentCulture = 'ar-EG';
+        expect(service.isRightToLeft()).true;
+        expect(service.isRightToLeft('en')).false;
+        expect(service.isRightToLeft('FA-ir')).true;
+        expect(service.isRightToLeft('ur')).true;
+        service.currentCulture = 'en';
+        expect(service.isRightToLeft('He-IL')).true;
+        expect(service.isRightToLeft('sYr')).true;
+        expect(service.isRightToLeft('ar-SA')).true;
+    });
+
     it("should fail with null provider", () => {
         throws(() => {
             new CurrentCultureService(['en-GB', 'de', 'ar-EG'], [null]);

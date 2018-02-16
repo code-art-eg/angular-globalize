@@ -53,6 +53,7 @@
     <TypeScriptCompile Include="src\pipes\globalize-day.pipe.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="src\directives\globalize-direction.directive.ts" />
     <TypeScriptCompile Include="src\pipes\globalize-month.pipe.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -101,6 +102,7 @@
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="src\directives\" />
     <Folder Include="test\" />
     <Folder Include="playground" />
     <Folder Include="src" />
