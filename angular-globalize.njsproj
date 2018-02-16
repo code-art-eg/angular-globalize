@@ -13,7 +13,7 @@
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
     <EnableTypeScript>true</EnableTypeScript>
-    <TypeScriptToolsVersion>2.6</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.7</TypeScriptToolsVersion>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
