@@ -9,7 +9,8 @@ describe("Globalization date formatting", () => {
 
     const mockCultureService: ICultureService = {
         currentCulture: 'en-GB',
-        cultureObservable: null
+        cultureObservable: null,
+        isRightToLeft: null
     };
 
     const service = new DefaultGlobalizationService(loadedGlobalize, mockCultureService);
@@ -80,5 +81,13 @@ describe("Globalization date formatting", () => {
         expect(service.parseDate(service.formatDate(date, 'de'), 'de')).equalTime(date);
         expect(service.parseDate(service.formatDate(date, 'de', { date: 'long' }), 'de', { date: 'long' })).equalTime(date);
         expect(service.parseDate(service.formatDate(date, 'de', { date: 'short' }), 'de', { date: 'short' })).equalTime(date);
+    });
+
+    it("parses time only date using current culture", () => {
+        const date = new Date();
+        date.setMilliseconds(0);
+        expect(service.parseDate(service.formatDate(date, { time: 'long' }), { time: 'long' })).equalTime(date);
+        date.setSeconds(0);
+        expect(service.parseDate(service.formatDate(date, { time: 'short' }), { time: 'short' })).equalTime(date);
     });
 });
