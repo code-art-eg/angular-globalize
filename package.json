@@ -9,7 +9,8 @@
   "typings": "index.d.ts",
   "scripts": {
     "test": "cd test && mocha --require mock-local-storage --require ts-node/register ./**/*.spec.ts",
-    "start": "cd playground && webpack --config webpack.config.vendor.js && webpack-dev-server --open"
+    "start": "cd playground && webpack --config webpack.config.vendor.js && webpack-dev-server --open",
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",
