@@ -61,19 +61,6 @@ export function addDays(date: Date, days: number): Date {
     return newDate;
 }
 
-const rtlLangs = ["ar", "dv", "fa", "he", "ku", "nqo", "pa", "prs", "ps", "sd", "syr", "tzm", "ug", "ur", "yi"];
-
-export function isRightToLeft(culture: string): boolean {
-    if (!culture) return false;
-    culture = culture.toLowerCase();
-    for (let i = 0; i < rtlLangs.length; i++) {
-        if (culture.indexOf(rtlLangs[i]) === 0) {
-            return true;
-        }
-    }
-    return false;
-}
-
 export function formatYear(service: IGlobalizationService, year: number, locale?: string): string {
     let res = service.formatNumber(year, locale, { useGrouping: false });
     if (res.length < 4) {

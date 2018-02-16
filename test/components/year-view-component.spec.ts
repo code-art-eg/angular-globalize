@@ -1,17 +1,16 @@
 ﻿import { YearsViewComponent } from '../../src/components/years-view.component';
 import { expect } from 'chai';
-import { IGlobalizationService, ICultureService, DefaultGlobalizationService } from '@code-art/angular-globalize';
+import { IGlobalizationService, ICultureService, DefaultGlobalizationService, CurrentCultureService } from '@code-art/angular-globalize';
 import { loadedGlobalize } from '../load-globalize-data';
 import { formatYear, IMonthYearSelection, KEY_CODE } from '../../src/util';
 
 
 describe("YearsViewComponent", () => {
-    const globalizeService = new DefaultGlobalizationService(loadedGlobalize, {
-        cultureObservable: null, currentCulture: 'en-GB'
-    });
+    const cultureService = new CurrentCultureService(['en-GB', 'ar-EG', 'de']);
+    const globalizeService = new DefaultGlobalizationService(loadedGlobalize, cultureService);
 
     it("initializes correctly", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         expect(c.command).not.null;
         expect(c.focusRange).null;
         expect(c.handleKeyboardEvents).false;
@@ -19,7 +18,7 @@ describe("YearsViewComponent", () => {
 
 
     it("calculates ranges correctly in years view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.locale = 'ar-EG';
         c.year = 2018;
         c.numberOfYears = 1;
@@ -31,7 +30,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("calculates ranges correctly in decades view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.locale = 'de';
         c.year = 2018;
         c.numberOfYears = 10;
@@ -43,7 +42,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("calculates ranges correctly in centuries view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.locale = 'de';
         c.year = 2018;
         c.numberOfYears = 100;
@@ -55,7 +54,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("goes home when home button is clicked", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 1;
         c.numberOfYears = 10;
         let e: IMonthYearSelection = null;
@@ -72,7 +71,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("resets when reset button is clicked", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 1;
         c.numberOfYears = 10;
         let e: IMonthYearSelection = null;
@@ -89,7 +88,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("increases year next is clicked in year view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 1;
         let e: IMonthYearSelection = null;
@@ -106,7 +105,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("decreases year prev is clicked in year view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 1;
         let e: IMonthYearSelection = null;
@@ -123,7 +122,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("increases year next is clicked in decades view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 10;
         let e: IMonthYearSelection = null;
@@ -140,7 +139,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("decreases year prev is clicked in year view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 10;
         let e: IMonthYearSelection = null;
@@ -157,7 +156,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("increases year next is clicked in centuries view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 100;
         let e: IMonthYearSelection = null;
@@ -174,7 +173,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("decreases year prev is clicked in centuries view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 100;
         let e: IMonthYearSelection = null;
@@ -191,7 +190,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("switches view to decades in years view ", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 1;
         let e: IMonthYearSelection = null;
@@ -208,7 +207,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("switches view to centuries in decades view ", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 10;
         let e: IMonthYearSelection = null;
@@ -225,7 +224,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("stays on centuries in centuries view ", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 100;
         let e: IMonthYearSelection = null;
@@ -242,7 +241,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("disables years in years view ", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 1;
         c.maxYear = 2019;
@@ -255,7 +254,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("disables years in decades view ", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2060;
         c.numberOfYears = 10;
         c.maxYear = 2080;
@@ -268,7 +267,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("disables years in centuries view ", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2060;
         c.numberOfYears = 10;
         c.maxYear = 2080;
@@ -281,7 +280,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("selects year in years view ", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 1;
         for (let i = 0; i < 12; i++) {
@@ -290,7 +289,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("selects year in decades view ", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 10;
         for (let i = 0; i < 12; i++) {
@@ -299,7 +298,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("selects year in centuries view ", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 100;
         for (let i = 0; i < 12; i++) {
@@ -308,7 +307,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("returns other in years view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 1;
         for (let i = 0; i < 12; i++) {
@@ -317,7 +316,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("returns other in decades view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 10;
         for (let i = 0; i < 12; i++) {
@@ -326,7 +325,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("returns other in centuries view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 100;
         for (let i = 0; i < 12; i++) {
@@ -335,7 +334,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("returns range false in years view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 1;
         for (let i = 0; i < 12; i++) {
@@ -344,7 +343,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("returns range false in decades view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 10;
         for (let i = 0; i < 12; i++) {
@@ -353,7 +352,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("returns range false in centuries view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 100;
         for (let i = 0; i < 12; i++) {
@@ -362,7 +361,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("does nothing when clicking disabled range", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.minYear = 2014
         c.year = 2018;
         c.maxYear = 2018;
@@ -380,7 +379,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("range click in years view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.minYear = 1;
         c.year = 2018;
         c.maxYear = 9999;
@@ -398,7 +397,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("range click in decades view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.minYear = 1;
         c.year = 2018;
         c.maxYear = 9999;
@@ -416,7 +415,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("range click in centuries view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.minYear = 1;
         c.year = 2018;
         c.maxYear = 9999;
@@ -434,7 +433,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("ignores keyboard events when handleKeyboardEvents is false", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.minYear = 1;
         c.year = 2018;
         c.maxYear = 9999;
@@ -450,7 +449,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("handle keyboard enter without focus in years view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.minYear = 1;
         c.year = 2018;
         c.maxYear = 9999;
@@ -469,7 +468,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("handle keyboard events in years view", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.minYear = 1;
         c.year = 2018;
         c.maxYear = 9999;
@@ -531,7 +530,7 @@ describe("YearsViewComponent", () => {
     });
 
     it("reverses keyboard arrows in right to left locales", () => {
-        const c = new YearsViewComponent(globalizeService);
+        const c = new YearsViewComponent(cultureService, globalizeService);
         c.minYear = 1;
         c.year = 2018;
         c.maxYear = 9999;

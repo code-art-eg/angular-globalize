@@ -1,17 +1,15 @@
 ﻿import { MonthsViewComponent } from '../../src/components/months-view.component';
 import { expect } from 'chai';
-import { IGlobalizationService, ICultureService, DefaultGlobalizationService } from '@code-art/angular-globalize';
+import { IGlobalizationService, ICultureService, DefaultGlobalizationService, CurrentCultureService } from '@code-art/angular-globalize';
 import { loadedGlobalize } from '../load-globalize-data';
 import { IMonthYearSelection, createDate, KEY_CODE } from '../../src/util';
 
 describe("MonthsViewComponent", () => {
-
-    const globalizeService = new DefaultGlobalizationService(loadedGlobalize, {
-        cultureObservable: null, currentCulture: 'en-GB'
-    });
+    const cultureService = new CurrentCultureService(['en-GB', 'ar-EG', 'de']);
+    const globalizeService = new DefaultGlobalizationService(loadedGlobalize, cultureService);
 
     it("initializes correctly", () => {
-        const c = new MonthsViewComponent(globalizeService);
+        const c = new MonthsViewComponent(cultureService, globalizeService);
         expect(c.command).not.null;
         expect(c.focusMonth).null;
         expect(c.handleKeyboardEvents).false;
@@ -23,7 +21,7 @@ describe("MonthsViewComponent", () => {
     });
 
     it("goes home when home button is clicked", () => {
-        const c = new MonthsViewComponent(globalizeService);
+        const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 1;
         let e: IMonthYearSelection = null;
         const sub = c.command.asObservable().subscribe(ev => {
@@ -39,7 +37,7 @@ describe("MonthsViewComponent", () => {
     });
 
     it("resets when reset button is clicked", () => {
-        const c = new MonthsViewComponent(globalizeService);
+        const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 1;
         let e: IMonthYearSelection = null;
         const sub = c.command.asObservable().subscribe(ev => {
@@ -55,7 +53,7 @@ describe("MonthsViewComponent", () => {
     });
 
     it("increases year when next is clicked in year view", () => {
-        const c = new MonthsViewComponent(globalizeService);
+        const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         let e: IMonthYearSelection = null;
         const sub = c.command.asObservable().subscribe(ev => {
@@ -71,7 +69,7 @@ describe("MonthsViewComponent", () => {
     });
 
     it("decreases year when prev is clicked in year view", () => {
-        const c = new MonthsViewComponent(globalizeService);
+        const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         let e: IMonthYearSelection = null;
         const sub = c.command.asObservable().subscribe(ev => {
@@ -87,7 +85,7 @@ describe("MonthsViewComponent", () => {
     });
 
     it("switches to years view when header is clicked", () => {
-        const c = new MonthsViewComponent(globalizeService);
+        const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         let e: IMonthYearSelection = null;
         const sub = c.command.asObservable().subscribe(ev => {
@@ -103,7 +101,7 @@ describe("MonthsViewComponent", () => {
     });
 
     it("sets header year when year or locale are changed", () => {
-        const c = new MonthsViewComponent(globalizeService);
+        const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2000;
         expect(c.nextPrevText).equal('2000');
         c.locale = 'ar-EG';
@@ -114,7 +112,7 @@ describe("MonthsViewComponent", () => {
     });
 
     it("disables months and handles month clicks", () => {
-        const c = new MonthsViewComponent(globalizeService);
+        const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2000;
         c.maxDate = createDate(2000, 7, 12);
         c.minDate = createDate(2000, 3, 12);
@@ -142,7 +140,7 @@ describe("MonthsViewComponent", () => {
     });
 
     it("does not disable in another year", () => {
-        const c = new MonthsViewComponent(globalizeService);
+        const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2000;
         c.maxDate = createDate(1999, 7, 12);
         c.minDate = createDate(2001, 3, 12);
@@ -152,7 +150,7 @@ describe("MonthsViewComponent", () => {
     });
 
     it("does not disable in another year", () => {
-        const c = new MonthsViewComponent(globalizeService);
+        const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2000;
         c.maxDate = createDate(1999, 7, 12);
         c.minDate = createDate(2001, 3, 12);
@@ -162,7 +160,7 @@ describe("MonthsViewComponent", () => {
     });
 
     it("ignores keyboard events when handleKeyboardEvents is false", () => {
-        const c = new MonthsViewComponent(globalizeService);
+        const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.month = 0;
         c.handleKeyboardEvents = false;
@@ -177,7 +175,7 @@ describe("MonthsViewComponent", () => {
     });
 
     it("handles keyboard events", () => {
-        const c = new MonthsViewComponent(globalizeService);
+        const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.month = 1;
         c.handleKeyboardEvents = true;
@@ -230,7 +228,7 @@ describe("MonthsViewComponent", () => {
     });
 
     it("reverse keyboard arrows in right to left locales", () => {
-        const c = new MonthsViewComponent(globalizeService);
+        const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.month = 1;
         c.handleKeyboardEvents = true;
@@ -256,7 +254,7 @@ describe("MonthsViewComponent", () => {
 
 
     it("handles keyboard enter without focus", () => {
-        const c = new MonthsViewComponent(globalizeService);
+        const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.month = 1;
         c.handleKeyboardEvents = true;

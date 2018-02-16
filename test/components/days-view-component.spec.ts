@@ -1,17 +1,16 @@
 ﻿import { DaysViewComponent } from '../../src/components/days-view.component';
 import { expect } from 'chai';
-import { IGlobalizationService, ICultureService, DefaultGlobalizationService } from '@code-art/angular-globalize';
+import { IGlobalizationService, ICultureService, DefaultGlobalizationService, CurrentCultureService } from '@code-art/angular-globalize';
 import { loadedGlobalize } from '../load-globalize-data';
 import { formatYear, IMonthYearSelection, KEY_CODE, createDate, addDays, dateInRange } from '../../src/util';
 
 
 describe("DaysViewComponent", () => {
-    const globalizeService = new DefaultGlobalizationService(loadedGlobalize, {
-        cultureObservable: null, currentCulture: 'en-GB'
-    });
+    const cultureService = new CurrentCultureService(['en-GB', 'ar-EG', 'de']);
+    const globalizeService = new DefaultGlobalizationService(loadedGlobalize, cultureService);
 
     it("initializes correctly", () => {
-        const c = new DaysViewComponent(globalizeService);
+        const c = new DaysViewComponent(cultureService, globalizeService);
         expect(c.command).not.null;
         expect(c.dateClicked).not.null;
         expect(c.handleKeyboardEvents).false;
@@ -19,7 +18,7 @@ describe("DaysViewComponent", () => {
     });
 
     it("it sets ranges correctly", () => {
-        const c = new DaysViewComponent(globalizeService);
+        const c = new DaysViewComponent(cultureService, globalizeService);
         c.month = 1; // Feb (starts on Thu)
         c.year = 2018;
 
@@ -65,7 +64,7 @@ describe("DaysViewComponent", () => {
     });
 
     it("it applies todayhightlight", () => {
-        const c = new DaysViewComponent(globalizeService);
+        const c = new DaysViewComponent(cultureService, globalizeService);
         c.month = 1; // Feb (starts on Thu)
         c.year = 2018;
         c.todayHighlight = false;
@@ -83,7 +82,7 @@ describe("DaysViewComponent", () => {
     });
 
     it("ignores disabled date clicks", () => {
-        const c = new DaysViewComponent(globalizeService);
+        const c = new DaysViewComponent(cultureService, globalizeService);
         c.month = 1; // Feb (starts on Thu)
         c.year = 2018;
         c.minDate = createDate(2018, 1, 10);
@@ -99,7 +98,7 @@ describe("DaysViewComponent", () => {
     });
 
     it("ignores handles date clicks", () => {
-        const c = new DaysViewComponent(globalizeService);
+        const c = new DaysViewComponent(cultureService, globalizeService);
         c.month = 1; // Feb (starts on Thu)
         c.year = 2018;
         c.minDate = createDate(2018, 1, 10);
@@ -114,7 +113,7 @@ describe("DaysViewComponent", () => {
     });
 
     it("ignores keyboard events when handleKeyboardEvents false", () => {
-        const c = new DaysViewComponent(globalizeService);
+        const c = new DaysViewComponent(cultureService, globalizeService);
         c.month = 1; // Feb (starts on Thu)
         c.year = 2018;
         c.minDate = createDate(2018, 1, 10);
@@ -130,7 +129,7 @@ describe("DaysViewComponent", () => {
     });
 
     it("handles keyboard events when handleKeyboardEvents true", () => {
-        const c = new DaysViewComponent(globalizeService);
+        const c = new DaysViewComponent(cultureService, globalizeService);
         c.month = 1; // Feb (starts on Thu)
         c.year = 2018;
         c.minDate = createDate(2018, 1, 10);
@@ -233,7 +232,7 @@ describe("DaysViewComponent", () => {
     });
 
     it("reverses keyboards in rtl locales", () => {
-        const c = new DaysViewComponent(globalizeService);
+        const c = new DaysViewComponent(cultureService, globalizeService);
         c.month = 1; // Feb (starts on Thu)
         c.year = 2018;
         c.minDate = createDate(2018, 1, 10);

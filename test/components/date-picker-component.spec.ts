@@ -29,7 +29,6 @@ describe("DatePickerComponent", () => {
 
     it("inits correctly", () => {
         const c = new DatePickerComponent(cultureService, typeConverter);
-        expect(c.dir).equal('ltr');
         expect(c.effectiveLocale).equal(mockLocaleProvider.locale);
         expect(c.selectionStart).null;
         expect(c.selectionEnd).null;
@@ -54,31 +53,24 @@ describe("DatePickerComponent", () => {
 
     it("switches locale correctly", () => {
         const c = new DatePickerComponent(cultureService, typeConverter);
-        expect(c.dir).equal('ltr');
         expect(c.effectiveLocale).equal(mockLocaleProvider.locale);
 
         c.locale = 'ar-EG';
-        expect(c.dir).equal('rtl');
         expect(c.effectiveLocale).equal('ar-EG');
 
         c.locale = 'de';
-        expect(c.dir).equal('ltr');
         expect(c.effectiveLocale).equal('de');
 
         c.locale = null;
-        expect(c.dir).equal('ltr');
         expect(c.effectiveLocale).equal(mockLocaleProvider.locale);
 
         cultureService.currentCulture = 'ar-EG';
-        expect(c.dir).equal('rtl');
         expect(c.effectiveLocale).equal('ar-EG');
 
         c.locale = 'de';
-        expect(c.dir).equal('ltr');
         expect(c.effectiveLocale).equal('de');
 
         cultureService.currentCulture = null;
-        expect(c.dir).equal('ltr');
         expect(c.effectiveLocale).equal('de');
     });
 
@@ -88,6 +80,8 @@ describe("DatePickerComponent", () => {
 
         function testWriteValues(c: DatePickerComponent, val: any, expectedFrom: Date | null, expectedTo?: Date | null) {
             let d = new Date();
+            c.selectionEnd = null;
+            c.selectionStart = null;
             c.selectionStart = d;
             c.selectionEnd = d;
             

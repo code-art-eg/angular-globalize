@@ -17,10 +17,6 @@ export class BaseDateRangeAccessor extends BaseValueAccessor {
     private _minDate: Date | null = null;
     private _maxDate: Date | null = null;
 
-    get dir(): string {
-        return this.isRtl ? 'rtl' : 'ltr';
-    }
-
     constructor(cultureService: ICultureService,
         protected readonly converterService: ITypeConverterService) {
         super(cultureService);
@@ -157,12 +153,13 @@ export class BaseDateRangeAccessor extends BaseValueAccessor {
                 }
             }
         }
-        if (s && e && this.rangeSelection && e.valueOf() < s.valueOf()) {
-            throw 'From date must be before or at to date.';
-        }
+        
         if (!this.rangeSelection) {
             return s;
         } else if (s || e) {
+            if (s && e && this.rangeSelection && e.valueOf() < s.valueOf()) {
+                throw 'From date must be before or at to date.';
+            }
             return {
                 from: s,
                 to: e

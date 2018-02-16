@@ -67,7 +67,7 @@ export abstract class BaseDatePickerPopupComponent extends BaseDatePickerAccesso
         if (this.parent) {
             return (this.parent as BaseDatePickerDirective).orientRight;
         }
-        return !this.isRtl;
+        return !this.cultureService.isRightToLeft(this.effectiveLocale);
     }
 }
 

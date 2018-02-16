@@ -6,7 +6,6 @@ import { Subscription } from "rxjs/Subscription";
 import 'rxjs/add/observable/combineLatest';
 
 import { ICultureService } from '@code-art/angular-globalize';
-import { isRightToLeft } from "./util";
 
 export abstract class BaseValueAccessor implements OnDestroy, ControlValueAccessor {
 
@@ -112,11 +111,6 @@ export abstract class BaseValueAccessor implements OnDestroy, ControlValueAccess
     writeValue(val: any): void {
         this.value = val;
     }
-
-    get isRtl(): boolean {
-        return isRightToLeft(this.effectiveLocale);
-    }
-
 
     get value(): any {
         if (this.parent) {

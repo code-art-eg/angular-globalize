@@ -1,6 +1,6 @@
 ﻿import { Input, Component, Inject, EventEmitter, Output, HostListener, OnInit } from '@angular/core';
-import { IGlobalizationService, CANG_GLOBALIZATION_SERVICE } from '@code-art/angular-globalize';
-import { addDays, IMonthYearSelection, sevenArray, sixArray, formatYear, dateInRange, KEY_CODE, NextPrevAction, createDate, isRightToLeft } from '../util';
+import { IGlobalizationService, CANG_GLOBALIZATION_SERVICE, ICultureService, CANG_CULTURE_SERVICE } from '@code-art/angular-globalize';
+import { addDays, IMonthYearSelection, sevenArray, sixArray, formatYear, dateInRange, KEY_CODE, NextPrevAction, createDate } from '../util';
 
 @Component({
     selector: 'ca-days-view',
@@ -9,7 +9,8 @@ import { addDays, IMonthYearSelection, sevenArray, sixArray, formatYear, dateInR
 })
 export class DaysViewComponent implements OnInit {
 
-    constructor( @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService
+    constructor(@Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
+        @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService
     ) {
         const date = createDate();
         this.month = date.getUTCMonth();
@@ -47,17 +48,16 @@ export class DaysViewComponent implements OnInit {
 
     readonly sevenArray = sevenArray;
     readonly sixArray = sixArray;
-    @Input() dir: string = 'ltr';
-
+    
     @HostListener('window:keyup', ['$event'])
     keyEvent(event: KeyboardEvent) {
         if (!this.handleKeyboardEvents) {
             return;
         }
         if (event.keyCode === KEY_CODE.LEFT_ARROW) {
-            this.addFocusDate(isRightToLeft(this.locale) ? 1 : -1);
+            this.addFocusDate(this.cultureService.isRightToLeft(this.locale) ? 1 : -1);
         } else if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
-            this.addFocusDate(isRightToLeft(this.locale) ? -1 : 1);
+            this.addFocusDate(this.cultureService.isRightToLeft(this.locale) ? -1 : 1);
         } else if (event.keyCode === KEY_CODE.UP_ARROW) {
             this.addFocusDate(-7);
         } else if (event.keyCode === KEY_CODE.DOWN_ARROW) {

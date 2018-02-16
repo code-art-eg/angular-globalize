@@ -2,7 +2,7 @@
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { CANG_CULTURE_SERVICE, ICultureService, ITypeConverterService, CANG_TYPE_CONVERTER_SERVICE } from '@code-art/angular-globalize';
-import { isRightToLeft, IMonthYearSelection, ViewType, stripTime, maxDate, minDate, dateInRange, createDate, similarInUtc, similarInLocal, IDateRange, datesEqual, getMonthYear } from '../util';
+import { IMonthYearSelection, ViewType, stripTime, maxDate, minDate, dateInRange, createDate, similarInUtc, similarInLocal, IDateRange, datesEqual, getMonthYear } from '../util';
 import { debug } from 'util';
 import { BaseDatePickerAccessor } from '../base-date-picker-accessor';
 

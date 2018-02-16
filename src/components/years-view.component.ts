@@ -1,6 +1,6 @@
 ﻿import { Input, Component, Inject, EventEmitter, Output, OnInit, HostListener } from '@angular/core';
-import { IGlobalizationService, CANG_GLOBALIZATION_SERVICE } from '@code-art/angular-globalize';
-import { IMonthYearSelection, twelveArray, formatYear, ViewType, KEY_CODE, NextPrevAction, isRightToLeft } from '../util';
+import { IGlobalizationService, CANG_GLOBALIZATION_SERVICE, CANG_CULTURE_SERVICE, ICultureService } from '@code-art/angular-globalize';
+import { IMonthYearSelection, twelveArray, formatYear, ViewType, KEY_CODE, NextPrevAction } from '../util';
 
 @Component({
     selector: 'ca-years-view',
@@ -9,7 +9,8 @@ import { IMonthYearSelection, twelveArray, formatYear, ViewType, KEY_CODE, NextP
 })
 export class YearsViewComponent implements OnInit {
 
-    constructor( @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService) {
+    constructor(@Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
+        @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService) {
         this._year = undefined;
         this._locale = undefined;
         this.month = undefined;
@@ -35,9 +36,9 @@ export class YearsViewComponent implements OnInit {
             return;
         }
         if (event.keyCode === KEY_CODE.LEFT_ARROW) {
-            this.addRange(isRightToLeft(this.locale) ? 1 : -1);
+            this.addRange(this.cultureService.isRightToLeft(this.locale) ? 1 : -1);
         } else if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
-            this.addRange(isRightToLeft(this.locale) ? -1 : 1);
+            this.addRange(this.cultureService.isRightToLeft(this.locale) ? -1 : 1);
         } else if (event.keyCode === KEY_CODE.UP_ARROW) {
             this.addRange(-3);
         } else if (event.keyCode === KEY_CODE.DOWN_ARROW) {
@@ -129,9 +130,6 @@ export class YearsViewComponent implements OnInit {
     get locale(): string {
         return this._locale;
     }
-
-    @Input()
-    dir: string;
 
     get nextPrevText(): string {
         this.calculate();

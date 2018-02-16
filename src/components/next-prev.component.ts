@@ -1,5 +1,6 @@
-﻿import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { isRightToLeft, NextPrevAction } from '../util';
+﻿import { Component, Input, EventEmitter, Output, Inject } from '@angular/core';
+import { NextPrevAction } from '../util';
+import { CANG_CULTURE_SERVICE, ICultureService } from '@code-art/angular-globalize';
 
 @Component({
     selector: 'ca-next-prev',
@@ -10,7 +11,7 @@ export class NextPreviousComponent {
     static readonly leftArrow: string = 'glyphicon-chevron-left';
     static readonly rightArrow: string = 'glyphicon-chevron-right';
 
-    constructor() {
+    constructor(@Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService) {
         this.locale = null;
         this.clicked = new EventEmitter<NextPrevAction>();
         this.text = null;
@@ -31,10 +32,10 @@ export class NextPreviousComponent {
 
     getClass(type: 'next'|'prev'): string {
         if (type === 'next') {
-            return isRightToLeft(this.locale) ? NextPreviousComponent.leftArrow : NextPreviousComponent.rightArrow;
+            return this.cultureService.isRightToLeft(this.locale) ? NextPreviousComponent.leftArrow : NextPreviousComponent.rightArrow;
         }
         else
-            return isRightToLeft(this.locale) ? NextPreviousComponent.rightArrow: NextPreviousComponent.leftArrow;
+            return this.cultureService.isRightToLeft(this.locale) ? NextPreviousComponent.rightArrow: NextPreviousComponent.leftArrow;
     }
 
     @Input()

@@ -1,10 +1,10 @@
 ﻿import { expect } from 'chai';
 const chai: Chai.ChaiStatic = require('chai');
 chai.use(require('chai-datetime'));
-import { IGlobalizationService, ICultureService, DefaultGlobalizationService } from '@code-art/angular-globalize';
+import { IGlobalizationService, ICultureService, DefaultGlobalizationService, CurrentCultureService } from '@code-art/angular-globalize';
 import { loadedGlobalize } from './load-globalize-data';
 
-import { datesEqual, createDate, similarInUtc, similarInLocal, addDays, isRightToLeft, formatYear, stripTime, minDate, maxDate, dateInRange, numArray, sixArray, sevenArray, twelveArray, getMonthYear } from '../src/util';
+import { datesEqual, createDate, similarInUtc, similarInLocal, addDays, formatYear, stripTime, minDate, maxDate, dateInRange, numArray, sixArray, sevenArray, twelveArray, getMonthYear } from '../src/util';
 
 describe("Utils datesEqual", () => {
 
@@ -156,40 +156,9 @@ describe("Util addDays", () => {
     });
 });
 
-describe("Util isRightToLeft", () => {
-    it("returns true for Arabic", () => {
-        expect(isRightToLeft('ar')).true;
-        expect(isRightToLeft('Ar')).true;
-        expect(isRightToLeft('AR')).true;
-        expect(isRightToLeft('AR-EG')).true;
-        expect(isRightToLeft('ar-EG')).true;
-        expect(isRightToLeft('ar-SA')).true;
-        expect(isRightToLeft('Ar-Sa')).true;
-    });
-
-    it("returns true for Hebrew", () => {
-        expect(isRightToLeft('he')).true;
-        expect(isRightToLeft('He')).true;
-        expect(isRightToLeft('He')).true;
-        expect(isRightToLeft('He-IL')).true;
-        expect(isRightToLeft('he-il')).true;
-        expect(isRightToLeft('he-Il')).true;
-        expect(isRightToLeft('He-IL')).true;
-    });
-
-    it("returns false for others", () => {
-        expect(isRightToLeft('en')).false;
-        expect(isRightToLeft('en-EG')).false;
-        expect(isRightToLeft('de')).false;
-        expect(isRightToLeft(null)).false;
-    });
-});
-
 describe("Util formatYear", () => {
-    const service = new DefaultGlobalizationService(loadedGlobalize, {
-        cultureObservable: null,
-        currentCulture: 'en-GB'
-    });
+    const cultureService = new CurrentCultureService(['en-GB', 'ar-EG', 'de']);
+    const service = new DefaultGlobalizationService(loadedGlobalize, cultureService);
 
     it("formats latin", () => {
         expect(formatYear(service, 2000)).equal('2000');

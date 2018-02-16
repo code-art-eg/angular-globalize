@@ -1,10 +1,12 @@
 ﻿import { NextPreviousComponent } from '../../src/components/next-prev.component';
+import { ICultureService, CurrentCultureService } from '@code-art/angular-globalize';
 import { expect } from 'chai';
 
 describe("NextPreviousComponent", () => {
+    const cultureService = new CurrentCultureService(['en-GB', 'ar-EG', 'de']);
 
     it("inits correctly", () => {
-        const c = new NextPreviousComponent();
+        const c = new NextPreviousComponent(cultureService);
         expect(c.locale).null;
         expect(NextPreviousComponent.leftArrow).not.equal(NextPreviousComponent.rightArrow);
         expect(c.text).null;
@@ -13,7 +15,7 @@ describe("NextPreviousComponent", () => {
     });
 
     it("gets correct arrows", () => {
-        const c = new NextPreviousComponent();
+        const c = new NextPreviousComponent(cultureService);
         expect(c.getClass('next')).equal(NextPreviousComponent.rightArrow);
         expect(c.getClass('prev')).equal(NextPreviousComponent.leftArrow);
         c.locale = 'en-GB';

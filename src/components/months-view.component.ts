@@ -1,6 +1,6 @@
 ﻿import { Input, Component, Inject, EventEmitter, Output, HostListener, OnInit } from '@angular/core';
-import { IGlobalizationService, CANG_GLOBALIZATION_SERVICE } from '@code-art/angular-globalize';
-import { IMonthYearSelection, twelveArray, formatYear, KEY_CODE, NextPrevAction, createDate, isRightToLeft } from '../util';
+import { IGlobalizationService, CANG_GLOBALIZATION_SERVICE, CANG_CULTURE_SERVICE, ICultureService } from '@code-art/angular-globalize';
+import { IMonthYearSelection, twelveArray, formatYear, KEY_CODE, NextPrevAction, createDate } from '../util';
 
 @Component({
     selector: 'ca-months-view',
@@ -9,7 +9,8 @@ import { IMonthYearSelection, twelveArray, formatYear, KEY_CODE, NextPrevAction,
 })
 export class MonthsViewComponent implements OnInit {
 
-    constructor( @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService) {
+    constructor(@Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
+        @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService) {
         this._year = undefined;
         this._locale = undefined;
         this.month = undefined;
@@ -39,9 +40,9 @@ export class MonthsViewComponent implements OnInit {
             return;
         }
         if (event.keyCode === KEY_CODE.LEFT_ARROW) {
-            this.addFocusMonth(isRightToLeft(this.locale) ? 1 : -1);
+            this.addFocusMonth(this.cultureService.isRightToLeft(this.locale) ? 1 : -1);
         } else if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
-            this.addFocusMonth(isRightToLeft(this.locale) ? -1 : 1);
+            this.addFocusMonth(this.cultureService.isRightToLeft(this.locale) ? -1 : 1);
         } else if (event.keyCode === KEY_CODE.UP_ARROW) {
             this.addFocusMonth(-3);
         } else if (event.keyCode === KEY_CODE.DOWN_ARROW) {

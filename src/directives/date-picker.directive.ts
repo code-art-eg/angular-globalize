@@ -137,7 +137,7 @@ export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor imp
             if (!this.compareValues(coercedValue, val)) {
                 this._controlValueAccessor.writeValue(this.formatValue(val, locale, f));
             }
-        });
+        }) as Subscription;
         this._controlValueAccessor.registerOnTouched(() => {
             this.raiseOnTouch();
         });
@@ -213,7 +213,7 @@ export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor imp
     }
 
     get orientRight(): boolean {
-        return this._orientRight === null ? !this.isRtl : this._orientRight;
+        return this._orientRight === null ? !this.cultureService.isRightToLeft(this.effectiveLocale) : this._orientRight;
     }
 
     @Input() set format(val: string) {
