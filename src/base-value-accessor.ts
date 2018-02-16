@@ -3,6 +3,7 @@ import { ControlValueAccessor } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import { Subscription } from "rxjs/Subscription";
+import 'rxjs/add/observable/combineLatest';
 
 import { ICultureService } from '@code-art/angular-globalize';
 import { isRightToLeft } from "./util";

@@ -15,12 +15,13 @@
             <br />
         </div>
         <input class="form-control"
-               caDatePicker
-               caInputAddon
                [(ngModel)]="val"
+               caInputAddon
+               caDatePicker
                [highlightDays]="65"
                [homeButton]="false"
                [rangeSelection]="range"
+               [format]="'long'"
                />
     </div>
     <div class="row col-sm-12">

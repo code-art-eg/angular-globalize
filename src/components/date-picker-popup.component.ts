@@ -40,9 +40,9 @@ export class DatePickerPopupComponent extends BaseDatePickerAccessor {
         return this.show;
     }
 
-    private isVisible(): boolean {
-        //const show = this._show || this._mouseIn;
-        const show = true;
+    get isVisible(): boolean {
+        const show = this._show || this._mouseIn;
+        //const show = true;
         return show;
     }
 

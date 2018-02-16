@@ -1,6 +1,7 @@
 import { EventEmitter, Output, Input } from "@angular/core";
 import { Subscription } from "rxjs/Subscription";
 
+import * as isPlainObject from  'is-plain-object';
 import { ICultureService, ITypeConverterService } from '@code-art/angular-globalize';
 import { BaseValueAccessor } from "./base-value-accessor";
 import { datesEqual, IDateRange, similarInLocal, createDate } from "./util";
@@ -151,19 +152,22 @@ export class BaseDateRangeAccessor extends BaseValueAccessor {
         let s: Date | null = null;
         let e: Date | null = null;
         if (val !== null && val !== undefined) {
-            if (this.rangeSelection) {
-                if (Array.isArray(val)) {
-                    s = val.length > 0 ? this.converterService.convertToDate(val[0], this.effectiveLocale) : null;
-                    e = val.length > 1 ? this.converterService.convertToDate(val[1], this.effectiveLocale) : null;
-                } else {
-                    s = this.converterService.convertToDate(val.from, this.effectiveLocale) || null;
-                    e = this.converterService.convertToDate(val.to, this.effectiveLocale) || null;
-                }
+            if (Array.isArray(val)) {
+                s = val.length > 0 ? this.converterService.convertToDate(val[0], this.effectiveLocale) : null;
+                e = val.length > 1 ? this.converterService.convertToDate(val[1], this.effectiveLocale) : null;
+            } else if (isPlainObject(val)) {
+                s = this.converterService.convertToDate(val.from, this.effectiveLocale) || null;
+                e = this.converterService.convertToDate(val.to, this.effectiveLocale) || null;
             } else {
-                s = this.converterService.convertToDate(val, this.effectiveLocale);
+                try {
+                    s = this.converterService.convertToDate(val, this.effectiveLocale);
+                }
+                catch {
+                    s = null;
+                }
             }
         }
-        if (s && e && e.valueOf() < s.valueOf()) {
+        if (s && e && this.rangeSelection && e.valueOf() < s.valueOf()) {
             throw 'From date must be before or at to date.';
         }
         if (!this.rangeSelection) {
