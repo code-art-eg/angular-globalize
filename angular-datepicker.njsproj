@@ -49,7 +49,6 @@
     <Content Include="src\components\styles\days-view.component.less">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\styles\input-addon-host.component.less" />
     <Content Include="src\components\templates\input-addon-host.component.html">
       <SubType>Code</SubType>
     </Content>
