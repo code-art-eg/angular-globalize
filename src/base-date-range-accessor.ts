@@ -6,7 +6,7 @@ import { ICultureService, ITypeConverterService } from '@code-art/angular-global
 import { BaseValueAccessor } from "./base-value-accessor";
 import { datesEqual, IDateRange, similarInLocal, createDate } from "./util";
 
-export class BaseDateRangeAccessor extends BaseValueAccessor {
+export  abstract class BaseDateRangeAccessor extends BaseValueAccessor {
 
     private static readonly maximumYear = 9999;
     private static readonly minimumYear = 0;
