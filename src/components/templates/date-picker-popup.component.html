@@ -1,10 +1,9 @@
 ﻿<div class="div-inline">
-    <div class="div-inline" id="control-host"></div>
+    <div class="div-inline" #inputhost></div>
     <div class="date-picker-popup dropdown-menu show" *ngIf="isVisible"
          [ngClass]="{'orient-top': orientTop, 'orient-bottom': !orientTop, 'orient-left': !orientRight, 'orient-right': orientRight }">
         <ca-datepicker [minDate]="minDate"
                        [maxDate]="maxDate"
-                       [rangeSelection]="rangeSelection"
                        [homeButton]="homeButton"
                        [resetButton]="resetButton"
                        [locale]="effectiveLocale"

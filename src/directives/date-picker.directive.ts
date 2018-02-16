@@ -1,5 +1,5 @@
-﻿import { Directive, ComponentFactoryResolver, ViewContainerRef, OnInit, Inject, ComponentRef, HostListener, Input, OnDestroy, forwardRef, ElementRef, Optional, Self, Injector } from '@angular/core';
-import { DatePickerPopupComponent } from '../components/date-picker-popup.component';
+﻿import { Directive, ComponentFactoryResolver, ViewContainerRef, OnInit, Inject, ComponentRef, HostListener, Input, OnDestroy, forwardRef, ElementRef, Optional, Self, Injector , ComponentFactory, AfterViewInit} from '@angular/core';
+import { DatePickerPopupComponent, DateRangePickerPopupComponent, BaseDatePickerPopupComponent } from '../components/date-picker-popup.component';
 import { datesEqual, IDateRange } from '../util';
 import { CANG_TYPE_CONVERTER_SERVICE, ITypeConverterService, CANG_CULTURE_SERVICE, ICultureService, CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from '@code-art/angular-globalize';
 import { BaseDatePickerAccessor } from '../base-date-picker-accessor';
@@ -10,16 +10,10 @@ import 'rxjs/add/observable/combineLatest';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import * as isPlainObject from 'is-plain-object';
 
-@Directive({
-    selector: '[caDatePicker]',
-    providers: [{
-        provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DatePickerDirective), multi: true 
-    }]
-})
-export class DatePickerDirective extends BaseDatePickerAccessor implements OnInit, OnDestroy {
 
+export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor implements OnInit, OnDestroy {
 
-    private componentRef: ComponentRef<DatePickerPopupComponent>;
+    private componentRef: ComponentRef<BaseDatePickerPopupComponent>;
     private _orientRight: boolean | null = null;
     private _orientTop = false;
     private _controlValueAccessor: ControlValueAccessor = null;
@@ -29,13 +23,13 @@ export class DatePickerDirective extends BaseDatePickerAccessor implements OnIni
     private readonly _formatObservable: Observable<string>;
     private readonly _formatSubject: ReplaySubject<string>;
 
-    constructor(@Inject(ComponentFactoryResolver) private readonly resolver: ComponentFactoryResolver,
-        @Inject(ViewContainerRef) private readonly viewContainerRef: ViewContainerRef,
-        @Inject(ElementRef) private readonly el: ElementRef,
-        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
-        @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-        @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService,
-        @Inject(Injector) private readonly injector: Injector
+    constructor(protected readonly resolver: ComponentFactoryResolver,
+        private readonly viewContainerRef: ViewContainerRef,
+        private readonly el: ElementRef,
+        converterService: ITypeConverterService,
+        cultureService: ICultureService,
+        private readonly globalizationService: IGlobalizationService,
+        private readonly injector: Injector
     ) {
         super(cultureService, converterService);
         this.handleKeyboardEvents = true;
@@ -81,7 +75,7 @@ export class DatePickerDirective extends BaseDatePickerAccessor implements OnIni
 
             var to: any = val.to;
             if (to instanceof Date) {
-                to = this.formatDate(from, locale, format);
+                to = this.formatDate(to, locale, format);
             } else {
                 to = null;
             }
@@ -101,7 +95,7 @@ export class DatePickerDirective extends BaseDatePickerAccessor implements OnIni
         if (typeof val !== 'string') {
             return val;
         }
-        const index =  val.indexOf(' - ');
+        const index = val.indexOf(' - ');
         if (index < 0) {
             return val;
         }
@@ -181,18 +175,12 @@ export class DatePickerDirective extends BaseDatePickerAccessor implements OnIni
         super.ngOnDestroy();
     }
 
-    createComponent(): void {
-        let factory = this.resolver.resolveComponentFactory(DatePickerPopupComponent);
-        this.componentRef = this.viewContainerRef.createComponent(factory);
-        const renderer = this.componentRef.instance.renderer;
-        const host = renderer.selectRootElement('#control-host');
+    abstract resolveFactory(): ComponentFactory<BaseDatePickerPopupComponent>;
 
-        let element = this.el.nativeElement;
-        while (element.newNativeElement) {
-            element = element.newNativeElement;
-        }
-        //element.newNativeElement = host;
-        renderer.appendChild(host, element);
+    createComponent(): void {
+        let factory = this.resolveFactory();
+        this.componentRef = this.viewContainerRef.createComponent(factory);
+        this.componentRef.instance.hostedElement = this.el;
         
         this.addBoundChild(this.componentRef.instance);
     }
@@ -237,3 +225,55 @@ export class DatePickerDirective extends BaseDatePickerAccessor implements OnIni
         return this._format;
     }
 }
+
+@Directive({
+    selector: '[caDatePicker]',
+    providers: [{
+        provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DatePickerDirective), multi: true
+    }]
+})
+export class DatePickerDirective extends BaseDatePickerDirective {
+
+    constructor(@Inject(ComponentFactoryResolver) protected readonly resolver: ComponentFactoryResolver,
+        @Inject(ViewContainerRef) viewContainerRef: ViewContainerRef,
+        @Inject(ElementRef) el: ElementRef,
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
+        @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+        @Inject(CANG_GLOBALIZATION_SERVICE) globalizationService: IGlobalizationService,
+        @Inject(Injector) injector: Injector
+    ) {
+        super(resolver, viewContainerRef, el, converterService, cultureService, globalizationService, injector);
+        this.rangeSelection = false;
+    }
+
+    resolveFactory(): ComponentFactory<BaseDatePickerPopupComponent> {
+        return this.resolver.resolveComponentFactory(DatePickerPopupComponent);
+    }
+}
+
+@Directive({
+    selector: '[caDateRangePicker]',
+    providers: [{
+        provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DateRangePickerDirective), multi: true
+    }]
+})
+export class DateRangePickerDirective extends BaseDatePickerDirective {
+
+    constructor(@Inject(ComponentFactoryResolver) protected readonly resolver: ComponentFactoryResolver,
+        @Inject(ViewContainerRef) viewContainerRef: ViewContainerRef,
+        @Inject(ElementRef) el: ElementRef,
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
+        @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+        @Inject(CANG_GLOBALIZATION_SERVICE) globalizationService: IGlobalizationService,
+        @Inject(Injector) injector: Injector
+    ) {
+        super(resolver, viewContainerRef, el, converterService, cultureService, globalizationService, injector);
+        this.rangeSelection = true;
+    }
+
+    resolveFactory(): ComponentFactory<BaseDatePickerPopupComponent> {
+        return this.resolver.resolveComponentFactory(DateRangePickerPopupComponent);
+    }
+}
+
+

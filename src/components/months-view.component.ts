@@ -4,8 +4,8 @@ import { IMonthYearSelection, twelveArray, formatYear, KEY_CODE, NextPrevAction,
 
 @Component({
     selector: 'ca-months-view',
-    templateUrl: './months-view.component.html',
-    styleUrls: ['year-month-view.less']
+    templateUrl: './templates/months-view.component.html',
+    styleUrls: ['./styles/year-month-view.less']
 })
 export class MonthsViewComponent implements OnInit {
 

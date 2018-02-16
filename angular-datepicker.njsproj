@@ -29,39 +29,40 @@
     <Content Include="playground\language-switch.component.html" />
     <Content Include="playground\tsconfig.json" />
     <Content Include="README.MD" />
-    <Content Include="src\components\common.less">
+    <Content Include="src\components\styles\common.less">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\date-picker-popup.component.html">
+    <Content Include="src\components\templates\date-picker-popup.component.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\date-picker-popup.component.less">
+    <Content Include="src\components\styles\date-picker-popup.component.less">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\date-picker.component.html">
+    <Content Include="src\components\templates\date-picker.component.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\date-picker.component.less" />
-    <Content Include="src\components\days-view.component.html">
+    <Content Include="src\components\styles\date-picker.component.less" />
+    <Content Include="src\components\templates\daterange-picker-popup.component.html" />
+    <Content Include="src\components\templates\days-view.component.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\days-view.component.less">
+    <Content Include="src\components\styles\days-view.component.less">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\input-addon-host.component.less" />
-    <Content Include="src\components\input-addon-host.component.html">
+    <Content Include="src\components\styles\input-addon-host.component.less" />
+    <Content Include="src\components\templates\input-addon-host.component.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\months-view.component.html">
+    <Content Include="src\components\templates\months-view.component.html">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\year-month-view.less">
+    <Content Include="src\components\styles\year-month-view.less">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\next-prev.component.less">
+    <Content Include="src\components\styles\next-prev.component.less">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\years-view.component.html">
+    <Content Include="src\components\templates\years-view.component.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\util.ts" />
@@ -73,6 +74,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\components\" />
+    <Folder Include="src\components\styles\" />
+    <Folder Include="src\components\templates\" />
     <Folder Include="src\directives\" />
     <Folder Include="test\" />
     <Folder Include="src\" />
@@ -102,7 +105,7 @@
     <TypeScriptCompile Include="src\components\months-view.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\components\next-prev.component.html" />
+    <TypeScriptCompile Include="src\components\templates\next-prev.component.html" />
     <TypeScriptCompile Include="src\components\next-prev.component.ts">
       <SubType>Code</SubType>
       <TestFramework>ExportRunner</TestFramework>

@@ -26,24 +26,14 @@ export class BaseDateRangeAccessor extends BaseValueAccessor {
         super(cultureService);
     }
 
-    @Input() set rangeSelection(val: boolean) {
-        if (this.parent) {
-            (this.parent as BaseDateRangeAccessor).rangeSelection = val;
-            return;
-        }
+    set rangeSelection(val: boolean) {
         val = !!val;
         if (val !== this._rangeSelection) {
             this._rangeSelection = val;
-            if (!this._rangeSelection) {
-                this.value = this.selectionStart;
-            }
         }
     }
 
     get rangeSelection(): boolean {
-        if (this.parent) {
-            return (this.parent as BaseDateRangeAccessor).rangeSelection;
-        }
         return this._rangeSelection;
     }
 
@@ -142,7 +132,7 @@ export class BaseDateRangeAccessor extends BaseValueAccessor {
         if (v1 instanceof Date && v2 instanceof Date) {
             return datesEqual(v1, v2);
         }
-        if (v1 && v2) {
+        if (v1 && v2 && isPlainObject(v1) && isPlainObject(v2)) {
             return datesEqual(v1.from, v2.from) && datesEqual(v1.to, v2.to);
         }
         return false;

@@ -1,30 +1,38 @@
 ﻿<div class="container">
-    <div class="col-sm-6">
-        <ca-datepicker 
-                       [handleKeyboardEvents]="true"
-                       [rangeSelection]="range"
-                       [highlightDays]="65"></ca-datepicker>
+    <div class="col-sm-6 col-12">
+        <h4>Date Range Component</h4>
+        <ca-daterangepicker [highlightDays]="65"></ca-daterangepicker>
         <div>
-            Val: {{ val | json }}
-            <br />
-            <input type="checkbox" [(ngModel)]="range" />
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div>
+            Value: {{ valdr | json }}
             <br />
         </div>
-        <input class="form-control"
-               [(ngModel)]="val"
-               caInputAddon
-               caDatePicker
-               [highlightDays]="65"
-               [homeButton]="false"
-               [rangeSelection]="range"
-               [format]="'long'"
-               />
     </div>
-    <div class="row col-sm-12">
+
+    <div class="col-sm-6 col-12">
+        <h4>Date Component</h4>
+        <ca-datepicker [highlightDays]="65"></ca-datepicker>
+        <div>
+            Value: {{ vald | json }}
+            <br />
+        </div>
+    </div>
+    <div class="col-sm-6 col-12">
+        <h4>Date Range Popup</h4>
+        <input class='form-control' caDateRangePicker caInputAddon [(ngModel)]="valpr" />
+        <div>
+            Value: {{ valpr | json }}
+            <br />
+        </div>
+    </div>
+    <div class="col-sm-6 col-12">
+        <h4>Date Popup</h4>
+        <input class='form-control' caDatePicker caInputAddon [(ngModel)]="valp" />
+        <div>
+            Value: {{ valp | json }}
+            <br />
+        </div>
+    </div>
+    <div class="row col-12">
         <language-switch></language-switch>
     </div>
 </div>

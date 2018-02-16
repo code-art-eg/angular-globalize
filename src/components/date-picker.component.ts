@@ -6,24 +6,15 @@ import { isRightToLeft, IMonthYearSelection, ViewType, stripTime, maxDate, minDa
 import { debug } from 'util';
 import { BaseDatePickerAccessor } from '../base-date-picker-accessor';
 
-@Component({
-    selector: 'ca-datepicker',
-    templateUrl: './date-picker.component.html',
-    styleUrls: ['./date-picker.component.less'],
-    providers: [{
-        provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DatePickerComponent), multi: true
-    }]
-})
-export class DatePickerComponent extends BaseDatePickerAccessor implements OnDestroy {
-
+export abstract class BaseDatePickerComponent extends BaseDatePickerAccessor implements OnDestroy {
     private _month: number | number = null;
     private _year: number | null = null;
     private _startEndToggle: boolean = false;
 
     view: ViewType = 'days';
-    
-    constructor(@Inject(CANG_CULTURE_SERVICE) readonly cultureService: ICultureService,
-        @Inject(CANG_TYPE_CONVERTER_SERVICE) readonly converterService: ITypeConverterService) {
+
+    constructor(cultureService: ICultureService,
+        converterService: ITypeConverterService) {
         super(cultureService, converterService);
     }
 
@@ -165,7 +156,8 @@ export class DatePickerComponent extends BaseDatePickerAccessor implements OnDes
 
 
     get month(): number {
-        return typeof this._month === 'number' ? this._month : this.todayDateInternal.getUTCMonth();
+        return typeof this._month === 'number' ? this._month :
+            (this.selectionStartInternal || this.selectionEndInternal || this.todayDateInternal).getUTCMonth()
     }
 
     set year(val: number) {
@@ -178,7 +170,8 @@ export class DatePickerComponent extends BaseDatePickerAccessor implements OnDes
     }
 
     get year(): number {
-        return typeof this._year === 'number' ? this._year : this.todayDateInternal.getUTCFullYear();
+        return typeof this._year === 'number' ? this._year :
+            (this.selectionStartInternal || this.selectionEndInternal || this.todayDateInternal).getUTCFullYear()
     }
 
     get maxYear(): number {
@@ -188,4 +181,38 @@ export class DatePickerComponent extends BaseDatePickerAccessor implements OnDes
     get minYear(): number {
         return this.minDateInternal.getUTCFullYear();
     }
+}
+
+@Component({
+    selector: 'ca-datepicker',
+    templateUrl: './templates/date-picker.component.html',
+    styleUrls: ['./styles/date-picker.component.less'],
+    providers: [{
+        provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DatePickerComponent), multi: true
+    }]
+})
+export class DatePickerComponent extends BaseDatePickerComponent implements OnDestroy {
+
+    constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService) {
+        super(cultureService, converterService);
+        this.rangeSelection = false;
+    }
+}
+
+@Component({
+    selector: 'ca-daterangepicker',
+    templateUrl: './templates/date-picker.component.html',
+    styleUrls: ['./styles/date-picker.component.less'],
+    providers: [{
+        provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DateRangePickerComponent), multi: true
+    }]
+})
+export class DateRangePickerComponent extends BaseDatePickerComponent implements OnDestroy {
+    constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService) {
+        super(cultureService, converterService);
+        this.rangeSelection = true;
+    }
+
 }

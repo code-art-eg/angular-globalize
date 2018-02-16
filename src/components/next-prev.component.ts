@@ -3,8 +3,8 @@ import { isRightToLeft, NextPrevAction } from '../util';
 
 @Component({
     selector: 'ca-next-prev',
-    templateUrl: 'next-prev.component.html',
-    styleUrls: ['next-prev.component.less']
+    templateUrl: './templates/next-prev.component.html',
+    styleUrls: ['./styles/next-prev.component.less']
 })
 export class NextPreviousComponent {
     static readonly leftArrow: string = 'glyphicon-chevron-left';

@@ -4,8 +4,8 @@ import { addDays, IMonthYearSelection, sevenArray, sixArray, formatYear, dateInR
 
 @Component({
     selector: 'ca-days-view',
-    templateUrl: './days-view.component.html',
-    styleUrls: ['./days-view.component.less']
+    templateUrl: './templates/days-view.component.html',
+    styleUrls: ['./styles/days-view.component.less']
 })
 export class DaysViewComponent implements OnInit {
 
