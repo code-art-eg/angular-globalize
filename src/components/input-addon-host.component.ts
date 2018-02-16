@@ -1,7 +1,8 @@
 ﻿import { Component, Inject, Renderer2, ElementRef } from "@angular/core";
 
 @Component({
-    templateUrl: './input-addon-host.component.html'
+    templateUrl: './input-addon-host.component.html',
+    styleUrls: ['./input-addon-host.component.less']
 })
 export class InputAddonHostComponent {
 

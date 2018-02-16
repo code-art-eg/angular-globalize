@@ -35,7 +35,18 @@ export class InputAddonDirective implements OnInit, OnDestroy {
             element = element.newNativeElement;
         }
         element.newNativeElement = parent;
-        this.componentRef.instance.renderer.insertBefore(parent, element, addon);
+        const oldParent = renderer.parentNode(element);
+        const oldSibling = renderer.nextSibling(element);
+
+        renderer.insertBefore(parent, element, addon);
+        if (oldParent) {
+            if (oldSibling) {
+                renderer.insertBefore(oldParent, parent, oldSibling);
+            } else {
+                renderer.appendChild(oldParent, parent);
+            }
+        }
+        
         this.componentRef.instance.type = this.type;
     }
 
