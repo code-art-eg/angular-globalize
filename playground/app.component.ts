@@ -18,4 +18,5 @@ export class AppComponent
     vald: any;
     valp: any;
     valt: number;
+    valts: number;
 }

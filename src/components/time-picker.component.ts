@@ -52,7 +52,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
                 const d = new Date(v);
                 this._hours = d.getUTCHours();
                 this._minutes = d.getUTCMinutes();
-                this._seconds = d.getUTCHours();
+                this._seconds = d.getUTCSeconds();
                 this._amPmText = this._hoursText = this._minutesText = this._secondsText = null;
             } else {
                 this._amPmText = this._hoursText = this._minutesText = this._secondsText = null;

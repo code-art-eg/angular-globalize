@@ -35,6 +35,7 @@
     <Content Include="src\components\styles\time-picker.component.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\components\templates\time-picker-popup.component.html" />
     <Content Include="src\components\templates\date-picker-popup.component.html">
       <SubType>Code</SubType>
     </Content>
@@ -115,7 +116,10 @@
       <SubType>Code</SubType>
       <TestFramework>ExportRunner</TestFramework>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\components\time-picker-component.ts">
+    <TypeScriptCompile Include="src\components\time-picker.component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\components\time-picker-popup.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\components\years-view.component.ts">
@@ -125,6 +129,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\directives\input-addon.directive.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="src\directives\time-picker.directive.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\module.ts">

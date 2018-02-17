@@ -34,13 +34,13 @@ export class InputAddonDirective implements OnInit, OnDestroy {
 
     private _type = 'calendar';
     get type(): string {
-        return this._type;
+        return this._type || 'calendar';
     }
 
-    set type(val: string) {
+    @Input('caInputAddon') set type(val: string) {
         this._type = val;
         if (this.componentRef) {
-            this.componentRef.instance.type = val;
+            this.componentRef.instance.type = val || 'calendar';
         }
     }
 }

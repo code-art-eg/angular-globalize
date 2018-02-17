@@ -10,15 +10,29 @@
     </div>
 
     <div class="col-sm-6 col-12">
-        <h4>Time Picker Component</h4>
+        <h4>Time Picker Component (Arabic)</h4>
         <ca-timepicker [(ngModel)]="valt" [locale]="'ar-EG'"></ca-timepicker>
         <div>
             Value: {{ valt | json }}
             <br />
         </div>
     </div>
-
-
+    <div class="col-sm-6 col-12">
+        <h4>Time Picker Directive</h4>
+        <input class='form-control' caTimePicker  [caInputAddon]="'time'" [(ngModel)]="valt" />
+        <div>
+            Value: {{ valt | json }}
+            <br />
+        </div>
+    </div>
+    <div class="col-sm-6 col-12">
+        <h4>Time Directive w/o addon, w. second</h4>
+        <input class='form-control' caTimePicker [(ngModel)]="valts" [showSeconds]="true" [format]="'medium'" />
+        <div>
+            Value: {{ valts | json }}
+            <br />
+        </div>
+    </div>
     <div class="col-sm-6 col-12">
         <h4>Date Range Component</h4>
         <ca-daterangepicker [highlightDays]="65" [(ngModel)]="valdr"></ca-daterangepicker>
