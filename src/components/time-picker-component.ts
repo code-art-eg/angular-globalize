@@ -35,6 +35,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
     @ViewChild('amPmInput1') amPmElement1: ElementRef;
     @ViewChild('amPmInput2') amPmElement2: ElementRef;
     private readonly cultureSub: Subscription;
+    private readonly valueSub: Subscription;
 
     constructor(@Inject(CANG_GLOBALIZE_STATIC) private readonly globalizeStatic: GlobalizeStatic,
         @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
@@ -45,6 +46,20 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
             this._minutesText = null;
             this._secondsText = null;
             this._amPmText = null;
+        });
+        this.valueSub = this.valueChange.asObservable().subscribe(v => {
+            if (typeof v === 'number') {
+                const d = new Date(v);
+                this._hours = d.getUTCHours();
+                this._minutes = d.getUTCMinutes();
+                this._seconds = d.getUTCHours();
+                this._amPmText = this._hoursText = this._minutesText = this._secondsText = null;
+            } else {
+                this._amPmText = this._hoursText = this._minutesText = this._secondsText = null;
+                this._hours = 0;
+                this._minutes = 0;
+                this._seconds = 0;
+            }
         });
     }
 
@@ -96,6 +111,12 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
         }
     }
 
+    ngOnDestroy() {
+        this.valueSub.unsubscribe();
+        this.cultureSub.unsubscribe();
+        super.ngOnDestroy();
+    }
+
     ngAfterViewInit(): void {
         this.selectAllOnFocus(this.hoursElement, () => this.hours--, () => this.hours++);
         this.selectAllOnFocus(this.minutesElement, () => this.decreaseMinutes(), () => this.increaseMinutes());
@@ -103,7 +124,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
         this.selectAllOnFocus(this.amPmElement1, () => this.switchAmPm(), () => this.switchAmPm());
         this.selectAllOnFocus(this.amPmElement2, () => this.switchAmPm(), () => this.switchAmPm());
     }
-    
+
     private updateValue(): void {
         this.value = (this.seconds + (this.minutes + this.hours * 60) * 60) * 1000;
     }
@@ -128,7 +149,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
         return TimePickerComponent.getTimeZoneData(this.globalizeStatic, this.effectiveLocale).twelveHours;
     }
 
-    
+
     set minutesText(val: string) {
         let v = this.globalizeService.parseNumber(val, this.effectiveLocale, { style: 'decimal' });
         if (v !== null) {
@@ -191,7 +212,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
     }
 
     get hoursText(): string {
-        return this._hoursText ? this._hoursText : formatTimeComponent(this.globalizeService, this.twelveHours ? (this.hours === 0  || this.hours === 12 ? 12 : this.hours % 12) : this.hours, this.effectiveLocale);
+        return this._hoursText ? this._hoursText : formatTimeComponent(this.globalizeService, this.twelveHours ? (this.hours === 0 || this.hours === 12 ? 12 : this.hours % 12) : this.hours, this.effectiveLocale);
     }
 
     set secondsText(val: string) {
@@ -240,7 +261,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
             val = Math.round(val);
             if (val < 0 || val >= 24) {
                 const d = Math.floor(val / 24);
-                val = val -  d * 24;
+                val = val - d * 24;
             }
         } else {
             val = null;

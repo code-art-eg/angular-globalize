@@ -52,7 +52,6 @@ export abstract class BaseDatePickerPopupComponent extends BaseDatePickerAccesso
 
     get isVisible(): boolean {
         let show = this._show || this._mouseIn;
-        //show = true;
         return show;
     }
 

@@ -10,8 +10,18 @@
     </div>
 
     <div class="col-sm-6 col-12">
+        <h4>Time Picker Component</h4>
+        <ca-timepicker [(ngModel)]="valt" [locale]="'ar-EG'"></ca-timepicker>
+        <div>
+            Value: {{ valt | json }}
+            <br />
+        </div>
+    </div>
+
+
+    <div class="col-sm-6 col-12">
         <h4>Date Range Component</h4>
-        <ca-daterangepicker [highlightDays]="65" [(ngModel)]="valdr" ></ca-daterangepicker>
+        <ca-daterangepicker [highlightDays]="65" [(ngModel)]="valdr"></ca-daterangepicker>
         <div>
             Value: {{ valdr | json }}
             <br />
@@ -20,7 +30,7 @@
 
     <div class="col-sm-6 col-12">
         <h4>Date Component</h4>
-        <ca-datepicker [highlightDays]="65" [(ngModel)]="vald" ></ca-datepicker>
+        <ca-datepicker [highlightDays]="65" [(ngModel)]="vald"></ca-datepicker>
         <div>
             Value: {{ vald | json }}
             <br />
