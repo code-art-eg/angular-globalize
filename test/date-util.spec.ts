@@ -4,7 +4,37 @@ chai.use(require('chai-datetime'));
 import { IGlobalizationService, ICultureService, DefaultGlobalizationService, CurrentCultureService } from '@code-art/angular-globalize';
 import { loadedGlobalize } from './load-globalize-data';
 
-import { datesEqual, createDate, similarInUtc, similarInLocal, addDays, formatYear, stripTime, minDate, maxDate, dateInRange, numArray, sixArray, sevenArray, twelveArray, getMonthYear } from '../src/util';
+import { datesEqual, createDate, similarInUtc, similarInLocal, addDays, formatYear, stripTime, minDate, maxDate, dateInRange, numArray, sixArray, sevenArray, twelveArray, getMonthYear, isPlainObject } from '../src/util';
+
+class Test {
+    v = 3;
+}
+
+describe("isPlainObject", () => {
+    it ("returns false when not plain object", () => {
+        expect(isPlainObject(null)).false;
+        expect(isPlainObject(undefined)).false;
+        expect(isPlainObject(0)).false;
+        expect(isPlainObject(1)).false;
+        expect(isPlainObject(/x/)).false;
+        expect(isPlainObject(new Date())).false;
+        expect(isPlainObject(function() { })).false;
+        expect(isPlainObject('test')).false;
+        expect(isPlainObject([0])).false;
+        expect(isPlainObject([])).false;
+        expect(isPlainObject(['0'])).false;
+        expect(isPlainObject(true)).false;
+        expect(isPlainObject(false)).false;
+        expect(isPlainObject(new Test())).false;
+    });
+
+    it ("returns true when plain object", () => {
+        expect(isPlainObject(Object.create({}))).true;
+        expect(isPlainObject(Object.create(Object.prototype))).true;
+        expect(isPlainObject({x: 1})).true;
+        expect(isPlainObject({})).true;
+    });
+});
 
 describe("Utils datesEqual", () => {
 

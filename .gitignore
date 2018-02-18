@@ -270,3 +270,4 @@ obj/
 /playground/*.svg
 /build
 /dist
+/tmp

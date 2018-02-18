@@ -1,10 +1,9 @@
 import { EventEmitter, Output, Input, Inject, ChangeDetectorRef } from "@angular/core";
 import { Subscription } from "rxjs/Subscription";
 
-import * as isPlainObject from 'is-plain-object';
 import { ICultureService, ITypeConverterService } from '@code-art/angular-globalize';
 import { BaseValueAccessor } from "./base-value-accessor";
-import { datesEqual, IDateRange, similarInLocal, createDate } from "./util";
+import { isPlainObject, datesEqual, IDateRange, similarInLocal, createDate } from "./util";
 import { IDateRangeOptions } from "./interfaces";
 
 export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions> extends BaseValueAccessor<T> implements IDateRangeOptions {

@@ -73,7 +73,7 @@ export abstract class PopupDirective<T> implements OnInit, OnDestroy, IPopupDire
             }
         }
         if (!this._controlValueAccessor) {
-            throw `More no control value accessor provider.`;
+            throw `No ControlValueAccessor available for the control. Make sure FormsModule from @angular/forms is imported in your application.`;
         }
         this._controlValueAccessor.registerOnChange(v => {
             this._controlValue = v;

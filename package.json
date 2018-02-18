@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "cd test && mocha --require mock-local-storage --require ts-node/register ./**/*.spec.ts",
-    "start": "cd playground && webpack --config webpack.config.vendor.js && webpack-dev-server --open"
+    "start": "cd playground && webpack --config webpack.config.vendor.js && webpack-dev-server --open",
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",
@@ -22,8 +23,7 @@
   },
   "homepage": "https://github.com/sherif-elmetainy/angular-datepicker#readme",
   "dependencies": {
-    "@code-art/angular-globalize": "^1.2.0",
-    "is-plain-object": "^2.0.4"
+    "@code-art/angular-globalize": "^1.2.0"
   },
   "peerDependencies": {
     "@angular/common": "^5.2.4",
@@ -63,6 +63,8 @@
     "event-source-polyfill": "0.0.12",
     "extract-text-webpack-plugin": "^3.0.2",
     "globalize": "^1.3.0",
+    "gulp": "^3.9.1",
+    "gulp-inline-ng2-template": "^4.1.0",
     "gulp-json-modify": "^1.0.2",
     "gulp-rename": "^1.2.2",
     "gulp-rollup": "^2.16.2",

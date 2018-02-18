@@ -1,6 +1,6 @@
 ﻿import { Observable } from 'rxjs/Observable';
 import { expect } from 'chai';
-import * as isPlainObject from 'is-plain-object';
+import { isPlainObject } from '../../src/util';
 const chai: Chai.ChaiStatic = require('chai');
 chai.use(require('chai-datetime'));
 import { loadedGlobalize } from '../load-globalize-data';

@@ -6,8 +6,7 @@ import { BaseDatePickerAccessor } from '../base-date-picker-accessor';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IPopupDirective, IDatePicker } from '../interfaces';
 import { PopupDirective } from './popup.directive';
-import { applyMixins } from '../util';
-import * as isPlainObject from 'is-plain-object';
+import { isPlainObject, applyMixins } from '../util';
 
 
 export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor<IDatePicker> implements IPopupDirective<IDatePicker>, IDatePicker {

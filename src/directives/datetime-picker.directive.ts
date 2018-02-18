@@ -7,7 +7,6 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IPopupDirective, IDateTimePicker, IBaseValueAccessor } from '../interfaces';
 import { PopupDirective } from './popup.directive';
 import { applyMixins } from '../util';
-import * as isPlainObject from 'is-plain-object';
 import { TimePickerOptions } from '../base-time-value-accessor';
 
 @Directive({

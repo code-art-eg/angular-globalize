@@ -166,6 +166,7 @@
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="gulpfile.js" />
     <Compile Include="playground\webpack.config.js" />
     <Compile Include="playground\webpack.config.vendor.js" />
   </ItemGroup>

@@ -32,6 +32,12 @@ export function applyMixins(derivedCtor: Function, ...baseCtors: Function[]) {
     });
 }
 
+export function isPlainObject(val: any): boolean {
+    if (!val) return false;
+    return typeof val === 'object' 
+        && val.constructor === Object;
+}
+
 export function datesEqual(d1: Date | null | undefined, d2: Date | null | undefined): boolean {
     if (d1 === null || d1 === undefined)
         return d2 === null || d2 === undefined;
