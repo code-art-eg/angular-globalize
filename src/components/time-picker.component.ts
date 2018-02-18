@@ -1,4 +1,4 @@
-﻿import { Component, Inject, forwardRef, ViewChild, ElementRef, AfterViewInit, OnDestroy } from "@angular/core";
+﻿import { Component, Inject, forwardRef, ViewChild, ElementRef, AfterViewInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseTimeValueAccessor } from "../base-time-value-accessor";
 import { CANG_GLOBALIZATION_SERVICE, CANG_CULTURE_SERVICE, ICultureService, IGlobalizationService, CANG_GLOBALIZE_STATIC } from "@code-art/angular-globalize";
@@ -39,8 +39,9 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
 
     constructor(@Inject(CANG_GLOBALIZE_STATIC) private readonly globalizeStatic: GlobalizeStatic,
         @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-        @Inject(CANG_GLOBALIZATION_SERVICE) globalizeService: IGlobalizationService) {
-        super(cultureService, globalizeService);
+        @Inject(CANG_GLOBALIZATION_SERVICE) globalizeService: IGlobalizationService,
+        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
+        super(cultureService, globalizeService, changeDetector);
         this.cultureSub = cultureService.cultureObservable.subscribe(() => {
             this._hoursText = null;
             this._minutesText = null;

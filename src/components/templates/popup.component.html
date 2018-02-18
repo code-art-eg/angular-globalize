@@ -1,0 +1,7 @@
+﻿<div class="div-inline">
+    <div class="div-inline" #inputhost></div>
+    <div class="picker-popup dropdown-menu show" *ngIf="isVisible"
+         [ngClass]="{'orient-top': orientTop, 'orient-bottom': !orientTop, 'orient-left': !orientRight, 'orient-right': orientRight }">
+        <popup-host></popup-host>
+    </div>
+</div>

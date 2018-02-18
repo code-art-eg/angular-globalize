@@ -1,4 +1,4 @@
-import { Input } from "@angular/core";
+import { Input, Inject, ChangeDetectorRef } from "@angular/core";
 import { ICultureService, ITypeConverterService } from '@code-art/angular-globalize';
 
 import { BaseDateRangeAccessor } from "./base-date-range-accessor";
@@ -15,8 +15,9 @@ export abstract class BaseDatePickerAccessor extends BaseDateRangeAccessor {
 
 
     constructor(cultureService: ICultureService,
-        protected readonly converterService: ITypeConverterService) {
-        super(cultureService, converterService);
+        protected readonly converterService: ITypeConverterService,
+        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
+        super(cultureService, converterService, changeDetector);
     }
 
     @Input() set homeButton(val: boolean) {

@@ -1,4 +1,4 @@
-﻿import { Directive, ComponentFactoryResolver, ViewContainerRef, OnInit, Inject, ComponentRef, HostListener, Input, OnDestroy, forwardRef, ElementRef, Optional, Self, Injector , ComponentFactory, AfterViewInit} from '@angular/core';
+﻿import { Directive, ComponentFactoryResolver, ViewContainerRef, OnInit, Inject, ComponentRef, HostListener, Input, OnDestroy, forwardRef, ElementRef, Optional, Self, Injector , ComponentFactory, AfterViewInit, ChangeDetectorRef} from '@angular/core';
 import { DatePickerPopupComponent, DateRangePickerPopupComponent, BaseDatePickerPopupComponent } from '../components/date-picker-popup.component';
 import { datesEqual, IDateRange } from '../util';
 import { CANG_TYPE_CONVERTER_SERVICE, ITypeConverterService, CANG_CULTURE_SERVICE, ICultureService, CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from '@code-art/angular-globalize';
@@ -29,9 +29,10 @@ export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor imp
         converterService: ITypeConverterService,
         cultureService: ICultureService,
         private readonly globalizationService: IGlobalizationService,
-        private readonly injector: Injector
+        private readonly injector: Injector,
+        changeDetector: ChangeDetectorRef
     ) {
-        super(cultureService, converterService);
+        super(cultureService, converterService, changeDetector);
         this.handleKeyboardEvents = true;
         this._formatSubject = new ReplaySubject();
         this._formatSubject.next(this._format);
@@ -240,9 +241,10 @@ export class DatePickerDirective extends BaseDatePickerDirective {
         @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
         @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
         @Inject(CANG_GLOBALIZATION_SERVICE) globalizationService: IGlobalizationService,
-        @Inject(Injector) injector: Injector
+        @Inject(Injector) injector: Injector,
+        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef
     ) {
-        super(resolver, viewContainerRef, el, converterService, cultureService, globalizationService, injector);
+        super(resolver, viewContainerRef, el, converterService, cultureService, globalizationService, injector, changeDetector);
         this.rangeSelection = false;
     }
 
@@ -265,9 +267,10 @@ export class DateRangePickerDirective extends BaseDatePickerDirective {
         @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
         @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
         @Inject(CANG_GLOBALIZATION_SERVICE) globalizationService: IGlobalizationService,
-        @Inject(Injector) injector: Injector
+        @Inject(Injector) injector: Injector,
+        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef
     ) {
-        super(resolver, viewContainerRef, el, converterService, cultureService, globalizationService, injector);
+        super(resolver, viewContainerRef, el, converterService, cultureService, globalizationService, injector, changeDetector);
         this.rangeSelection = true;
     }
 

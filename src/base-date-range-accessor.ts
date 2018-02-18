@@ -1,4 +1,4 @@
-import { EventEmitter, Output, Input } from "@angular/core";
+import { EventEmitter, Output, Input, Inject, ChangeDetectorRef } from "@angular/core";
 import { Subscription } from "rxjs/Subscription";
 
 import * as isPlainObject from  'is-plain-object';
@@ -18,8 +18,8 @@ export  abstract class BaseDateRangeAccessor extends BaseValueAccessor {
     private _maxDate: Date | null = null;
 
     constructor(cultureService: ICultureService,
-        protected readonly converterService: ITypeConverterService) {
-        super(cultureService);
+        protected readonly converterService: ITypeConverterService, @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
+        super(cultureService, changeDetector);
     }
 
     set rangeSelection(val: boolean) {

@@ -1,10 +1,11 @@
 ﻿
-import { Directive, ComponentFactoryResolver, ViewContainerRef, Inject, ComponentRef, HostListener, Input, forwardRef, ElementRef, Injector, ComponentFactory } from '@angular/core';
-import { TimePickerPopupComponent } from '../components/time-picker-popup.component';
+import { Directive, ComponentFactoryResolver, ViewContainerRef, Inject, ComponentRef, HostListener, Input, forwardRef, ElementRef, Injector, ComponentFactory, ChangeDetectorRef } from '@angular/core';
+import { TimePickerComponent } from '../components/time-picker.component';
 import { CANG_CULTURE_SERVICE, ICultureService, CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from '@code-art/angular-globalize';
 import { BaseTimeValueAccessor } from '../base-time-value-accessor';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IPopupDirective, PopupDirective } from '../popups';
+import { IPopupDirective } from '../popups';
+import { PopupDirective } from './popup.directive';
 import { applyMixins } from '../util';
 
 @Directive({
@@ -15,15 +16,16 @@ import { applyMixins } from '../util';
 })
 export class TimePickerDirective extends BaseTimeValueAccessor implements IPopupDirective {
     
-    constructor(@Inject(ComponentFactoryResolver) private readonly resolver: ComponentFactoryResolver,
+    constructor(@Inject(ComponentFactoryResolver) resolver: ComponentFactoryResolver,
         @Inject(ViewContainerRef) viewContainerRef: ViewContainerRef,
         @Inject(ElementRef) el: ElementRef,
+        @Inject(Injector) injector: Injector,
         @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
         @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService,
-        @Inject(Injector) injector: Injector
+        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef
     ) {
-        super(cultureService, globalizationService);
-        this.initPopupDirective(viewContainerRef, el, injector);
+        super(cultureService, globalizationService, changeDetector);
+        this.initPopupDirective(resolver, viewContainerRef, el, injector);
     }
 
     formatValue(val: number, locale: string, format: string): string {
@@ -59,10 +61,14 @@ export class TimePickerDirective extends BaseTimeValueAccessor implements IPopup
         return this.globalizationService.formatDate(d2, locale, options);
     }
 
-    initPopupDirective: (viewContainerRef: ViewContainerRef, el: ElementRef, injector: Injector) => void;
+    getDefaultFormat(): string {
+        return 'short';
+    }
 
-    resolveFactory(): ComponentFactory<TimePickerPopupComponent> {
-        return this.resolver.resolveComponentFactory(TimePickerPopupComponent);
+    initPopupDirective: (resolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, el: ElementRef, injector: Injector) => void;
+
+    resolveFactory(resolver: ComponentFactoryResolver): ComponentFactory<TimePickerComponent> {
+        return resolver.resolveComponentFactory(TimePickerComponent);
     }
 
     @HostListener('focus') onFocus: () => void;
@@ -73,10 +79,6 @@ export class TimePickerDirective extends BaseTimeValueAccessor implements IPopup
     @Input() orientTop: boolean;
     @Input() orientRight: boolean;
     @Input() format: string;
-
-    getDefaultFormat(): string {
-        return 'short';
-    }
 }
 
 applyMixins(TimePickerDirective, PopupDirective);

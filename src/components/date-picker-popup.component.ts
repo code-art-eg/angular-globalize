@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2, ElementRef, Inject, AfterViewInit, ViewChild, HostListener } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, ElementRef, Inject, AfterViewInit, ViewChild, HostListener, ChangeDetectorRef } from '@angular/core';
 import { DOCUMENT } from '@angular/common'
 import { datesEqual } from '../util';
 import { BaseDatePickerAccessor } from '../base-date-picker-accessor';
@@ -16,9 +16,10 @@ export abstract class BaseDatePickerPopupComponent extends BaseDatePickerAccesso
 
     constructor(private readonly renderer: Renderer2,
         cultureService: ICultureService,
-        converterService: ITypeConverterService
+        converterService: ITypeConverterService,
+        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef
     ) {
-        super(cultureService, converterService);
+        super(cultureService, converterService, changeDetector);
     }
 
     ngAfterViewInit(): void {
@@ -71,26 +72,28 @@ export abstract class BaseDatePickerPopupComponent extends BaseDatePickerAccesso
 
 @Component({
     templateUrl: './templates/date-picker-popup.component.html',
-    styleUrls: [ './styles/popup.less']
+    styleUrls: [ './styles/popup.component.less']
 })
 export class DatePickerPopupComponent extends BaseDatePickerPopupComponent {
     constructor(@Inject(Renderer2) renderer: Renderer2,
         @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
+        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef
     ) {
-        super(renderer, cultureService, converterService);
+        super(renderer, cultureService, converterService, changeDetector);
     }
 }
 
 @Component({
     templateUrl: './templates/daterange-picker-popup.component.html',
-    styleUrls: ['./styles/popup.less']
+    styleUrls: ['./styles/popup.component.less']
 })
 export class DateRangePickerPopupComponent extends BaseDatePickerPopupComponent {
     constructor(@Inject(Renderer2) renderer: Renderer2,
         @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
+        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef
     ) {
-        super(renderer, cultureService, converterService);
+        super(renderer, cultureService, converterService, changeDetector);
     }
 }

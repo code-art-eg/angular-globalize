@@ -1,4 +1,4 @@
-import { OnDestroy, Input, Output, EventEmitter, AfterViewInit } from "@angular/core";
+import { OnDestroy, Input, Output, EventEmitter, AfterViewInit, ChangeDetectorRef } from "@angular/core";
 import { ControlValueAccessor } from "@angular/forms";
 import { Observable } from "rxjs/Observable";
 import { ReplaySubject } from "rxjs/ReplaySubject";
@@ -7,7 +7,20 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ICultureService } from '@code-art/angular-globalize';
 
-export abstract class BaseValueAccessor implements OnDestroy, ControlValueAccessor {
+export interface IBaseValueAccessor extends ControlValueAccessor {
+    coerceValue(val: any): any;
+    value: any;
+    compareValues(v1: any, v2: any);
+    cultureService: ICultureService;
+    valueChange: EventEmitter<any>;
+    disabled: boolean;
+    locale: string;
+    effectiveLocale: string;
+    raiseOnTouch(): void;
+    addBoundChild(child: IBaseValueAccessor): void;
+}
+
+export abstract class BaseValueAccessor implements OnDestroy, IBaseValueAccessor {
 
     private readonly _boundChildren: BaseValueAccessor[] = [];
     private readonly _localeSubject = new ReplaySubject<string>();
@@ -28,7 +41,7 @@ export abstract class BaseValueAccessor implements OnDestroy, ControlValueAccess
             }
         });
 
-    constructor(readonly cultureService: ICultureService) {
+    constructor(readonly cultureService: ICultureService, private readonly changeDetector: ChangeDetectorRef) {
         this.effectiveLocale = this.cultureService.currentCulture;
         this.locale = null;
 
@@ -44,6 +57,9 @@ export abstract class BaseValueAccessor implements OnDestroy, ControlValueAccess
 
         this._boundChildren.push(child);
         child._parent = this;
+        if (child.changeDetector) {
+            child.changeDetector.detectChanges();
+        }
     }
 
     protected removeBoundChild(child: BaseValueAccessor): void {
@@ -140,6 +156,9 @@ export abstract class BaseValueAccessor implements OnDestroy, ControlValueAccess
 
     ngOnDestroy() {
         this._localeSubscription.unsubscribe();
+        if (this._parent) {
+            this._parent.removeBoundChild(this);
+        }
     }
 
 

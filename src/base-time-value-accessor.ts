@@ -1,4 +1,4 @@
-import { Input } from "@angular/core";
+import { Input, Inject, ChangeDetectorRef } from "@angular/core";
 import { BaseValueAccessor } from "./base-value-accessor";
 import { ICultureService, IGlobalizationService } from "@code-art/angular-globalize";
 
@@ -16,8 +16,8 @@ export abstract class BaseTimeValueAccessor extends BaseValueAccessor {
     private _secondsIncrement: number = 5;
 
     constructor(cultureService: ICultureService,
-        protected readonly globalizeService: IGlobalizationService) {
-        super(cultureService);
+        protected readonly globalizeService: IGlobalizationService, @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
+        super(cultureService, changeDetector);
     }
 
     @Input() set minTime(val: number) {

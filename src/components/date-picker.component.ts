@@ -1,4 +1,4 @@
-﻿import { Component, Input, Inject, OnDestroy, forwardRef, ElementRef, Output, EventEmitter } from '@angular/core';
+﻿import { Component, Input, Inject, OnDestroy, forwardRef, ElementRef, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { CANG_CULTURE_SERVICE, ICultureService, ITypeConverterService, CANG_TYPE_CONVERTER_SERVICE } from '@code-art/angular-globalize';
@@ -14,8 +14,9 @@ export abstract class BaseDatePickerComponent extends BaseDatePickerAccessor imp
     view: ViewType = 'days';
 
     constructor(cultureService: ICultureService,
-        converterService: ITypeConverterService) {
-        super(cultureService, converterService);
+        converterService: ITypeConverterService,
+        changeDetector: ChangeDetectorRef) {
+        super(cultureService, converterService, changeDetector);
     }
 
     onDaysViewDayClick(date: Date): void {
@@ -194,8 +195,9 @@ export abstract class BaseDatePickerComponent extends BaseDatePickerAccessor imp
 export class DatePickerComponent extends BaseDatePickerComponent implements OnDestroy {
 
     constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService) {
-        super(cultureService, converterService);
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
+        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
+        super(cultureService, converterService, changeDetector);
         this.rangeSelection = false;
     }
 }
@@ -210,8 +212,9 @@ export class DatePickerComponent extends BaseDatePickerComponent implements OnDe
 })
 export class DateRangePickerComponent extends BaseDatePickerComponent implements OnDestroy {
     constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService) {
-        super(cultureService, converterService);
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
+        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
+        super(cultureService, converterService, changeDetector);
         this.rangeSelection = true;
     }
 
