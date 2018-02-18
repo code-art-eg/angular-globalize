@@ -21,7 +21,7 @@
     "annotateForClosureCompiler": true,
     "flatModuleOutFile": "index.js",
     "skipTemplateCodegen": true,
-    "flatModuleId": "@code-art/angular-datpicker"
+    "flatModuleId": "@code-art/angular-datepicker"
   },
   "files": [
     "./module.ts"
