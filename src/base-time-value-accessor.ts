@@ -122,7 +122,9 @@ export abstract class BaseTimeValueAccessor extends BaseValueAccessor {
 
             for (let i = 0; i < BaseTimeValueAccessor.formats.length; i++) {
                 d = this.globalizeService.parseDate(val, this.effectiveLocale, BaseTimeValueAccessor.formats[i]);
-                break;
+                if (d) {
+                    break;
+                }
             }
         } else if (val instanceof Date) {
             d = val;

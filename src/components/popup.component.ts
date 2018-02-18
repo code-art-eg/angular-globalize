@@ -4,7 +4,7 @@ import { datesEqual, applyMixins } from '../util';
 import { BaseTimeValueAccessor } from '../base-time-value-accessor';
 import { ICultureService, CANG_CULTURE_SERVICE } from '@code-art/angular-globalize';
 import { TimePickerDirective } from '../directives/time-picker.directive';
-import { IPopupComponent, IPopupDirective } from '../popups';
+import { IPopupComponent, IPopupDirective, IComponentFocus } from '../popups';
 import { IBaseValueAccessor } from '../base-value-accessor';
 import { PopupHostDirective } from '../directives/popup-host.directive';
 
@@ -83,8 +83,20 @@ export class PopupComponent implements AfterViewInit, IPopupComponent {
         return this.show;
     }
 
+    get focus(): boolean {
+        if (this.componentRef) {
+            if (this.componentRef.instance) {
+                let focusable = this.componentRef.instance as IComponentFocus;
+                if (focusable.focus === true) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     get isVisible(): boolean {
-        let show = this._show || this._mouseIn;
+        let show = this._show || this._mouseIn || this.focus;
         return show;
     }
 

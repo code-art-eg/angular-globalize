@@ -23,6 +23,7 @@ export interface IBaseValueAccessor extends ControlValueAccessor {
 export abstract class BaseValueAccessor implements OnDestroy, IBaseValueAccessor {
 
     private readonly _boundChildren: BaseValueAccessor[] = [];
+    private readonly _subs: Subscription[] = [];
     private readonly _localeSubject = new ReplaySubject<string>();
     private readonly _localeObservable = this._localeSubject.asObservable();
     private _parent: BaseValueAccessor = null;
@@ -33,6 +34,7 @@ export abstract class BaseValueAccessor implements OnDestroy, IBaseValueAccessor
     private _ontouch: () => void = null;
     private _value: any = null;
     private _valueSet: boolean = false;
+    
     private readonly _localeSubscription = Observable.combineLatest(this._localeObservable, this.cultureService.cultureObservable)
         .subscribe({
             next: vals => {
@@ -56,6 +58,10 @@ export abstract class BaseValueAccessor implements OnDestroy, IBaseValueAccessor
         }
 
         this._boundChildren.push(child);
+        child.value = this.value;
+        this._subs.push(this.valueChange.asObservable().subscribe(v => {
+            child.valueChange.emit(v);
+        }));
         child._parent = this;
         if (child.changeDetector) {
             child.changeDetector.detectChanges();
@@ -65,6 +71,8 @@ export abstract class BaseValueAccessor implements OnDestroy, IBaseValueAccessor
     protected removeBoundChild(child: BaseValueAccessor): void {
         const index = this._boundChildren.indexOf(child);
         if (index >= 0) {
+            this._subs[index].unsubscribe();
+            this._subs.splice(index, 1);
             this._boundChildren.splice(index, 1);
         }
         if (child._parent === this) {
@@ -159,6 +167,12 @@ export abstract class BaseValueAccessor implements OnDestroy, IBaseValueAccessor
         if (this._parent) {
             this._parent.removeBoundChild(this);
         }
+        for (let i = 0; i < this._boundChildren.length; i++) {
+            this._subs[i].unsubscribe();
+            this._boundChildren[i]._parent = null;
+        }
+        this._subs.splice(0, this._subs.length);
+        this._boundChildren.splice(0, this._boundChildren.length);
     }
 
 

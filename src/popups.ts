@@ -7,6 +7,10 @@ import { Observable } from "rxjs/Observable";
 import { CANG_CULTURE_SERVICE, ICultureService, CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from '@code-art/angular-globalize';
 import { IBaseValueAccessor } from "./base-value-accessor";
 
+export interface IComponentFocus {
+    focus?: boolean;
+}
+
 export interface IPopupDirective extends IBaseValueAccessor {
     format: string;
     orientRight: boolean;

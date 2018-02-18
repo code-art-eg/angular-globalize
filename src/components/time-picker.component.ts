@@ -4,6 +4,7 @@ import { BaseTimeValueAccessor } from "../base-time-value-accessor";
 import { CANG_GLOBALIZATION_SERVICE, CANG_CULTURE_SERVICE, ICultureService, IGlobalizationService, CANG_GLOBALIZE_STATIC } from "@code-art/angular-globalize";
 import { formatTimeComponent, KEY_CODE } from '../util';
 import { Subscription } from "rxjs/Subscription";
+import { IComponentFocus } from "../popups";
 
 interface ITimeData {
     twelveHours: boolean;
@@ -19,7 +20,7 @@ interface ITimeData {
         provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TimePickerComponent), multi: true
     }]
 })
-export class TimePickerComponent extends BaseTimeValueAccessor implements AfterViewInit, OnDestroy {
+export class TimePickerComponent extends BaseTimeValueAccessor implements AfterViewInit, OnDestroy, IComponentFocus {
 
     private static _timeZoneData: { [key: string]: ITimeData } = {};
     private _minutes: number;
@@ -36,6 +37,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
     @ViewChild('amPmInput2') amPmElement2: ElementRef;
     private readonly cultureSub: Subscription;
     private readonly valueSub: Subscription;
+    focus: boolean = false;
 
     constructor(@Inject(CANG_GLOBALIZE_STATIC) private readonly globalizeStatic: GlobalizeStatic,
         @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
@@ -98,6 +100,10 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
                 if (i && typeof i.select === 'function') {
                     i.select();
                 }
+                this.focus = true;
+            });
+            input.addEventListener('blur', () => {
+                this.focus = false;
             });
             if (keyup || keydown) {
                 input.addEventListener('keyup', (e): void => {
