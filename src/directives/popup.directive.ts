@@ -133,11 +133,15 @@ export abstract class PopupDirective<T> implements OnInit, OnDestroy, IPopupDire
     }
 
     onFocus() {
-        this.componentRef.instance.show = true;
+        if (this.componentRef && this.componentRef.instance) {
+            this.componentRef.instance.show = true;
+        }
     }
 
     onBlur() {
-        this.componentRef.instance.show = false;
+        if (this.componentRef && this.componentRef.instance) {
+            this.componentRef.instance.show = false;
+        }
     }
 
     set orientTop(val: boolean) {
