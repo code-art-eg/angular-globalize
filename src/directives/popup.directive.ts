@@ -42,8 +42,9 @@ export abstract class PopupDirective implements OnInit, OnDestroy, IPopupDirecti
 
     abstract getDefaultFormat();
     abstract formatValue(val: any, locale: string, format: string): string;
+    parseValue: (val: string) => any;
     abstract resolveFactory(): ComponentFactory<BaseValueAccessor>;
-
+    
     initPopupDirective(resolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, el: ElementRef, injector: Injector): void {
         this._viewContainerRef = viewContainerRef;
         this._orientRight = null;
@@ -75,8 +76,9 @@ export abstract class PopupDirective implements OnInit, OnDestroy, IPopupDirecti
         }
         this._controlValueAccessor.registerOnChange(v => {
             this._controlValue = v;
-            if (this.coerceValue(v)) {
-                this.value = v;
+            const val = typeof this.parseValue === 'function' ? this.parseValue(v) : v;
+            if (this.coerceValue(val)) {
+                this.value = val;
             }
         });
         this._valueChangeSubscription = Observable.combineLatest(this.cultureService.cultureObservable, this.valueChange.asObservable(), this._formatObservable).subscribe(v => {

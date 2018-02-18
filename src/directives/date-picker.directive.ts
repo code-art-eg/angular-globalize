@@ -43,6 +43,21 @@ export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor imp
     @Input() format: string;
 
    
+    parseValue(val: any): any {
+        if (typeof val !== 'string') {
+            return val;
+        }
+        const index = val.indexOf(' - ');
+        if (index < 0) {
+            return val;
+        }
+        const from = val.substring(0, index);
+        const to = val.substring(index + 3);
+        return {
+            from: from,
+            to: to
+        };
+    }
 
     formatValue(val: any, locale: string, format: string): string {
         if (val === undefined || val === null) {

@@ -15,7 +15,7 @@ export abstract class BaseDatePickerComponent extends BaseDatePickerAccessor imp
 
     constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
         @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
-        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
+        @Inject(ChangeDetectorRef) changeDetector?: ChangeDetectorRef) {
         super(cultureService, converterService, changeDetector);
     }
 
