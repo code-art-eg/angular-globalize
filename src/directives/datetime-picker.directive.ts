@@ -1,5 +1,5 @@
 ﻿
-import { Directive, ComponentFactoryResolver, ViewContainerRef, Inject, ComponentRef, HostListener, Input, forwardRef, ElementRef, Injector, ComponentFactory, ChangeDetectorRef } from '@angular/core';
+import { Directive, ComponentFactoryResolver, ViewContainerRef, Inject, ComponentRef, HostListener, Input, forwardRef, ElementRef, Injector, ComponentFactory, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { DateTimePickerComponent} from '../components/datetime-picker.component';
 import { CANG_CULTURE_SERVICE, ICultureService, CANG_GLOBALIZATION_SERVICE, IGlobalizationService, CANG_TYPE_CONVERTER_SERVICE, ITypeConverterService } from '@code-art/angular-globalize';
 import { BaseDatePickerAccessor } from '../base-date-picker-accessor';
@@ -15,7 +15,7 @@ import { TimePickerOptions } from '../base-time-value-accessor';
         provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DateTimePickerDirective), multi: true
     }]
 })
-export class DateTimePickerDirective extends BaseDatePickerAccessor<IDateTimePicker> implements IPopupDirective<IDateTimePicker>, IDateTimePicker {
+export class DateTimePickerDirective extends BaseDatePickerAccessor<IDateTimePicker> implements IPopupDirective<IDateTimePicker>, IDateTimePicker, OnInit, OnDestroy {
 
     @Input() minutesIncrement: number;
     @Input() secondsIncrement: number;
@@ -83,6 +83,14 @@ export class DateTimePickerDirective extends BaseDatePickerAccessor<IDateTimePic
                 break;
         }
         return this.globalizationService.formatDate(val, locale, options);
+    }
+
+    ngOnInit(): void {
+
+    }
+
+    ngOnDestroy(): void {
+
     }
 }
 
