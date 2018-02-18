@@ -14,6 +14,11 @@ export abstract class BaseDatePickerComponent extends BaseDatePickerAccessor<IDa
 
     view: ViewType = 'days';
 
+    constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
+        @Inject(ChangeDetectorRef) changeDetector?: ChangeDetectorRef) {
+        super(cultureService, converterService, changeDetector);
+    }
    
 
     onDaysViewDayClick(date: Date): void {
@@ -191,6 +196,11 @@ export abstract class BaseDatePickerComponent extends BaseDatePickerAccessor<IDa
 })
 export class DatePickerComponent extends BaseDatePickerComponent implements OnDestroy {
 
+    constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
+        @Inject(ChangeDetectorRef) changeDetector?: ChangeDetectorRef) {
+        super(cultureService, converterService, changeDetector);
+    }
     rangeSelection = false;
 }
 
@@ -203,5 +213,10 @@ export class DatePickerComponent extends BaseDatePickerComponent implements OnDe
     }]
 })
 export class DateRangePickerComponent extends BaseDatePickerComponent implements OnDestroy {
+    constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
+        @Inject(ChangeDetectorRef) changeDetector?: ChangeDetectorRef) {
+        super(cultureService, converterService, changeDetector);
+    }
     rangeSelection = true;
 }

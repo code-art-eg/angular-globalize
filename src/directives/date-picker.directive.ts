@@ -122,6 +122,18 @@ applyMixins(BaseDatePickerDirective, PopupDirective);
 })
 export class DatePickerDirective extends BaseDatePickerDirective {
 
+    constructor(@Inject(ComponentFactoryResolver) resolver: ComponentFactoryResolver,
+        @Inject(ViewContainerRef) viewContainerRef: ViewContainerRef,
+        @Inject(ElementRef) el: ElementRef,
+        @Inject(Injector) injector: Injector,
+        @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+        @Inject(CANG_GLOBALIZATION_SERVICE) globalizationService: IGlobalizationService,
+        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef,
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService
+    ) {
+        super(resolver, viewContainerRef, el, injector, cultureService, globalizationService, changeDetector, converterService);
+    }
+
     rangeSelection = false;
 
     resolveFactory(resolver: ComponentFactoryResolver): ComponentFactory<BaseDatePickerComponent> {
@@ -137,8 +149,19 @@ export class DatePickerDirective extends BaseDatePickerDirective {
 })
 export class DateRangePickerDirective extends BaseDatePickerDirective {
 
-    rangeSelection = true;
+    constructor(@Inject(ComponentFactoryResolver) resolver: ComponentFactoryResolver,
+        @Inject(ViewContainerRef) viewContainerRef: ViewContainerRef,
+        @Inject(ElementRef) el: ElementRef,
+        @Inject(Injector) injector: Injector,
+        @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+        @Inject(CANG_GLOBALIZATION_SERVICE) globalizationService: IGlobalizationService,
+        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef,
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService
+    ) {
+        super(resolver, viewContainerRef, el, injector, cultureService, globalizationService, changeDetector, converterService);
+    }
 
+    rangeSelection = true;
 
     resolveFactory(resolver: ComponentFactoryResolver): ComponentFactory<BaseDatePickerComponent> {
         return resolver.resolveComponentFactory(DateRangePickerComponent);

@@ -1,6 +1,6 @@
 {
   "name": "@code-art/angular-datepicker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A datepicker for angular 5",
   "main": "index.js",
   "scripts": {
