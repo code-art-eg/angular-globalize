@@ -1,5 +1,5 @@
 ﻿
-import { Directive, ComponentFactoryResolver, ViewContainerRef, Inject, ComponentRef, HostListener, Input, forwardRef, ElementRef, Injector, ComponentFactory, ChangeDetectorRef } from '@angular/core';
+import { Directive, ComponentFactoryResolver, ViewContainerRef, Inject, ComponentRef, HostListener, Input, forwardRef, ElementRef, Injector, ComponentFactory, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { DatePickerComponent, DateRangePickerComponent, BaseDatePickerComponent } from '../components/date-picker.component';
 import { CANG_CULTURE_SERVICE, ICultureService, CANG_GLOBALIZATION_SERVICE, IGlobalizationService, CANG_TYPE_CONVERTER_SERVICE, ITypeConverterService } from '@code-art/angular-globalize';
 import { BaseDatePickerAccessor } from '../base-date-picker-accessor';
@@ -9,8 +9,9 @@ import { PopupDirective } from './popup.directive';
 import { isPlainObject, applyMixins } from '../util';
 
 
-export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor<IDatePicker> implements IPopupDirective<IDatePicker>, IDatePicker {
+export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor<IDatePicker> implements IPopupDirective<IDatePicker>, IDatePicker, OnInit, OnDestroy {
 
+   
     constructor(@Inject(ComponentFactoryResolver) resolver: ComponentFactoryResolver,
         @Inject(ViewContainerRef) viewContainerRef: ViewContainerRef,
         @Inject(ElementRef) el: ElementRef,
@@ -109,6 +110,14 @@ export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor<IDa
                 break;
         }
         return this.globalizationService.formatDate(val, locale, options);
+    }
+
+    ngOnInit(): void {
+        
+    }
+
+    ngOnDestroy(): void {
+
     }
 }
 

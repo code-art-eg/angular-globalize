@@ -1,5 +1,5 @@
 ﻿
-import { Directive, ComponentFactoryResolver, ViewContainerRef, Inject, ComponentRef, HostListener, Input, forwardRef, ElementRef, Injector, ComponentFactory, ChangeDetectorRef } from '@angular/core';
+import { Directive, ComponentFactoryResolver, ViewContainerRef, Inject, ComponentRef, HostListener, Input, forwardRef, ElementRef, Injector, ComponentFactory, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 import { TimePickerComponent } from '../components/time-picker.component';
 import { CANG_CULTURE_SERVICE, ICultureService, CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from '@code-art/angular-globalize';
 import { BaseTimeValueAccessor } from '../base-time-value-accessor';
@@ -14,7 +14,7 @@ import { applyMixins } from '../util';
         provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TimePickerDirective), multi: true
     }]
 })
-export class TimePickerDirective extends BaseTimeValueAccessor implements IPopupDirective<ITimePicker>, ITimePicker {
+export class TimePickerDirective extends BaseTimeValueAccessor implements IPopupDirective<ITimePicker>, ITimePicker, OnInit, OnDestroy {
     
     constructor(@Inject(ComponentFactoryResolver) resolver: ComponentFactoryResolver,
         @Inject(ViewContainerRef) viewContainerRef: ViewContainerRef,
@@ -79,6 +79,14 @@ export class TimePickerDirective extends BaseTimeValueAccessor implements IPopup
     @Input() orientTop: boolean;
     @Input() orientRight: boolean;
     @Input() format: string;
+
+    ngOnInit(): void {
+
+    }
+
+    ngOnDestroy(): void {
+
+    }
 }
 
 applyMixins(TimePickerDirective, PopupDirective);
