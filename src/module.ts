@@ -8,7 +8,6 @@ import { DaysViewComponent } from './components/days-view.component';
 import { MonthsViewComponent } from './components/months-view.component';
 import { YearsViewComponent } from './components/years-view.component';
 import { NextPreviousComponent } from './components/next-prev.component';
-import { DatePickerPopupComponent, DateRangePickerPopupComponent } from './components/date-picker-popup.component';
 import { InputAddonHostComponent } from './components/input-addon-host.component';
 import { TimePickerComponent } from './components/time-picker.component';
 import { PopupComponent } from './components/popup.component';
@@ -27,8 +26,6 @@ import { TimePickerDirective } from './directives/time-picker.directive';
         NextPreviousComponent, 
         YearsViewComponent,
         InputAddonDirective,
-        DatePickerPopupComponent,
-        DateRangePickerPopupComponent,
         InputAddonHostComponent,
         TimePickerComponent, 
         PopupComponent,
@@ -38,7 +35,7 @@ import { TimePickerDirective } from './directives/time-picker.directive';
         PopupHostDirective
         ],
     exports: [DatePickerComponent, DateRangePickerComponent, InputAddonDirective, DatePickerDirective, DateRangePickerDirective, TimePickerComponent, TimePickerDirective ],
-    entryComponents: [DatePickerPopupComponent, DateRangePickerPopupComponent, InputAddonHostComponent, PopupComponent, TimePickerComponent],
+    entryComponents: [InputAddonHostComponent, PopupComponent, TimePickerComponent, DatePickerComponent, DateRangePickerComponent],
     imports: [ GlobalizationServicesModule, GlobalizationModule, CommonModule, FormsModule ]
 })
 export class DatePickerModule {

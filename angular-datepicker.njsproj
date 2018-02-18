@@ -35,9 +35,6 @@
     <Content Include="src\components\styles\time-picker.component.less">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\templates\date-picker-popup.component.html">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="src\components\styles\popup.component.less">
       <SubType>Code</SubType>
     </Content>
@@ -100,9 +97,6 @@
     <TypeScriptCompile Include="src\base-date-picker-accessor.ts" />
     <TypeScriptCompile Include="src\base-date-range-accessor.ts" />
     <TypeScriptCompile Include="src\base-value-accessor.ts" />
-    <TypeScriptCompile Include="src\components\date-picker-popup.component.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
     <TypeScriptCompile Include="src\components\date-picker.component.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
