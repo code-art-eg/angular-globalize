@@ -139,13 +139,25 @@ export abstract class PopupDirective implements OnInit, OnDestroy, IPopupDirecti
 
     set orientTop(val: boolean) {
         val = !!val;
-        if (this._orientRight != val) {
+        if (this._orientTop != val) {
             this._orientTop = val;
         }
     }
 
     get orientTop(): boolean {
-        return this._orientTop;
+        if (this._orientTop === null) {
+            if (this._el && this._el.nativeElement) {
+                const htmlEl = this._el.nativeElement as HTMLElement;
+                if (typeof htmlEl.getBoundingClientRect === 'function' && window) {
+                    const rect = htmlEl.getBoundingClientRect();
+                    const winHeight = window.innerHeight;
+                    if (typeof winHeight === 'number' && rect && typeof (rect.top) === 'number' && typeof (rect.bottom) === 'number') {
+                        return rect.top > winHeight - rect.bottom;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     set orientRight(val: boolean | null) {

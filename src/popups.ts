@@ -17,6 +17,7 @@ export interface IPopupDirective extends IBaseValueAccessor {
     getDefaultFormat(): string;
     initPopupDirective(resolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, el: ElementRef, injector: Injector);
     formatValue(val: any, locale: string, format: string): string;
+    parseValue?(val: string): any;
 }
 
 export interface IPopupComponent {

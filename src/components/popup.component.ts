@@ -21,7 +21,14 @@ export class PopupComponent implements AfterViewInit, IPopupComponent {
     private componentRef: ComponentRef<IBaseValueAccessor>;
     private _show = false;
     private _componenthost: PopupHostDirective;
+    private _mouseOutTimeOut: any;
     @ViewChild("inputhost") inputHost: ElementRef;
+
+    constructor(@Inject(Renderer2) private readonly renderer: Renderer2,
+        @Inject(ComponentFactoryResolver) private readonly resolver: ComponentFactoryResolver
+    ) {
+        this._mouseOutTimeOut = null;
+    }
 
     @ViewChild(PopupHostDirective) set componenthost(val: PopupHostDirective) {
         if (val !== this._componenthost) {
@@ -40,13 +47,6 @@ export class PopupComponent implements AfterViewInit, IPopupComponent {
     get componenthost(): PopupHostDirective {
         return this._componenthost;
     }
-    
-    constructor(@Inject(Renderer2) private readonly renderer: Renderer2,
-        @Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
-        @Inject(ComponentFactoryResolver) private readonly resolver: ComponentFactoryResolver
-    ) {
-    }
-
 
     ngAfterViewInit(): void {
         let element = this.hostedElement.nativeElement;
@@ -59,10 +59,17 @@ export class PopupComponent implements AfterViewInit, IPopupComponent {
 
     @HostListener('mouseenter') mouseEnter(): void {
         this._mouseIn = true;
+        if (this._mouseOutTimeOut) {
+            clearTimeout(this._mouseOutTimeOut);
+            this._mouseOutTimeOut = null;
+        }
     };
 
     @HostListener('mouseleave') mouseLeave(): void {
-        setTimeout(() => this._mouseIn = false, 50);
+        this._mouseOutTimeOut = setTimeout(() => {
+            this._mouseIn = false;
+            this._mouseOutTimeOut = null;
+        }, 200);
     };
 
     set show(val: boolean) {
