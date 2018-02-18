@@ -46,7 +46,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
             this._minutesText = null;
             this._secondsText = null;
             this._amPmText = null;
-        });
+        }) as any as Subscription;
         this.valueSub = this.valueChange.asObservable().subscribe(v => {
             if (typeof v === 'number') {
                 const d = new Date(v);
@@ -60,7 +60,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
                 this._minutes = 0;
                 this._seconds = 0;
             }
-        });
+        }) as any as Subscription;
     }
 
     private static getTimeZoneData(globalizeStatic: GlobalizeStatic, locale: string): ITimeData {

@@ -137,7 +137,7 @@ export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor imp
             if (!this.compareValues(coercedValue, val)) {
                 this._controlValueAccessor.writeValue(this.formatValue(val, locale, f));
             }
-        }) as Subscription;
+        }) as any as Subscription;
         this._controlValueAccessor.registerOnTouched(() => {
             this.raiseOnTouch();
         });

@@ -28,13 +28,13 @@ export abstract class BaseValueAccessor implements OnDestroy, ControlValueAccess
             }
         });
 
-    constructor(protected readonly cultureService: ICultureService) {
+    constructor(readonly cultureService: ICultureService) {
         this.effectiveLocale = this.cultureService.currentCulture;
         this.locale = null;
 
     }
 
-    protected addBoundChild(child: BaseValueAccessor): void {
+    addBoundChild(child: BaseValueAccessor): void {
         if (child === this) {
             throw `Cannot bind to self`;
         }
@@ -162,7 +162,7 @@ export abstract class BaseValueAccessor implements OnDestroy, ControlValueAccess
         }
     }
 
-    protected raiseOnTouch(): void {
+    raiseOnTouch(): void {
         if (typeof this._ontouch === 'function') {
             this._ontouch();
         }
@@ -172,11 +172,11 @@ export abstract class BaseValueAccessor implements OnDestroy, ControlValueAccess
         this.disabled = !!isDisabled;
     }
 
-    protected coerceValue(val: any): any {
+    coerceValue(val: any): any {
         return val;
     }
 
-    protected compareValues(v1: any, v2: any): boolean {
+    compareValues(v1: any, v2: any): boolean {
         return v1 === v2;
     }
 

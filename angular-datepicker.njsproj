@@ -35,7 +35,6 @@
     <Content Include="src\components\styles\time-picker.component.less">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\templates\time-picker-popup.component.html" />
     <Content Include="src\components\templates\date-picker-popup.component.html">
       <SubType>Code</SubType>
     </Content>
@@ -65,12 +64,14 @@
     <Content Include="src\components\styles\next-prev.component.less">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\components\templates\time-picker-popup.component.html" />
     <Content Include="src\components\templates\time-picker.component.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\components\templates\years-view.component.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\popups.ts" />
     <Content Include="src\util.ts" />
     <Content Include="src\tsconfig.lib.json" />
     <Content Include="test\tsconfig.json">

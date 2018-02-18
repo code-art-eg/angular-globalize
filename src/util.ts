@@ -1,5 +1,37 @@
 import { IGlobalizationService } from '@code-art/angular-globalize';
 
+export function applyMixins(derivedCtor: Function, ...baseCtors: Function[]) {
+    baseCtors.forEach(function (baseCtor) {
+        Object.getOwnPropertyNames(baseCtor.prototype).forEach(function (name) {
+            if (name === 'constructor') {
+                return;
+            }
+            var pd = Object.getOwnPropertyDescriptor(baseCtor.prototype, name);
+            var fb;
+            if (typeof pd.value === 'function' && !pd.get && !pd.set) {
+                var fb_1 = pd.value;
+                var fd_1 = derivedCtor.prototype[name];
+                if (typeof fd_1 === 'function') {
+                    derivedCtor.prototype[name] = function () {
+                        var args = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            args[_i] = arguments[_i];
+                        }
+                        fb_1.apply(this, args);
+                        fd_1.apply(this, args);
+                    };
+                }
+                else {
+                    derivedCtor.prototype[name] = fb_1;
+                }
+            }
+            else if (pd) {
+                Object.defineProperty(derivedCtor.prototype, name, pd);
+            }
+        });
+    });
+}
+
 export function datesEqual(d1: Date | null | undefined, d2: Date | null | undefined): boolean {
     if (d1 === null || d1 === undefined)
         return d2 === null || d2 === undefined;

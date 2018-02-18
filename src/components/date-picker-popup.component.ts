@@ -9,7 +9,6 @@ import { BaseDatePickerDirective } from '../directives/date-picker.directive';
 export abstract class BaseDatePickerPopupComponent extends BaseDatePickerAccessor implements AfterViewInit {
     private _mouseIn = false;
     private _show = false;
-    readonly uniqueId: string;
     rangeValue: any = null;
     nonRangeValue: any = null;
     @ViewChild("inputhost") inputHost: ElementRef;
