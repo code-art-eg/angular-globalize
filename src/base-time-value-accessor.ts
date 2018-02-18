@@ -1,64 +1,22 @@
 import { Input, Inject, ChangeDetectorRef } from "@angular/core";
 import { BaseValueAccessor } from "./base-value-accessor";
 import { ICultureService, IGlobalizationService } from "@code-art/angular-globalize";
+import { ITimePicker, ICompositeObject, ITimePickerOptions, IBaseValueAccessor } from "./interfaces";
+import { applyMixins } from "./util";
 
+export abstract class TimePickerOptions implements ICompositeObject<ITimePickerOptions>, ITimePickerOptions {
 
-export abstract class BaseTimeValueAccessor extends BaseValueAccessor {
-
-    private static readonly maximumValue = 24 * 3600 * 1000 - 1;
-    private static readonly minimumValue = 0;
-    private static readonly formats: DateFormatterOptions[] = [{ time: 'short' }, { time: 'medium' }, { time: 'long' }, { time: 'full' }];
-    private _rangeSelection: boolean = false;
-    private _minTime: number = BaseTimeValueAccessor.maximumValue;
-    private _maxTime: number = BaseTimeValueAccessor.minimumValue;
-    private _showSeconds = false;
     private _minutesIncrement: number = 5;
     private _secondsIncrement: number = 5;
+    private _showSeconds: boolean;
 
-    constructor(cultureService: ICultureService,
-        protected readonly globalizeService: IGlobalizationService, @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
-        super(cultureService, changeDetector);
-    }
+    parent: IBaseValueAccessor<ITimePickerOptions> & ITimePickerOptions;
+    abstract addBoundChild(child: IBaseValueAccessor<ITimePickerOptions> & ITimePickerOptions): void;
+    abstract removeBoundChild(child: IBaseValueAccessor<ITimePickerOptions> & ITimePickerOptions);
 
-    @Input() set minTime(val: number) {
+    set minutesIncrement(val: number) {
         if (this.parent) {
-            (this.parent as BaseTimeValueAccessor).minTime = val;
-            return;
-        }
-        val = this.coerceValue(val);
-        if (this._minTime !== val) {
-            this._minTime = val;
-        }
-    }
-
-    get minTime(): number {
-        if (this.parent) {
-            return (this.parent as BaseTimeValueAccessor).minTime;
-        }
-        return this._minTime|| BaseTimeValueAccessor.minimumValue;
-    }
-
-    @Input() set maxTime(val: number) {
-        if (this.parent) {
-            (this.parent as BaseTimeValueAccessor).maxTime = val;
-            return;
-        }
-        val = this.coerceValue(val);
-        if (this._maxTime !== val) {
-            this._maxTime = val;
-        }
-    }
-
-    get maxTime(): number {
-        if (this.parent) {
-            return (this.parent as BaseTimeValueAccessor).maxTime;
-        }
-        return this._maxTime || BaseTimeValueAccessor.maximumValue;
-    }
-
-    @Input() set minutesIncrement(val: number) {
-        if (this.parent) {
-            (this.parent as BaseTimeValueAccessor).minutesIncrement = val;
+            this.parent.minutesIncrement = val;
             return;
         }
         val = this.coerceIncrement(val);
@@ -69,14 +27,14 @@ export abstract class BaseTimeValueAccessor extends BaseValueAccessor {
 
     get minutesIncrement(): number {
         if (this.parent) {
-            return (this.parent as BaseTimeValueAccessor).minutesIncrement;
+            return this.parent.minutesIncrement;
         }
-        return this._minutesIncrement || 5;
+        return this.coerceIncrement(this._minutesIncrement);
     }
 
     @Input() set secondsIncrement(val: number) {
         if (this.parent) {
-            (this.parent as BaseTimeValueAccessor).secondsIncrement = val;
+            this.parent.secondsIncrement = val;
             return;
         }
         val = this.coerceIncrement(val);
@@ -87,14 +45,14 @@ export abstract class BaseTimeValueAccessor extends BaseValueAccessor {
 
     get secondsIncrement(): number {
         if (this.parent) {
-            return (this.parent as BaseTimeValueAccessor).secondsIncrement;
+            return this.parent.secondsIncrement;
         }
-        return this._secondsIncrement || 5;
+        return this.coerceIncrement(this._secondsIncrement);
     }
 
     @Input() set showSeconds(val: boolean) {
         if (this.parent) {
-            (this.parent as BaseTimeValueAccessor).showSeconds = val;
+            this.parent.showSeconds = val;
             return;
         }
         val = !!val;
@@ -105,14 +63,72 @@ export abstract class BaseTimeValueAccessor extends BaseValueAccessor {
 
     get showSeconds(): boolean {
         if (this.parent) {
-            return (this.parent as BaseTimeValueAccessor).showSeconds;
+            return this.parent.showSeconds;
         }
-        return this._showSeconds;
+        return !!this._showSeconds;
     }
 
-    coerceIncrement(val: number) : number {
+    
+    private coerceIncrement(val: number): number {
         return val && 60 % val === val ? val : 5;
     }
+}
+
+export abstract class BaseTimeValueAccessor extends BaseValueAccessor<ITimePicker> implements ITimePicker {
+
+    @Input() minutesIncrement: number;
+    @Input() secondsIncrement: number;
+    @Input() showSeconds: boolean;
+    private static readonly maximumValue = 24 * 3600 * 1000 - 1;
+    private static readonly minimumValue = 0;
+    private static readonly formats: DateFormatterOptions[] = [{ time: 'short' }, { time: 'medium' }, { time: 'long' }, { time: 'full' }];
+    private _minTime: number = BaseTimeValueAccessor.maximumValue;
+    private _maxTime: number = BaseTimeValueAccessor.minimumValue;
+    private _showSeconds = false;
+   
+
+    constructor(cultureService: ICultureService,
+        protected readonly globalizeService: IGlobalizationService, @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
+        super(cultureService, changeDetector);
+    }
+
+    @Input() set minTime(val: number) {
+        if (this.parent) {
+            this.parent.minTime = val;
+            return;
+        }
+        val = this.coerceValue(val);
+        if (this._minTime !== val) {
+            this._minTime = val;
+        }
+    }
+
+    get minTime(): number {
+        if (this.parent) {
+            return this.parent.minTime;
+        }
+        return this._minTime|| BaseTimeValueAccessor.minimumValue;
+    }
+
+    @Input() set maxTime(val: number) {
+        if (this.parent) {
+            this.parent.maxTime = val;
+            return;
+        }
+        val = this.coerceValue(val);
+        if (this._maxTime !== val) {
+            this._maxTime = val;
+        }
+    }
+
+    get maxTime(): number {
+        if (this.parent) {
+            return this.parent.maxTime;
+        }
+        return this._maxTime || BaseTimeValueAccessor.maximumValue;
+    }
+
+   
 
     coerceValue(val: any): any {
         let d: Date | null = null;
@@ -135,3 +151,5 @@ export abstract class BaseTimeValueAccessor extends BaseValueAccessor {
         return null;
     }
 }
+
+applyMixins(BaseTimeValueAccessor, TimePickerOptions);

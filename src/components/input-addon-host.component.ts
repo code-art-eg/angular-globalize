@@ -17,7 +17,7 @@ export class InputAddonHostComponent implements AfterViewInit, OnDestroy {
 
         this.sub = this.cultureService.cultureObservable.subscribe(o => {
             this.applyStyles();
-        }) as any as Subscription;
+        });
     }
 
     private applyStyles(): void {

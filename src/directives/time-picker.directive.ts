@@ -4,7 +4,7 @@ import { TimePickerComponent } from '../components/time-picker.component';
 import { CANG_CULTURE_SERVICE, ICultureService, CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from '@code-art/angular-globalize';
 import { BaseTimeValueAccessor } from '../base-time-value-accessor';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IPopupDirective } from '../popups';
+import { IPopupDirective, ITimePicker } from '../interfaces';
 import { PopupDirective } from './popup.directive';
 import { applyMixins } from '../util';
 
@@ -14,7 +14,7 @@ import { applyMixins } from '../util';
         provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TimePickerDirective), multi: true
     }]
 })
-export class TimePickerDirective extends BaseTimeValueAccessor implements IPopupDirective {
+export class TimePickerDirective extends BaseTimeValueAccessor implements IPopupDirective<ITimePicker>, ITimePicker {
     
     constructor(@Inject(ComponentFactoryResolver) resolver: ComponentFactoryResolver,
         @Inject(ViewContainerRef) viewContainerRef: ViewContainerRef,

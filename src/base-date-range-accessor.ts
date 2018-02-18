@@ -1,18 +1,19 @@
 import { EventEmitter, Output, Input, Inject, ChangeDetectorRef } from "@angular/core";
 import { Subscription } from "rxjs/Subscription";
 
-import * as isPlainObject from  'is-plain-object';
+import * as isPlainObject from 'is-plain-object';
 import { ICultureService, ITypeConverterService } from '@code-art/angular-globalize';
 import { BaseValueAccessor } from "./base-value-accessor";
 import { datesEqual, IDateRange, similarInLocal, createDate } from "./util";
+import { IDateRangeOptions } from "./interfaces";
 
-export  abstract class BaseDateRangeAccessor extends BaseValueAccessor {
+export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions> extends BaseValueAccessor<T> implements IDateRangeOptions {
 
     private static readonly maximumYear = 9999;
     private static readonly minimumYear = 0;
     private static readonly defaultMaxDate = similarInLocal(createDate(BaseDateRangeAccessor.maximumYear, 11, 31));
     private static readonly defaultMinDate = similarInLocal(createDate(BaseDateRangeAccessor.minimumYear, 0, 1));
-    
+
     private _rangeSelection: boolean = false;
     private _minDate: Date | null = null;
     private _maxDate: Date | null = null;
@@ -35,7 +36,7 @@ export  abstract class BaseDateRangeAccessor extends BaseValueAccessor {
 
     @Input() set minDate(val: Date | null) {
         if (this.parent) {
-            (this.parent as BaseDateRangeAccessor).minDate = val;
+            this.parent.minDate = val;
             return;
         }
         val = val || null;
@@ -45,14 +46,14 @@ export  abstract class BaseDateRangeAccessor extends BaseValueAccessor {
     }
     get minDate(): Date | null {
         if (this.parent) {
-            return (this.parent as BaseDateRangeAccessor).minDate;
+            return this.parent.minDate;
         }
         return this._minDate || BaseDateRangeAccessor.defaultMinDate;
     }
 
     @Input() set maxDate(val: Date | null) {
         if (this.parent) {
-            (this.parent as BaseDateRangeAccessor).maxDate = val;
+            this.parent.maxDate = val;
             return;
         }
         val = val || null;
@@ -63,14 +64,14 @@ export  abstract class BaseDateRangeAccessor extends BaseValueAccessor {
 
     get maxDate(): Date | null {
         if (this.parent) {
-            return (this.parent as BaseDateRangeAccessor).maxDate;
+            return this.parent.maxDate;
         }
         return this._maxDate || BaseDateRangeAccessor.defaultMaxDate;
     }
-    
+
     get selectionStart(): Date | null {
         if (this.parent) {
-            return (this.parent as BaseDateRangeAccessor).selectionStart;
+            return this.parent.selectionStart;
         }
         const val = this.value;
         if (val instanceof Date) {
@@ -81,7 +82,7 @@ export  abstract class BaseDateRangeAccessor extends BaseValueAccessor {
 
     set selectionStart(val: Date | null) {
         if (this.parent) {
-            (this.parent as BaseDateRangeAccessor).selectionStart = val;
+            this.parent.selectionStart = val;
             return;
         }
         val = val || null;
@@ -99,7 +100,7 @@ export  abstract class BaseDateRangeAccessor extends BaseValueAccessor {
 
     get selectionEnd(): Date | null {
         if (this.parent) {
-            return (this.parent as BaseDateRangeAccessor).selectionEnd;
+            return this.parent.selectionEnd;
         }
         if (!this.rangeSelection) {
             return null;
@@ -110,7 +111,7 @@ export  abstract class BaseDateRangeAccessor extends BaseValueAccessor {
 
     set selectionEnd(val: Date | null) {
         if (this.parent) {
-            (this.parent as BaseDateRangeAccessor).selectionEnd = val;
+            this.parent.selectionEnd = val;
             return;
         }
         if (!this.rangeSelection) {
@@ -153,7 +154,7 @@ export  abstract class BaseDateRangeAccessor extends BaseValueAccessor {
                 }
             }
         }
-        
+
         if (!this.rangeSelection) {
             return s;
         } else if (s || e) {

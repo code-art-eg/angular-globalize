@@ -1,0 +1,23 @@
+﻿@import "common.less";
+
+table {
+    min-width: @defaultCellSize * 7;
+    td.viewbutton {
+        text-align: center;
+        padding: @dayViewDefaultPadding;
+
+        span {
+            color: @buttonColor;
+        }
+
+
+        &:hover {
+            background-color: @hoverColor;
+            .border-radius(@dayBorderRadius);
+
+            span {
+                color: @buttonHoverColor;
+            }
+        }
+    }
+}

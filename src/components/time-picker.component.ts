@@ -4,7 +4,7 @@ import { BaseTimeValueAccessor } from "../base-time-value-accessor";
 import { CANG_GLOBALIZATION_SERVICE, CANG_CULTURE_SERVICE, ICultureService, IGlobalizationService, CANG_GLOBALIZE_STATIC } from "@code-art/angular-globalize";
 import { formatTimeComponent, KEY_CODE } from '../util';
 import { Subscription } from "rxjs/Subscription";
-import { IComponentFocus } from "../popups";
+import { IComponentFocus } from "../interfaces";
 
 interface ITimeData {
     twelveHours: boolean;
@@ -49,7 +49,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
             this._minutesText = null;
             this._secondsText = null;
             this._amPmText = null;
-        }) as any as Subscription;
+        });
         this.valueSub = this.valueChange.asObservable().subscribe(v => {
             if (typeof v === 'number') {
                 const d = new Date(v);
@@ -63,7 +63,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
                 this._minutes = 0;
                 this._seconds = 0;
             }
-        }) as any as Subscription;
+        });
     }
 
     private static getTimeZoneData(globalizeStatic: GlobalizeStatic, locale: string): ITimeData {

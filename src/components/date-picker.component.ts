@@ -5,19 +5,16 @@ import { CANG_CULTURE_SERVICE, ICultureService, ITypeConverterService, CANG_TYPE
 import { IMonthYearSelection, ViewType, stripTime, maxDate, minDate, dateInRange, createDate, similarInUtc, similarInLocal, IDateRange, datesEqual, getMonthYear } from '../util';
 import { debug } from 'util';
 import { BaseDatePickerAccessor } from '../base-date-picker-accessor';
+import { IDatePicker } from '../interfaces';
 
-export abstract class BaseDatePickerComponent extends BaseDatePickerAccessor implements OnDestroy {
+export abstract class BaseDatePickerComponent extends BaseDatePickerAccessor<IDatePicker> implements OnDestroy {
     private _month: number | number = null;
     private _year: number | null = null;
     private _startEndToggle: boolean = false;
 
     view: ViewType = 'days';
 
-    constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
-        @Inject(ChangeDetectorRef) changeDetector?: ChangeDetectorRef) {
-        super(cultureService, converterService, changeDetector);
-    }
+   
 
     onDaysViewDayClick(date: Date): void {
         if (this.disabled || !dateInRange(date, this.minDateInternal, this.maxDateInternal)) {

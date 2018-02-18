@@ -6,27 +6,16 @@ import { Subscription } from "rxjs/Subscription";
 import 'rxjs/add/observable/combineLatest';
 
 import { ICultureService } from '@code-art/angular-globalize';
+import { IBaseValueAccessor, ICompositeObject  } from "./interfaces";
 
-export interface IBaseValueAccessor extends ControlValueAccessor {
-    coerceValue(val: any): any;
-    value: any;
-    compareValues(v1: any, v2: any);
-    cultureService: ICultureService;
-    valueChange: EventEmitter<any>;
-    disabled: boolean;
-    locale: string;
-    effectiveLocale: string;
-    raiseOnTouch(): void;
-    addBoundChild(child: IBaseValueAccessor): void;
-}
 
-export abstract class BaseValueAccessor implements OnDestroy, IBaseValueAccessor {
+export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAccessor<T>, ICompositeObject<T> {
 
-    private readonly _boundChildren: BaseValueAccessor[] = [];
+    private readonly _boundChildren: (IBaseValueAccessor<T> & T)[] = [];
     private readonly _subs: Subscription[] = [];
     private readonly _localeSubject = new ReplaySubject<string>();
     private readonly _localeObservable = this._localeSubject.asObservable();
-    private _parent: BaseValueAccessor = null;
+    private _parent: IBaseValueAccessor<T> & T = null;
     private _effectiveLocale: string = null;
     private _disabled = false;
     private _locale: string = undefined;
@@ -43,17 +32,18 @@ export abstract class BaseValueAccessor implements OnDestroy, IBaseValueAccessor
             }
         });
 
-    constructor(readonly cultureService: ICultureService, private readonly changeDetector: ChangeDetectorRef) {
+    constructor(readonly cultureService: ICultureService, readonly changeDetector: ChangeDetectorRef) {
         this.effectiveLocale = this.cultureService.currentCulture;
         this.locale = null;
 
     }
 
-    addBoundChild(child: BaseValueAccessor): void {
-        if (child === this) {
+    addBoundChild(child: IBaseValueAccessor<T> & T): void {
+        let thisT = this as IBaseValueAccessor<T> as (IBaseValueAccessor<T> & T);
+        if (child === thisT) {
             throw `Cannot bind to self`;
         }
-        if (child._parent === this || this._boundChildren.indexOf(child) >= 0) {
+        if (child.parent === thisT || this._boundChildren.indexOf(child) >= 0) {
             return;
         }
 
@@ -62,26 +52,31 @@ export abstract class BaseValueAccessor implements OnDestroy, IBaseValueAccessor
         this._subs.push(this.valueChange.asObservable().subscribe(v => {
             child.valueChange.emit(v);
         }));
-        child._parent = this;
+        child.parent = thisT;
         if (child.changeDetector) {
             child.changeDetector.detectChanges();
         }
     }
 
-    protected removeBoundChild(child: BaseValueAccessor): void {
+    removeBoundChild(child: IBaseValueAccessor<T> & T): void {
+        let thisT = this as IBaseValueAccessor<T> as (IBaseValueAccessor<T> & T);
         const index = this._boundChildren.indexOf(child);
         if (index >= 0) {
             this._subs[index].unsubscribe();
             this._subs.splice(index, 1);
             this._boundChildren.splice(index, 1);
         }
-        if (child._parent === this) {
-            child._parent = null;
+        if (child.parent === thisT) {
+            child.parent = null;
         }
     }
 
-    get parent(): BaseValueAccessor {
+    get parent(): IBaseValueAccessor<T> & T {
         return this._parent;
+    }
+
+    set parent(val: IBaseValueAccessor<T> & T) {
+        this._parent = val;
     }
 
     get effectiveLocale(): string {
@@ -164,12 +159,13 @@ export abstract class BaseValueAccessor implements OnDestroy, IBaseValueAccessor
 
     ngOnDestroy() {
         this._localeSubscription.unsubscribe();
+        let thisT = this as IBaseValueAccessor<T> as (IBaseValueAccessor<T> & T);
         if (this._parent) {
-            this._parent.removeBoundChild(this);
+            this._parent.removeBoundChild(thisT);
         }
         for (let i = 0; i < this._boundChildren.length; i++) {
             this._subs[i].unsubscribe();
-            this._boundChildren[i]._parent = null;
+            this._boundChildren[i].parent = null;
         }
         this._subs.splice(0, this._subs.length);
         this._boundChildren.splice(0, this._boundChildren.length);

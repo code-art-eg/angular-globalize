@@ -4,14 +4,13 @@ import { Observable } from "rxjs/Observable";
 import { OnInit, OnDestroy, ComponentRef, ElementRef, Injector, EventEmitter, ComponentFactory, ViewContainerRef, ComponentFactoryResolver, Directive } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { ICultureService } from "@code-art/angular-globalize";
-import { IBaseValueAccessor } from "../base-value-accessor";
 import { PopupComponent } from "../components/popup.component";
 import { BaseValueAccessor } from "../base-value-accessor";
-import { IPopupDirective, IPopupComponent } from "../popups";
+import { IBaseValueAccessor, IPopupDirective, IPopupComponent } from "../interfaces";
 
 
-export abstract class PopupDirective implements OnInit, OnDestroy, IPopupDirective {
-    private componentRef: ComponentRef<IPopupComponent>;
+export abstract class PopupDirective<T> implements OnInit, OnDestroy, IPopupDirective<T> {
+    private componentRef: ComponentRef<IPopupComponent<T>>;
     private _el: ElementRef;
     private _controlValueAccessor: ControlValueAccessor;
     private _viewContainerRef: ViewContainerRef;
@@ -25,6 +24,7 @@ export abstract class PopupDirective implements OnInit, OnDestroy, IPopupDirecti
     private _controlValue: any;
     private _resolver: ComponentFactoryResolver;
     
+    parent: IBaseValueAccessor<T> & T;
     abstract coerceValue(val: any): any;
     value: any;
     abstract compareValues(v1: any, v2: any);
@@ -33,7 +33,8 @@ export abstract class PopupDirective implements OnInit, OnDestroy, IPopupDirecti
     disabled: boolean;
     locale: string;
     abstract raiseOnTouch(): void;
-    abstract addBoundChild(child: IBaseValueAccessor): void;
+    abstract addBoundChild(child: IBaseValueAccessor<T> & T): void;
+    abstract removeBoundChild(child: IBaseValueAccessor<T> & T): void;
     effectiveLocale: string;
 
     abstract writeValue(val: any): void;
@@ -43,7 +44,7 @@ export abstract class PopupDirective implements OnInit, OnDestroy, IPopupDirecti
     abstract getDefaultFormat();
     abstract formatValue(val: any, locale: string, format: string): string;
     parseValue: (val: string) => any;
-    abstract resolveFactory(): ComponentFactory<BaseValueAccessor>;
+    abstract resolveFactory(): ComponentFactory<IBaseValueAccessor<T>>;
     
     initPopupDirective(resolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, el: ElementRef, injector: Injector): void {
         this._viewContainerRef = viewContainerRef;
@@ -125,7 +126,7 @@ export abstract class PopupDirective implements OnInit, OnDestroy, IPopupDirecti
     }
 
     createComponent(): void {
-        let factory = this._resolver.resolveComponentFactory<IPopupComponent>(PopupComponent);
+        let factory = this._resolver.resolveComponentFactory<IPopupComponent<T>>(PopupComponent);
         this.componentRef = this._viewContainerRef.createComponent(factory);
         this.componentRef.instance.hostedElement = this._el;
         this.componentRef.instance.popupDirective = this;

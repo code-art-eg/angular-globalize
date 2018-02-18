@@ -4,8 +4,7 @@ import { datesEqual, applyMixins } from '../util';
 import { BaseTimeValueAccessor } from '../base-time-value-accessor';
 import { ICultureService, CANG_CULTURE_SERVICE } from '@code-art/angular-globalize';
 import { TimePickerDirective } from '../directives/time-picker.directive';
-import { IPopupComponent, IPopupDirective, IComponentFocus } from '../popups';
-import { IBaseValueAccessor } from '../base-value-accessor';
+import { IPopupComponent, IPopupDirective, IComponentFocus, IBaseValueAccessor } from '../interfaces';
 import { PopupHostDirective } from '../directives/popup-host.directive';
 
 
@@ -13,12 +12,12 @@ import { PopupHostDirective } from '../directives/popup-host.directive';
     templateUrl: './templates/popup.component.html',
     styleUrls: ['./styles/popup.component.less']
 })
-export class PopupComponent implements AfterViewInit, IPopupComponent {
+export class PopupComponent implements AfterViewInit, IPopupComponent<any> {
 
     private _mouseIn = false;
     hostedElement: ElementRef;
-    popupDirective: IPopupDirective;
-    private componentRef: ComponentRef<IBaseValueAccessor>;
+    popupDirective: IPopupDirective<any>;
+    private componentRef: ComponentRef<IBaseValueAccessor<any>>;
     private _show = false;
     private _componenthost: PopupHostDirective;
     private _mouseOutTimeOut: any;

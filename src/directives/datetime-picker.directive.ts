@@ -1,17 +1,28 @@
 ﻿
 import { Directive, ComponentFactoryResolver, ViewContainerRef, Inject, ComponentRef, HostListener, Input, forwardRef, ElementRef, Injector, ComponentFactory, ChangeDetectorRef } from '@angular/core';
-import { DatePickerComponent, DateRangePickerComponent, BaseDatePickerComponent } from '../components/date-picker.component';
+import { DateTimePickerComponent} from '../components/datetime-picker.component';
 import { CANG_CULTURE_SERVICE, ICultureService, CANG_GLOBALIZATION_SERVICE, IGlobalizationService, CANG_TYPE_CONVERTER_SERVICE, ITypeConverterService } from '@code-art/angular-globalize';
 import { BaseDatePickerAccessor } from '../base-date-picker-accessor';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IPopupDirective, IDatePicker } from '../interfaces';
+import { IPopupDirective, IDateTimePicker, IBaseValueAccessor } from '../interfaces';
 import { PopupDirective } from './popup.directive';
 import { applyMixins } from '../util';
 import * as isPlainObject from 'is-plain-object';
+import { TimePickerOptions } from '../base-time-value-accessor';
 
+@Directive({
+    selector: '[caDateTimePicker]',
+    providers: [{
+        provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DateTimePickerDirective), multi: true
+    }]
+})
+export class DateTimePickerDirective extends BaseDatePickerAccessor<IDateTimePicker> implements IPopupDirective<IDateTimePicker>, IDateTimePicker {
 
-export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor<IDatePicker> implements IPopupDirective<IDatePicker>, IDatePicker {
-
+    @Input() minutesIncrement: number;
+    @Input() secondsIncrement: number;
+    @Input() showSeconds: boolean;
+    parent: IBaseValueAccessor<IDateTimePicker> & IDateTimePicker;
+    
     constructor(@Inject(ComponentFactoryResolver) resolver: ComponentFactoryResolver,
         @Inject(ViewContainerRef) viewContainerRef: ViewContainerRef,
         @Inject(ElementRef) el: ElementRef,
@@ -31,7 +42,9 @@ export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor<IDa
 
     initPopupDirective: (resolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, el: ElementRef, injector: Injector) => void;
 
-    abstract resolveFactory(resolver: ComponentFactoryResolver): ComponentFactory<BaseDatePickerComponent>;
+    resolveFactory(resolver: ComponentFactoryResolver): ComponentFactory<DateTimePickerComponent> {
+        return resolver.resolveComponentFactory(DateTimePickerComponent);
+    }
 
     @HostListener('focus') onFocus: () => void;
 
@@ -42,52 +55,13 @@ export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor<IDa
     @Input() orientRight: boolean;
     @Input() format: string;
 
-   
-    parseValue(val: any): any {
-        if (typeof val !== 'string') {
-            return val;
-        }
-        const index = val.indexOf(' - ');
-        if (index < 0) {
-            return val;
-        }
-        const from = val.substring(0, index);
-        const to = val.substring(index + 3);
-        return {
-            from: from,
-            to: to
-        };
-    }
-
     formatValue(val: any, locale: string, format: string): string {
         if (val === undefined || val === null) {
             return '';
         }
         if (val instanceof Date) {
             return this.formatDate(val, locale, format);
-        } else if (isPlainObject(val)) {
-            var from: any = val.from;
-            if (from instanceof Date) {
-                from = this.formatDate(from, locale, format);
-            } else {
-                from = null;
-            }
-
-            var to: any = val.to;
-            if (to instanceof Date) {
-                to = this.formatDate(to, locale, format);
-            } else {
-                to = null;
-            }
-
-            if (!from) {
-                if (!to) return '';
-                return to;
-            } else {
-                if (!to) return from;
-                return `${from} - ${to}`;
-            }
-        }
+        } 
         return '';
     }
 
@@ -99,7 +73,7 @@ export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor<IDa
             case 'medium':
             case 'long':
             case 'full':
-                options = { date: format }
+                options = { datetime: format }
                 break;
             default:
                 if (format.indexOf('raw:')) {
@@ -113,35 +87,4 @@ export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor<IDa
     }
 }
 
-applyMixins(BaseDatePickerDirective, PopupDirective);
-
-@Directive({
-    selector: '[caDatePicker]',
-    providers: [{
-        provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DatePickerDirective), multi: true
-    }]
-})
-export class DatePickerDirective extends BaseDatePickerDirective {
-
-    rangeSelection = false;
-
-    resolveFactory(resolver: ComponentFactoryResolver): ComponentFactory<BaseDatePickerComponent> {
-        return resolver.resolveComponentFactory(DatePickerComponent);
-    }
-}
-
-@Directive({
-    selector: '[caDateRangePicker]',
-    providers: [{
-        provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DateRangePickerDirective), multi: true
-    }]
-})
-export class DateRangePickerDirective extends BaseDatePickerDirective {
-
-    rangeSelection = true;
-
-
-    resolveFactory(resolver: ComponentFactoryResolver): ComponentFactory<BaseDatePickerComponent> {
-        return resolver.resolveComponentFactory(DateRangePickerComponent);
-    }
-}
+applyMixins(DateTimePickerDirective, PopupDirective, TimePickerOptions);

@@ -1,10 +1,11 @@
 import { Input, Inject, ChangeDetectorRef } from "@angular/core";
-import { ICultureService, ITypeConverterService } from '@code-art/angular-globalize';
+import { ICultureService, ITypeConverterService, CANG_TYPE_CONVERTER_SERVICE, CANG_CULTURE_SERVICE } from '@code-art/angular-globalize';
 
 import { BaseDateRangeAccessor } from "./base-date-range-accessor";
 import { datesEqual, similarInLocal, createDate } from "./util";
+import { IDatePicker } from "./interfaces";
 
-export abstract class BaseDatePickerAccessor extends BaseDateRangeAccessor {
+export abstract class BaseDatePickerAccessor<T extends IDatePicker> extends BaseDateRangeAccessor<IDatePicker> implements IDatePicker {
 
     private _homeButton = true;
     private _resetButton = true;
@@ -14,15 +15,16 @@ export abstract class BaseDatePickerAccessor extends BaseDateRangeAccessor {
     private _highlightDays: number = 0;
 
 
-    constructor(cultureService: ICultureService,
-        protected readonly converterService: ITypeConverterService,
-        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
+    constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
+        @Inject(ChangeDetectorRef) changeDetector?: ChangeDetectorRef) {
         super(cultureService, converterService, changeDetector);
     }
 
+    
     @Input() set homeButton(val: boolean) {
         if (this.parent) {
-            (this.parent as BaseDatePickerAccessor).homeButton = val;
+            this.parent.homeButton = val;
             return;
         }
         val = !!val;
@@ -33,14 +35,14 @@ export abstract class BaseDatePickerAccessor extends BaseDateRangeAccessor {
     
     get homeButton(): boolean {
         if (this.parent) {
-            return (this.parent as BaseDatePickerAccessor).homeButton;
+            return this.parent.homeButton;
         }
         return this._homeButton;
     }
 
     @Input() set resetButton(val: boolean) {
         if (this.parent) {
-            (this.parent as BaseDatePickerAccessor).resetButton = val;
+            this.parent.resetButton = val;
             return;
         }
         val = !!val;
@@ -51,14 +53,14 @@ export abstract class BaseDatePickerAccessor extends BaseDateRangeAccessor {
     
     get resetButton(): boolean {
         if (this.parent) {
-            return (this.parent as BaseDatePickerAccessor).resetButton;
+            return this.parent.resetButton;
         }
         return this._resetButton;
     }
 
     @Input() set handleKeyboardEvents(val: boolean) {
         if (this.parent) {
-            (this.parent as BaseDatePickerAccessor).handleKeyboardEvents = val;
+            this.parent.handleKeyboardEvents = val;
             return;
         }
         val = !!val;
@@ -69,14 +71,14 @@ export abstract class BaseDatePickerAccessor extends BaseDateRangeAccessor {
     
     get handleKeyboardEvents(): boolean {
         if (this.parent) {
-            return (this.parent as BaseDatePickerAccessor).handleKeyboardEvents;
+            return this.parent.handleKeyboardEvents;
         }
         return this._handleKeyboardEvents;
     }
 
     @Input() set todayHighlight(val: boolean) {
         if (this.parent) {
-            (this.parent as BaseDatePickerAccessor).todayHighlight = val;
+            this.parent.todayHighlight = val;
         }
         val = !!val;
         if (val != this._todayHighlight) {
@@ -86,14 +88,14 @@ export abstract class BaseDatePickerAccessor extends BaseDateRangeAccessor {
     
     get todayHighlight(): boolean {
         if (this.parent) {
-            return (this.parent as BaseDatePickerAccessor).todayHighlight;
+            return this.parent.todayHighlight;
         }
         return this._todayHighlight;
     }
 
     @Input() set todayDate(val: Date | null) {
         if (this.parent) {
-            (this.parent as BaseDatePickerAccessor).todayDate = val;
+            this.parent.todayDate = val;
             return;
         }
         val = val || null;
@@ -104,7 +106,7 @@ export abstract class BaseDatePickerAccessor extends BaseDateRangeAccessor {
     
     get todayDate(): Date | null {
         if (this.parent) {
-            return (this.parent as BaseDatePickerAccessor).todayDate;
+            return this.parent.todayDate;
         }
         if (this._todayDate) {
             return this._todayDate;
@@ -114,7 +116,7 @@ export abstract class BaseDatePickerAccessor extends BaseDateRangeAccessor {
 
     @Input() set highlightDays(val: number) {
         if (this.parent) {
-            (this.parent as BaseDatePickerAccessor).highlightDays = val;
+            this.parent.highlightDays = val;
             return;
         }
         val = val || 0;
@@ -125,7 +127,7 @@ export abstract class BaseDatePickerAccessor extends BaseDateRangeAccessor {
     
     get highlightDays(): number {
         if (this.parent) {
-            return (this.parent as BaseDatePickerAccessor).highlightDays;
+            return this.parent.highlightDays;
         }
         return this._highlightDays;
     }
