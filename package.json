@@ -45,7 +45,7 @@
     "@angular/platform-browser-dynamic": "^5.2.4",
     "@types/chai": "^4.1.2",
     "@types/chai-datetime": "0.0.31",
-    "@types/globalize": "0.0.31",
+    "@types/globalize": "0.0.32",
     "@types/mocha": "^2.2.48",
     "@types/node": "^9.4.5",
     "@types/webpack": "^3.8.5",
