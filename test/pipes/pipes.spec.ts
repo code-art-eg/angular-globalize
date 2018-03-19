@@ -12,6 +12,8 @@ import { GlobalizeNumberPipe } from '../../src/pipes/globalize-number.pipe';
 import { GlobalizeCurrencyPipe } from '../../src/pipes/globalize-currency.pipe';
 import { GlobalizeDayPipe } from '../../src/pipes/globalize-day.pipe';
 import { GlobalizeMonthPipe } from '../../src/pipes/globalize-month.pipe';
+import { GlobalizeDurationPipe } from '../../src/pipes/globalize-duration.pipe';
+
 
 import { expect } from 'chai';
 
@@ -174,4 +176,9 @@ describe("Globalize Day Pipe", () => {
 describe("Globalize Month Pipe", () => {
     const pipeFactory = (mock: ChangeDetectorRef) => new GlobalizeMonthPipe(globalizeService, cultureService, mock);
     generateTests(pipeFactory, 'de', 0, globalizeService, globalizeService.getMonthName, 'wide', 'wide', 'wide', 'wide');
+});
+
+describe("Globalize duration Pipe", () => {
+    const pipeFactory = (mock: ChangeDetectorRef) => new GlobalizeDurationPipe(globalizeService, cultureService, mock);
+    generateTests(pipeFactory, 'de', 0, globalizeService, globalizeService.formatDuration, 'constant', { style: 'short' }, { style: 'constant' }, { style: 'long' });
 });

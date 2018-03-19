@@ -16,6 +16,7 @@
     <TypeScriptToolsVersion>2.7</TypeScriptToolsVersion>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -59,6 +60,7 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\pipes\globalize-number.pipe.ts" />
     <TypeScriptCompile Include="src\pipes\globalize-datetime.pipe.ts" />
+    <TypeScriptCompile Include="src\pipes\globalize-duration.pipe.ts" />
     <TypeScriptCompile Include="src\pipes\globalize-time.pipe.ts" />
     <TypeScriptCompile Include="src\pipes\globalize-date.pipe.ts">
       <SubType>Code</SubType>
@@ -86,6 +88,7 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="test\services\culture-service.spec.ts" />
+    <TypeScriptCompile Include="test\services\duration.spec.ts" />
     <TypeScriptCompile Include="test\services\numbers.spec.ts" />
     <TypeScriptCompile Include="test\services\dates.spec.ts" />
     <TypeScriptCompile Include="test\services\load-globalize-data.ts">

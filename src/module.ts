@@ -7,6 +7,7 @@ import { GlobalizeCurrencyPipe } from './pipes/globalize-currency.pipe';
 import { GlobalizeNumberPipe } from './pipes/globalize-number.pipe';
 import { GlobalizeDayPipe } from './pipes/globalize-day.pipe';
 import { GlobalizeMonthPipe } from './pipes/globalize-month.pipe';
+import { GlobalizeDurationPipe } from './pipes/globalize-duration.pipe';
 import { GlobalizeDirectionDirective } from './directives/globalize-direction.directive';
 
 import { CANG_CULTURE_SERVICE, 
@@ -41,6 +42,7 @@ export * from './services/current-culture.service';
         GlobalizeNumberPipe,
         GlobalizeMonthPipe,
         GlobalizeDayPipe,
+        GlobalizeDurationPipe,
         GlobalizeDirectionDirective
     ],
     exports: [
@@ -51,6 +53,7 @@ export * from './services/current-culture.service';
         GlobalizeNumberPipe,
         GlobalizeMonthPipe,
         GlobalizeDayPipe,
+        GlobalizeDurationPipe,
         GlobalizeDirectionDirective
     ]
 })

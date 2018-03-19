@@ -16,12 +16,33 @@ export const globalizeStatic = ((Globalize: GlobalizeStatic): GlobalizeStatic =>
 
 export { ICalendarService } from './calendar.service';
 
+export interface DurationFormatOptions {
+    style?: 'constant' | 'short' | 'long';
+    pattern?: string;
+}
+
+interface NumberFormatInfo {
+    zeroChar: string;
+    plusSign: string;
+    minusSign: string;
+    timeSeparator: string;
+    decimalSeperator: string;
+    groupSeperator: string;
+}
+
 /**
  * Interface for number and date formatting and parsing.
  * This can be provided via Angular dependency injection.
  * In none is provided, a default one is used.
  */
 export interface IGlobalizationService {
+    formatDuration(val: null, options?: DurationFormatOptions | undefined): null;
+    formatDuration(val: undefined, options?: DurationFormatOptions | undefined): undefined;
+    formatDuration(val: number, options?: DurationFormatOptions | undefined): string;
+    formatDuration(val: null, locale: string, options?: DurationFormatOptions | undefined): null;
+    formatDuration(val: undefined, locale: string, options?: DurationFormatOptions | undefined): undefined;
+    formatDuration(val: number, locale: string, options?: DurationFormatOptions | undefined): string;
+
     parseDate(val: null, options?: DateFormatterOptions | undefined): null;
     parseDate(val: undefined, options?: DateFormatterOptions | undefined): undefined;
     parseDate(val: string, options?: DateFormatterOptions | undefined): Date;
@@ -85,7 +106,8 @@ export class DefaultGlobalizationService implements IGlobalizationService {
     private static readonly dateParsers: { [key: string]: (n: string) => Date } = { };
     private static readonly numberFormatters: { [key: string]: (n: number) => string } = { };
     private static readonly currencyFormatters: { [key: string]: (n: number) => string } = { };
-    private static readonly dateFormatters: { [key: string]: (n: Date) => string } = { };
+    private static readonly dateFormatters: { [key: string]: (n: Date) => string } = {};
+    private static readonly numberFormatInfos: { [key: string]: NumberFormatInfo } = {};
 
     private readonly globalize: GlobalizeStatic;
 
@@ -126,7 +148,218 @@ export class DefaultGlobalizationService implements IGlobalizationService {
         return parser(val);
     }
 
-    private formatNumberInternal(val: number, locale: string, options: NumberFormatterOptions): string {
+    private getNumberFormatInfo(locale: string): NumberFormatInfo {
+        let info = DefaultGlobalizationService.numberFormatInfos[locale];
+        if (!info) {
+            const globalizeInstance = this.getGlobalizeInstance(locale);
+            const cldr = globalizeInstance.cldr;
+            const system = cldr.main(['numbers', 'defaultNumberingSystem']) as string;
+            const symbols = cldr.main(['numbers', 'symbols-numberSystem-' + system]) as { [key: string]: string };
+            const formatter = this.getNumberFormatter(locale, { style: 'decimal' });
+            info = {
+                decimalSeperator: symbols['decimal'],
+                groupSeperator: symbols['group'],
+                minusSign: symbols['minusSign'],
+                plusSign: symbols['plusSign'],
+                zeroChar: formatter(0),
+                timeSeparator: ':'
+            };
+            DefaultGlobalizationService.numberFormatInfos[locale] = info;
+        }
+        return info;
+    }
+
+    private formatDurationInternal(val: number, locale: string, options: DurationFormatOptions): string {
+        options = options || { style: 'short' };
+        let pattern = options.pattern;
+        if (!pattern) {
+            switch (options.style) {
+                case 'long':
+                    pattern = "[-][d:]hh:mm:ss[.fff]";
+                    break;
+                case 'short':
+                    pattern = "[-][d:]h:mm[:ss[.FFF]]";
+                    break;
+                case 'constant':
+                    pattern = "[-]d:hh:mm:ss.fff";
+                    break;
+            }
+        }
+
+        let formatter = this.getNumberFormatter(locale, { style: 'decimal' } );
+        const info = this.getNumberFormatInfo(locale);
+
+        const negative = val < 0;
+        val = negative ? -val : val;
+        const days = Math.floor(val / 86400000);
+        val = val % 86400000;
+        const hours = Math.floor(val / 3600000);
+        val = val % 3600000;
+        const minutes = Math.floor(val / 60000);
+        val = val % 60000;
+        const seconds = Math.floor(val / 1000);
+        const milliseconds = Math.round(val % 1000);
+
+        function countRepeat(s: string, index: number): number {
+            let count = 0;
+            for (let i = index; i < s.length; i++) {
+                if (s[i] !== s[index]) {
+                    break;
+                }
+                count++;
+            }
+            return count;
+        }
+
+        function formatNumber(v: number, minLength: number): string {
+            let res = formatter(v);
+            while (res.length < minLength) {
+                res = info.zeroChar + res;
+            }
+            return res;
+        }
+
+        function findEndQuote(s: string, index: number): number {
+            let count = 1;
+            for (let i = index + 1; i < s.length; i++) {
+                count++;
+                if (s[i] === s[index]) {
+                    return count;
+                }
+            }
+            throw `Invalid`;
+        }
+
+        function findSubPatternEnd(s: string, index: number): number {
+            let count = 1;
+            let nesting = 1;
+            for (let i = index + 1; i < s.length; i++) {
+                count++;
+                if (s[i] === '[') {
+                    nesting++;
+                }
+                if (s[i] === ']') {
+                    nesting--;
+                }
+                if (nesting < 0)
+                    throw `Invalid`;
+                if (nesting === 0)
+                    return count;
+            }
+            throw `Invalid`;
+        }
+
+        function formatPart(sub: string): [boolean, string] {
+            let result = '';
+            let hasValue = false;
+            let tokenLen: number;
+            for (let i = 0; i < sub.length; i += tokenLen) {
+                const ch = sub[i];
+                tokenLen = 1;
+                switch (ch) {
+                    case 'd':
+                        tokenLen = countRepeat(sub, i);
+                        if (tokenLen > 8) {
+                            throw `Invalid`;
+                        }
+                        hasValue = hasValue || days !== 0;
+                        result += formatNumber(days, tokenLen);
+                        break;
+                    case 'h':
+                        tokenLen = countRepeat(sub, i);
+                        if (tokenLen > 2) {
+                            throw `Invalid`;
+                        }
+                        hasValue = hasValue || hours !== 0;
+                        result += formatNumber(hours, tokenLen);
+                        break;
+                    case 'm':
+                        tokenLen = countRepeat(sub, i);
+                        if (tokenLen > 2) {
+                            throw `Invalid`;
+                        }
+                        hasValue = hasValue || minutes !== 0;
+                        result += formatNumber(minutes, tokenLen);
+                        break;
+                    case 's':
+                        tokenLen = countRepeat(sub, i);
+                        if (tokenLen > 2) {
+                            throw `Invalid`;
+                        }
+                        hasValue = hasValue || seconds !== 0;
+                        result += formatNumber(seconds, tokenLen);
+                        break;
+                    case 'f':
+                        tokenLen = countRepeat(sub, i);
+                        if (tokenLen > 3) {
+                            throw `Invalid`;
+                        }
+                        const msPart = Math.round(milliseconds / 1000 * Math.pow(10, tokenLen));
+                        hasValue = hasValue || msPart !== 0;
+                        result += formatNumber(msPart, tokenLen);
+                        break;
+                    case 'F':
+                        tokenLen = countRepeat(sub, i);
+                        if (tokenLen > 3) {
+                            throw `Invalid`;
+                        }
+                        const msMin = Math.round(milliseconds / 1000 * Math.pow(10, tokenLen));
+                        let s = formatNumber(msMin, tokenLen);
+                        while (s.length > 0 && s[s.length - 1] === info.zeroChar) {
+                            s = s.substr(0, s.length - 1);
+                        }
+                        hasValue = hasValue || s.length !== 0;
+                        result += s;
+                        break;
+                    case '\'':
+                    case '\"':
+                        tokenLen = findEndQuote(sub, i);
+                        result += sub.substr(i + 1, tokenLen - 2);
+                        break;
+                    case '\\':
+                        if (sub.length < i + 2) {
+                            throw `Invalid`;
+                        }
+                        tokenLen = 2;
+                        result += sub[i + 1];
+                        break;
+                    case '[':
+                        tokenLen = findSubPatternEnd(sub, i);
+                        let [h, r] = formatPart(sub.substr(i + 1, tokenLen - 2));
+                        hasValue = hasValue || h;
+                        if (h) {
+                            result += r;
+                        }
+                        break;
+                    case '-':
+                    case '+':
+                        tokenLen = 1;
+                        hasValue = hasValue || negative;
+                        result += negative ? info.minusSign : info.plusSign;
+                        break;
+                    case '.':
+                        result += info.decimalSeperator;
+                        break;
+                    case ':':
+                        result += info.timeSeparator;
+                        break;
+                    default:
+                        throw `Invalid`;
+                }
+            }
+            return [hasValue, result];
+        }
+        try {
+            let [h, r] = formatPart(pattern);
+            return r;
+        } catch (e) {
+            if (e === 'Invalid') {
+                throw `Invalid duration format '${pattern}'`
+            }
+        }
+    }
+
+    private getNumberFormatter(locale: string, options: NumberFormatterOptions): (v: number) => string {
         let key = DefaultGlobalizationService.getNumberFormatterKey(locale, options);
         let formatter = DefaultGlobalizationService.numberFormatters[key];
         if (!formatter) {
@@ -134,6 +367,10 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             formatter = instance.numberFormatter(options);
             DefaultGlobalizationService.numberFormatters[key] = formatter;
         }
+        return formatter;
+    }
+    private formatNumberInternal(val: number, locale: string, options: NumberFormatterOptions): string {
+        const formatter = this.getNumberFormatter(locale, options);
         return formatter(val);
     }
 
@@ -201,6 +438,33 @@ export class DefaultGlobalizationService implements IGlobalizationService {
         return key;
     }
 
+    formatDuration(val: null, options?: DurationFormatOptions | undefined): null;
+    formatDuration(val: undefined, options?: DurationFormatOptions | undefined): undefined;
+    formatDuration(val: number, options?: DurationFormatOptions | undefined): string;
+    formatDuration(val: null, locale: string, options?: DurationFormatOptions | undefined): null;
+    formatDuration(val: undefined, locale: string, options?: DurationFormatOptions | undefined): undefined;
+    formatDuration(val: number, locale: string, options?: DurationFormatOptions | undefined): string;
+    formatDuration(val: number | null | undefined, localeOrOptions?: string | DurationFormatOptions | undefined, options?: DurationFormatOptions | undefined): string | null | undefined {
+        if (val === null) {
+            return null;
+        }
+        if (val === undefined) {
+            return undefined;
+        }
+
+        let locale: string;
+        if (typeof localeOrOptions === 'string' || options) {
+            if (localeOrOptions && typeof (localeOrOptions) !== 'string') {
+                throw `Invalid locale ${locale}`;
+            }
+            locale = (localeOrOptions as string) || this.cultureService.currentCulture;
+        } else {
+            locale = this.cultureService.currentCulture;
+            options = localeOrOptions;
+        }
+        return this.formatDurationInternal(val, locale, options || undefined);
+    }
+
     parseDate(val: null, options?: DateFormatterOptions | undefined): null;
     parseDate(val: undefined, options?: DateFormatterOptions | undefined): undefined;
     parseDate(val: string, options?: DateFormatterOptions | undefined): Date;
@@ -216,7 +480,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
         }
         let locale: string;
         if (typeof localeOrOptions === 'string' || options) {
-            if (locale && typeof (localeOrOptions) !== 'string') {
+            if (localeOrOptions && typeof (localeOrOptions) !== 'string') {
                 throw `Invalid locale ${locale}`;
             }
             locale = (localeOrOptions as string) || this.cultureService.currentCulture;
@@ -242,7 +506,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
         }
         let locale: string;
         if (typeof localeOrOptions === 'string' || options) {
-            if (locale && typeof (localeOrOptions) !== 'string') {
+            if (localeOrOptions && typeof (localeOrOptions) !== 'string') {
                 throw `Invalid locale ${locale}`;
             }
             locale = (localeOrOptions as string) || this.cultureService.currentCulture;
@@ -268,7 +532,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
         }
         let locale: string;
         if (typeof localeOrOptions === 'string' || options) {
-            if (locale && typeof (localeOrOptions) !== 'string') {
+            if (localeOrOptions && typeof (localeOrOptions) !== 'string') {
                 throw `Invalid locale ${locale}`;
             }
             locale = (localeOrOptions as string) || this.cultureService.currentCulture;
@@ -294,7 +558,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
         }
         let locale: string;
         if (typeof localeOrOptions === 'string' || options) {
-            if (locale && typeof (localeOrOptions) !== 'string') {
+            if (localeOrOptions && typeof (localeOrOptions) !== 'string') {
                 throw `Invalid locale ${locale}`;
             }
             locale = (localeOrOptions as string) || this.cultureService.currentCulture;
@@ -320,7 +584,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
         }
         let locale: string;
         if (typeof localeOrOptions === 'string' || options) {
-            if (locale && typeof (localeOrOptions) !== 'string') {
+            if (localeOrOptions && typeof (localeOrOptions) !== 'string') {
                 throw `Invalid locale ${locale}`;
             }
             locale = (localeOrOptions as string) || this.cultureService.currentCulture;
