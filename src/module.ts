@@ -44,7 +44,7 @@ import { DateTimePickerDirective } from './directives/datetime-picker.directive'
         ],
     exports: [DatePickerComponent, DateRangePickerComponent, InputAddonDirective, DatePickerDirective, DateRangePickerDirective, TimePickerComponent, TimePickerDirective, DateTimePickerComponent, DateTimePickerDirective ],
     entryComponents: [InputAddonHostComponent, PopupComponent, TimePickerComponent, DatePickerComponent, DateRangePickerComponent, DateTimePickerComponent],
-    imports: [ GlobalizationServicesModule, GlobalizationModule, CommonModule, FormsModule ]
+    imports: [ GlobalizationModule, CommonModule, FormsModule ]
 })
 export class DatePickerModule {
 
