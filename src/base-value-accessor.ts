@@ -143,12 +143,12 @@ export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAcces
             this.parent.value = val;
             return;
         }
-        val = this.coerceValue(val);
-        if (this.compareValuesInternal(this._value, val)) {
+        const newVal = this.coerceValue(val);
+        if (this.compareValuesInternal(this._value, newVal)) {
             return;
         }
-        this._value = val;
-        this.raiseOnChange(val);
+        this._value = newVal;
+        this.raiseOnChange(newVal);
     }
 
     @Output() readonly valueChange: EventEmitter<any> = new EventEmitter<any>();

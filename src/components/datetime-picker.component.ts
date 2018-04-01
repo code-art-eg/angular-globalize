@@ -35,8 +35,11 @@ export class DateTimePickerComponent extends BaseDatePickerAccessor<IDateTimePic
     get dateValue(): Date {
         let d = this.value;
         if (d instanceof Date) {
-            d = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-            return d;
+            var newD = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+            if (newD.getFullYear() !== d.getFullYear()) {
+                newD.setFullYear(d.getFullYear());
+            }
+            return newD;
         }
         return null;
     }
@@ -44,6 +47,9 @@ export class DateTimePickerComponent extends BaseDatePickerAccessor<IDateTimePic
     set dateValue(val: Date) {
         if (val instanceof Date) {
             let d = new Date(val.getFullYear(), val.getMonth(), val.getDate());
+            if (d.getFullYear() !== val.getFullYear()) {
+                d.setFullYear(val.getFullYear());
+            }
             let oldVal = this.value;
             if (oldVal instanceof Date) {
                 d.setHours(oldVal.getHours());
