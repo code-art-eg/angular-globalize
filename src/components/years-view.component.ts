@@ -157,9 +157,8 @@ export class YearsViewComponent implements OnInit {
         if (num === 1) {
             return formatYear(this.globalizationService, year, this.locale);
         } else {
-            let from = formatYear(this.globalizationService, year, this.locale);
-            let to = formatYear(this.globalizationService, year + num - 1, this.locale);
-            return `${from} - ${to}`;
+            return formatYear(this.globalizationService, year, this.locale)
+                + ' - ' + formatYear(this.globalizationService, year + num - 1, this.locale);
         }
     }
 

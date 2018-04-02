@@ -80,11 +80,9 @@
     </Content>
     <Content Include="src\interfaces.ts" />
     <Content Include="src\util.ts" />
-    <Content Include="src\tsconfig.lib.json" />
     <Content Include="test\tsconfig.json">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\components\" />
@@ -167,7 +165,6 @@
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="gulpfile.js" />
     <Compile Include="playground\webpack.config.js" />
     <Compile Include="playground\webpack.config.vendor.js" />
   </ItemGroup>

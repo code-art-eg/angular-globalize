@@ -1,7 +1,7 @@
 ﻿import { Component, Inject, forwardRef, ViewChild, ElementRef, AfterViewInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseTimeValueAccessor } from "../base-time-value-accessor";
-import { CANG_GLOBALIZATION_SERVICE, CANG_CULTURE_SERVICE, ICultureService, IGlobalizationService, CANG_GLOBALIZE_STATIC } from "@code-art/angular-globalize";
+import { CANG_GLOBALIZATION_SERVICE, CANG_CULTURE_SERVICE, ICultureService, IGlobalizationService, globalizeStatic} from "@code-art/angular-globalize";
 import { formatTimeComponent, KEY_CODE } from '../util';
 import { Subscription } from "rxjs/Subscription";
 import { IComponentFocus } from "../interfaces";
@@ -39,8 +39,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
     private readonly valueSub: Subscription;
     focus: boolean = false;
 
-    constructor(@Inject(CANG_GLOBALIZE_STATIC) private readonly globalizeStatic: GlobalizeStatic,
-        @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+    constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
         @Inject(CANG_GLOBALIZATION_SERVICE) globalizeService: IGlobalizationService,
         @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
         super(cultureService, globalizeService, changeDetector);
@@ -141,11 +140,11 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
     }
 
     get am(): string {
-        return TimePickerComponent.getTimeZoneData(this.globalizeStatic, this.effectiveLocale).am;
+        return TimePickerComponent.getTimeZoneData(globalizeStatic, this.effectiveLocale).am;
     }
 
     get pm(): string {
-        return TimePickerComponent.getTimeZoneData(this.globalizeStatic, this.effectiveLocale).pm;
+        return TimePickerComponent.getTimeZoneData(globalizeStatic, this.effectiveLocale).pm;
     }
 
     get amPmMaxLength(): number {
@@ -153,7 +152,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
     }
 
     get twelveHours(): boolean {
-        return TimePickerComponent.getTimeZoneData(this.globalizeStatic, this.effectiveLocale).twelveHours;
+        return TimePickerComponent.getTimeZoneData(globalizeStatic, this.effectiveLocale).twelveHours;
     }
 
 
