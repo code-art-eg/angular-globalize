@@ -129,8 +129,7 @@ export class TypeConverterService implements ITypeConverterService {
             if (val === '') {
                 return null;
             }
-            let d = this.parseDate(val, locale);
-            return d;
+            return this.parseDate(val, locale);
         }
         if (val instanceof Date) {
             return val;

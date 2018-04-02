@@ -350,7 +350,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             return [hasValue, result];
         }
         try {
-            let [h, r] = formatPart(pattern);
+            let [, r] = formatPart(pattern);
             return r;
         } catch (e) {
             if (e === 'Invalid') {
@@ -612,8 +612,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             type = locale;
             locale = null;
         }
-        const calendar = this.getCalendar(locale);
-        return calendar.getMonthNames(type)[month];
+        return this.getCalendar(locale).getMonthNames(type)[month];
     }
 
     getDayName(day: undefined, locale?: string, type?: 'abbreviated' | 'short' | 'narrow' | 'wide'): undefined;
@@ -633,8 +632,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             type = locale;
             locale = null;
         }
-        const calendar = this.getCalendar(locale);
-        return calendar.getDayNames(type)[day];
+        return this.getCalendar(locale).getDayNames(type)[day];
     }
 
     getCalendar(locale?: string, calendarName?: string): ICalendarService {

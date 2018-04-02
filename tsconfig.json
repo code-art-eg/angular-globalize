@@ -11,10 +11,7 @@
     ],
     "target": "es5",
     "skipLibCheck": true,
-    "types": ["globalize", "node"],
-    "paths": {
-      "@code-art/angular-globalize": [ "module.ts" ]
-    }
+    "types": ["globalize", "node"]
   },
   "exclude": ["dist", "node_modules", "obj", "bin", "build", "playground", "test"]
 }

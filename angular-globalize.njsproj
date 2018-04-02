@@ -30,12 +30,11 @@
     </Content>
     <Content Include="playground\tsconfig.json" />
     <Content Include="LICENSE" />
-    <Content Include="src\tsconfig.lib.json" />
     <Content Include="test\tsconfig.json">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="tsconfig.json" />
     <Content Include="README.MD" />
+    <Content Include="tsconfig.json" />
     <TypeScriptCompile Include="playground\app.component.ts" />
     <TypeScriptCompile Include="playground\language-switch.component.html" />
     <TypeScriptCompile Include="playground\language-switch.component.ts">
@@ -115,9 +114,6 @@
     <Folder Include="test\services\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="gulpfile.js">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="playground\webpack.config.vendor.js" />
     <Compile Include="playground\webpack.config.js">
       <SubType>Code</SubType>

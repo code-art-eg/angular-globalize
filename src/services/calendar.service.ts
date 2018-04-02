@@ -62,10 +62,6 @@ export class GregorianCalendarService implements ICalendarService {
         if (month < 0 || month > 11) {
             throw `Invalid value for month. In Gregorian Calendar month can be from 0 to 11.`;
         }
-        if (month !== 1) {
-            return this.monthDays[month];
-        }
-        const isLeap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
-        return isLeap ? 29 : 28;
+        return month !== 1 ? this.monthDays[month] : (year % 400 || (year % 4 && !(year % 100)) ? 29 : 28);
     }
 }
