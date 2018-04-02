@@ -10,8 +10,9 @@ export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions> extends
 
     private static readonly maximumYear = 9999;
     private static readonly minimumYear = 0;
-    private static readonly defaultMaxDate = similarInLocal(createDate(BaseDateRangeAccessor.maximumYear, 11, 31));
-    private static readonly defaultMinDate = similarInLocal(createDate(BaseDateRangeAccessor.minimumYear, 0, 1));
+
+    private readonly defaultMaxDate: Date;
+    private readonly defaultMinDate: Date;
 
     private _rangeSelection: boolean = false;
     private _minDate: Date | null = null;
@@ -20,6 +21,8 @@ export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions> extends
     constructor(cultureService: ICultureService,
         protected readonly converterService: ITypeConverterService, @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
         super(cultureService, changeDetector);
+        this.defaultMinDate = similarInLocal(createDate(BaseDateRangeAccessor.minimumYear, 0, 1));
+        this.defaultMaxDate = similarInLocal(createDate(BaseDateRangeAccessor.maximumYear, 11, 31));
     }
 
     set rangeSelection(val: boolean) {
@@ -47,7 +50,7 @@ export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions> extends
         if (this.parent) {
             return this.parent.minDate;
         }
-        return this._minDate || BaseDateRangeAccessor.defaultMinDate;
+        return this._minDate || this.defaultMinDate;
     }
 
     @Input() set maxDate(val: Date | null) {
@@ -65,7 +68,7 @@ export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions> extends
         if (this.parent) {
             return this.parent.maxDate;
         }
-        return this._maxDate || BaseDateRangeAccessor.defaultMaxDate;
+        return this._maxDate || this.defaultMaxDate;
     }
 
     get selectionStart(): Date | null {
