@@ -30,10 +30,19 @@
     </Content>
     <Content Include="playground\tsconfig.json" />
     <Content Include="LICENSE" />
+    <Content Include="src\globalization-services.module.ts" />
+    <Content Include="src\globalization.module.ts" />
+    <Content Include="src\pipes\base-date-pipe.ts" />
+    <Content Include="src\pipes\base-numeric-pipe.ts" />
+    <Content Include="src\services\angular-default-provider.ts" />
+    <Content Include="src\services\cookie-locale-provider.ts" />
+    <Content Include="src\services\navigator-language-provider.ts" />
+    <Content Include="src\services\storage-locale-provider.ts" />
     <Content Include="test\tsconfig.json">
       <SubType>Code</SubType>
     </Content>
     <Content Include="README.MD" />
+    <Content Include="test\tslint.json" />
     <Content Include="tsconfig.json" />
     <TypeScriptCompile Include="playground\app.component.ts" />
     <TypeScriptCompile Include="playground\language-switch.component.html" />
@@ -107,9 +116,7 @@
     <Folder Include="src\directives\" />
     <Folder Include="test\" />
     <Folder Include="playground" />
-    <Folder Include="src" />
     <Folder Include="src\pipes\" />
-    <Folder Include="src\services" />
     <Folder Include="test\pipes\" />
     <Folder Include="test\services\" />
   </ItemGroup>

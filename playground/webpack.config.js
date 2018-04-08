@@ -36,11 +36,10 @@ module.exports = {
             moduleFilenameTemplate: path.relative(deployDir, '[resourcePath]') // Point sourcemap entries to the original file locations on disk
         }),
         new webpack.NamedModulesPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        
+        new webpack.HotModuleReplacementPlugin()
     ],
     devServer: {
         contentBase: './',
         hot: true
-    },
+    }
 }

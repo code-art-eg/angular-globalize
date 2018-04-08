@@ -1,14 +1,12 @@
-import { Input, Inject, Directive, ElementRef, Renderer2, OnDestroy } from "@angular/core";
-import { ICultureService, CANG_CULTURE_SERVICE } from "../services/current-culture.service";
+import { Directive, ElementRef, Inject, Input, OnDestroy, Renderer2 } from "@angular/core";
 import { Subscription } from "rxjs/Subscription";
-
+import { CANG_CULTURE_SERVICE, ICultureService } from "../services/current-culture.service";
 
 @Directive({
-    selector: '[caDirection]'
+    selector: "[caDirection]",
 })
 export class GlobalizeDirectionDirective implements OnDestroy {
 
-   
     private _rtlCssClass: string = null;
     private _ltrCssClass: string = null;
     private _isRtl: boolean;
@@ -16,8 +14,8 @@ export class GlobalizeDirectionDirective implements OnDestroy {
     private readonly sub: Subscription;
 
     constructor(@Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
-        @Inject(ElementRef) private readonly el: ElementRef,
-        @Inject(Renderer2) private readonly renderer: Renderer2
+                @Inject(ElementRef) private readonly el: ElementRef,
+                @Inject(Renderer2) private readonly renderer: Renderer2,
     ) {
         this.handleLocaleChange();
         this.sub = this.cultureService.cultureObservable.subscribe(() => {
@@ -25,7 +23,7 @@ export class GlobalizeDirectionDirective implements OnDestroy {
         });
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         this.sub.unsubscribe();
     }
 
@@ -63,7 +61,6 @@ export class GlobalizeDirectionDirective implements OnDestroy {
         return this._ltrCssClass;
     }
 
-
     @Input() set locale(val: string) {
         val = val || null;
         if (this._locale !== val) {
@@ -76,8 +73,8 @@ export class GlobalizeDirectionDirective implements OnDestroy {
         return this._locale;
     }
 
-    handleLocaleChange() {
-        const isrtl = this.cultureService.isRightToLeft(this._locale);
+    public handleLocaleChange(): void {
+        const isrtl: boolean = this.cultureService.isRightToLeft(this._locale);
         if (this._isRtl !== isrtl) { // initially this._isRtl will be undefined so this will always be true
             this._isRtl = isrtl;
             if (this._isRtl) {

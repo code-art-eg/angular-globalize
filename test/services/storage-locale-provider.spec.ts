@@ -1,26 +1,31 @@
-﻿import { StorageLocaleProvider, CANG_DEFAULT_LOCALE_KEY } from '../../src/module';
+﻿import { CANG_DEFAULT_LOCALE_KEY, StorageLocaleProvider } from "../../src/module";
 
-import { expect } from 'chai';
+import { expect } from "chai";
 
 describe("Storage Locale Provider", () => {
-    const testValue = 'en-GB';
-    const localStorage = global['localStorage'] as Storage;
-    const sessionStorage = global['sessionStorage'] as Storage;
+    const testValue = "en-GB";
+    const localStorageKey = "localStorage";
+    const sessionStorageKey = "sessionStorage";
+    const localStorage = global[localStorageKey] as Storage;
+    const sessionStorage = global[sessionStorageKey] as Storage;
 
     it("can write", () => {
         const service = new StorageLocaleProvider();
         expect(service.canWrite).true;
     });
 
-    function testGetAndSet(service: StorageLocaleProvider, usedStorage: Storage, nonUsedStorage: Storage, key: string): void {
+    function testGetAndSet(service: StorageLocaleProvider,
+                           usedStorage: Storage,
+                           nonUsedStorage: Storage,
+                           key: string): void {
         usedStorage.clear();
         nonUsedStorage.clear();
-        
+
         expect(usedStorage.length).equals(0);
         expect(nonUsedStorage.length).equals(0);
-        
+
         service.locale = testValue;
-        
+
         expect(service.locale).equals(testValue);
         expect(usedStorage.getItem(key)).equals(testValue);
         expect(usedStorage.length).equals(1);
@@ -29,8 +34,8 @@ describe("Storage Locale Provider", () => {
         service.locale = null;
         expect(usedStorage.length).equals(0);
         expect(nonUsedStorage.length).equals(0);
-        
-        service.locale = '';
+
+        service.locale = "";
         expect(usedStorage.length).equals(0);
         expect(nonUsedStorage.length).equals(0);
 
@@ -50,25 +55,25 @@ describe("Storage Locale Provider", () => {
     });
 
     it("get and set works local storage non default key", () => {
-        const key = 'testKey';
+        const key = "testKey";
         const service = new StorageLocaleProvider(key);
         testGetAndSet(service, localStorage, sessionStorage, key);
     });
 
     it("get and set works session storage non default key", () => {
-        const key = 'testKey';
+        const key = "testKey";
         const service = new StorageLocaleProvider(key, true);
         testGetAndSet(service, sessionStorage, localStorage, key);
     });
 
     it("works when local storage is undefined", () => {
-        global['localStorage'] = undefined;
-        global['sessionStorage'] = undefined;
+        global[localStorageKey] = undefined;
+        global[sessionStorageKey] = undefined;
         const service = new StorageLocaleProvider();
         expect(service.locale).null;
         service.locale = testValue;
         expect(service.locale).null;
-        global['localStorage'] = localStorage;
-        global['sessionStorage'] = sessionStorage;
+        global[localStorageKey] = localStorage;
+        global[sessionStorageKey] = sessionStorage;
     });
 });

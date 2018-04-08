@@ -1,68 +1,71 @@
-﻿import { ChangeDetectorRef, PipeTransform, WrappedValue } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
-import { Observable } from 'rxjs/Observable';
+﻿import { ChangeDetectorRef, PipeTransform, WrappedValue } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import { ReplaySubject } from "rxjs/ReplaySubject";
+import { Subject } from "rxjs/Subject";
 
-import { IGlobalizationService, ICultureService, DefaultGlobalizationService, CurrentCultureService } from '../../src/module';
-import { loadedGlobalize } from '../services/load-globalize-data';
-import { GlobalizeDatePipe } from '../../src/pipes/globalize-date.pipe';
-import { GlobalizeTimePipe } from '../../src/pipes/globalize-time.pipe';
-import { GlobalizeDateTimePipe } from '../../src/pipes/globalize-datetime.pipe';
-import { GlobalizeNumberPipe } from '../../src/pipes/globalize-number.pipe';
-import { GlobalizeCurrencyPipe } from '../../src/pipes/globalize-currency.pipe';
-import { GlobalizeDayPipe } from '../../src/pipes/globalize-day.pipe';
-import { GlobalizeMonthPipe } from '../../src/pipes/globalize-month.pipe';
-import { GlobalizeDurationPipe } from '../../src/pipes/globalize-duration.pipe';
+import { CurrentCultureService, DefaultGlobalizationService } from "../../src/module";
+import { GlobalizeCurrencyPipe } from "../../src/pipes/globalize-currency.pipe";
+import { GlobalizeDatePipe } from "../../src/pipes/globalize-date.pipe";
+import { GlobalizeDateTimePipe } from "../../src/pipes/globalize-datetime.pipe";
+import { GlobalizeDayPipe } from "../../src/pipes/globalize-day.pipe";
+import { GlobalizeDurationPipe } from "../../src/pipes/globalize-duration.pipe";
+import { GlobalizeMonthPipe } from "../../src/pipes/globalize-month.pipe";
+import { GlobalizeNumberPipe } from "../../src/pipes/globalize-number.pipe";
+import { GlobalizeTimePipe } from "../../src/pipes/globalize-time.pipe";
+import { loadedGlobalize } from "../services/load-globalize-data";
 
+import { expect } from "chai";
 
-import { expect } from 'chai';
-
-const cultureService = new CurrentCultureService(['en-GB', 'de'], [{ locale: 'en-GB', canWrite: false }]);
+const cultureService = new CurrentCultureService(["en-GB", "de"], [{ locale: "en-GB", canWrite: false }]);
 const globalizeService = new DefaultGlobalizationService(loadedGlobalize, cultureService);
 
 class ChangeDetectorMock extends ChangeDetectorRef {
-    
-    private readonly changeSubject: ReplaySubject<number>;
+
     public readonly changeObservable: Observable<number>;
+    private readonly changeSubject: ReplaySubject<number>;
     private markCountInternal: number;
-    
-    public get markCount(): number {
-        return this.markCountInternal;
-    }
-    
-    markForCheck(): void {
-        this.markCountInternal++;
-        this.changeSubject.next(this.markCountInternal);
-    }
 
-    detach(): void {
-    }
-
-    detectChanges(): void {
-    }
-
-    checkNoChanges(): void {
-    }
-
-    reattach(): void {
-    }
-    
     constructor() {
         super();
         this.markCountInternal = 0;
         this.changeSubject = new ReplaySubject(1);
         this.changeObservable = this.changeSubject.asObservable();
     }
+
+    public get markCount(): number {
+        return this.markCountInternal;
+    }
+
+    public markForCheck(): void {
+        this.markCountInternal++;
+        this.changeSubject.next(this.markCountInternal);
+    }
+
+    public detach(): void {
+        //
+    }
+
+    public detectChanges(): void {
+        //
+    }
+
+    public checkNoChanges(): void {
+        //
+    }
+
+    public reattach(): void {
+        //
+    }
 }
 
 function pipeIt(expection: string,
-    pipeFactory: (ref: ChangeDetectorRef) => PipeTransform,
-    expectedMarkCount: number,
-    expectedValue: any,
-    callback: () => void,
-    value: any,
-    moreArgs: any[],
-    ...args: any[]
+                pipeFactory: (ref: ChangeDetectorRef) => PipeTransform,
+                expectedMarkCount: number,
+                expectedValue: any,
+                callback: () => void,
+                value: any,
+                moreArgs: any[],
+                ...args: any[],
 ) {
     it(expection, () => {
         const mock = new ChangeDetectorMock();
@@ -88,17 +91,15 @@ function pipeIt(expection: string,
 function generateTests(
     pipeFactory: (ref: ChangeDetectorRef) => PipeTransform,
     lang: string,
-    testVal: any, 
-    globalizeService: IGlobalizationService, 
-    formatMethod: Function,
+    testVal: any,
+    formatMethod: (...args) => string,
     style: string,
     defaultOptions: any,
     styleOptions: any,
     options: any,
-    ...args: any[]
+    ...args: any[],
     ): void {
 
-    
     pipeIt("transforms null to null", pipeFactory, 0, null, null, null, args);
     pipeIt("transforms null:lang to null", pipeFactory, 0, null, null, null, args, lang);
     pipeIt("transforms null:lang:style to null", pipeFactory, 0, null, null, null, args, lang, style);
@@ -108,8 +109,10 @@ function generateTests(
 
     pipeIt("transforms undefined to undefined", pipeFactory, 0, undefined, null, undefined, args);
     pipeIt("transforms undefined:lang to undefined", pipeFactory, 0, undefined, null, undefined, args, lang);
-    pipeIt("transforms undefined:lang:style to undefined", pipeFactory, 0, undefined, null, undefined, args, lang, style);
-    pipeIt("transforms undefined:lang:opt to undefined", pipeFactory, 0, undefined, null, undefined, args, lang, options);
+    pipeIt("transforms undefined:lang:style to undefined",
+        pipeFactory, 0, undefined, null, undefined, args, lang, style);
+    pipeIt("transforms undefined:lang:opt to undefined",
+        pipeFactory, 0, undefined, null, undefined, args, lang, options);
     pipeIt("transforms undefined:style to undefined", pipeFactory, 0, undefined, null, undefined, args, style);
     pipeIt("transforms undefined:opt to undefined", pipeFactory, 0, undefined, null, undefined, args, options);
 
@@ -135,50 +138,60 @@ function generateTests(
 
     pipeIt("transforms obs to string", pipeFactory, 1, defVal, () => subject.next(testVal), obs, args);
     pipeIt("transforms obs:lang to string", pipeFactory, 1, langVal, () => subject.next(testVal), obs, args, lang);
-    pipeIt("transforms obs:lang:style to string", pipeFactory, 1, langStyleVal, () => subject.next(testVal), obs, args, lang, style);
-    pipeIt("transforms obs:lang:opt to string", pipeFactory, 1, langOptionsVal, () => subject.next(testVal), obs, args, lang, options);
+    pipeIt("transforms obs:lang:style to string", pipeFactory,
+        1, langStyleVal, () => subject.next(testVal), obs, args, lang, style);
+    pipeIt("transforms obs:lang:opt to string", pipeFactory,
+        1, langOptionsVal, () => subject.next(testVal), obs, args, lang, options);
     pipeIt("transforms obs:style to string", pipeFactory, 1, styleVal, () => subject.next(testVal), obs, args, style);
     pipeIt("transforms obs:opt to string", pipeFactory, 1, optionsVal, () => subject.next(testVal), obs, args, options);
 }
 
-
 describe("Globalize Date Pipe", () => {
     const pipeFactory = (mock: ChangeDetectorRef) => new GlobalizeDatePipe(globalizeService, cultureService, mock);
-    generateTests(pipeFactory, 'de', new Date(), globalizeService, globalizeService.formatDate, 'full', { date: 'short' }, { date: 'full' }, { date: 'long' });
+    generateTests(pipeFactory, "de",
+        new Date(), globalizeService.formatDate, "full",
+        { date: "short" }, { date: "full" }, { date: "long" });
 });
 
 describe("Globalize DateTime Pipe", () => {
     const pipeFactory = (mock: ChangeDetectorRef) => new GlobalizeDateTimePipe(globalizeService, cultureService, mock);
-    generateTests(pipeFactory, 'de', new Date(), globalizeService, globalizeService.formatDate, 'full', { datetime: 'short' }, { datetime: 'full' }, { datetime: 'long' });
+    generateTests(pipeFactory, "de",
+        new Date(), globalizeService.formatDate,
+        "full", { datetime: "short" }, { datetime: "full" }, { datetime: "long" });
 });
 
 describe("Globalize Time Pipe", () => {
     const pipeFactory = (mock: ChangeDetectorRef) => new GlobalizeTimePipe(globalizeService, cultureService, mock);
-    generateTests(pipeFactory, 'de', new Date(), globalizeService, globalizeService.formatDate, 'full', { time: 'short' }, { time: 'full' }, { time: 'long' });
+    generateTests(pipeFactory, "de",
+        new Date(), globalizeService.formatDate,
+        "full", { time: "short" }, { time: "full" }, { time: "long" });
 });
 
 describe("Globalize Number Pipe", () => {
     const pipeFactory = (mock: ChangeDetectorRef) => new GlobalizeNumberPipe(globalizeService, cultureService, mock);
-    generateTests(pipeFactory, 'de', 1234.56, globalizeService, globalizeService.formatNumber, 'decimal', { style: 'decimal' }, { style: 'decimal' }, { style: 'decimal' });
+    generateTests(pipeFactory, "de", 1234.56,
+        globalizeService.formatNumber, "decimal", { style: "decimal" }, { style: "decimal" }, { style: "decimal" });
 });
 
 describe("Globalize Currency Pipe", () => {
     const pipeFactory = (mock: ChangeDetectorRef) => new GlobalizeCurrencyPipe(globalizeService, cultureService, mock);
-    generateTests(pipeFactory, 'de', 1234.56, globalizeService, globalizeService.formatCurrency, 'symbol', { style: 'symbol' }, { style: 'symbol' }, { style: 'symbol' }, 'EUR');
+    generateTests(pipeFactory, "de", 1234.56,
+        globalizeService.formatCurrency, "symbol", { style: "symbol" },
+        { style: "symbol" }, { style: "symbol" }, "EUR");
 });
-
 
 describe("Globalize Day Pipe", () => {
     const pipeFactory = (mock: ChangeDetectorRef) => new GlobalizeDayPipe(globalizeService, cultureService, mock);
-    generateTests(pipeFactory, 'de', 0, globalizeService, globalizeService.getDayName, 'wide', 'wide', 'wide', 'wide');
+    generateTests(pipeFactory, "de", 0, globalizeService.getDayName, "wide", "wide", "wide", "wide");
 });
 
 describe("Globalize Month Pipe", () => {
     const pipeFactory = (mock: ChangeDetectorRef) => new GlobalizeMonthPipe(globalizeService, cultureService, mock);
-    generateTests(pipeFactory, 'de', 0, globalizeService, globalizeService.getMonthName, 'wide', 'wide', 'wide', 'wide');
+    generateTests(pipeFactory, "de", 0, globalizeService.getMonthName, "wide", "wide", "wide", "wide");
 });
 
 describe("Globalize duration Pipe", () => {
     const pipeFactory = (mock: ChangeDetectorRef) => new GlobalizeDurationPipe(globalizeService, cultureService, mock);
-    generateTests(pipeFactory, 'de', 0, globalizeService, globalizeService.formatDuration, 'constant', { style: 'short' }, { style: 'constant' }, { style: 'long' });
+    generateTests(pipeFactory, "de", 0,
+        globalizeService.formatDuration, "constant", { style: "short" }, { style: "constant" }, { style: "long" });
 });

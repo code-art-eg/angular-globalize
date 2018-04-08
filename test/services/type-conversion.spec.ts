@@ -1,58 +1,60 @@
-﻿import { IGlobalizationService, ICultureService, DefaultGlobalizationService, TypeConverterService } from '../../src/module';
-import { loadedGlobalize } from './load-globalize-data';
-import { throws } from 'assert';
-import { expect } from 'chai';
-const chai: Chai.ChaiStatic = require('chai');
-chai.use(require('chai-datetime'));
+﻿import { throws } from "assert";
+import { expect } from "chai";
+import { DefaultGlobalizationService, ICultureService, TypeConverterService } from "../../src/module";
+import { loadedGlobalize } from "./load-globalize-data";
+// tslint:disable-next-line
+const chai: Chai.ChaiStatic = require("chai");
+// tslint:disable-next-line
+chai.use(require("chai-datetime"));
 
 describe("Conversion Service", () => {
 
     const mockCultureService: ICultureService = {
-        currentCulture: 'en-GB',
         cultureObservable: null,
-        isRightToLeft: null
+        currentCulture: "en-GB",
+        isRightToLeft: null,
     };
     const globalizeService = new DefaultGlobalizationService(loadedGlobalize, mockCultureService);
     const typeConverter = new TypeConverterService(globalizeService);
 
     it("converts null to string", () => {
-        expect(typeConverter.convertToString(null)).equal('');
+        expect(typeConverter.convertToString(null)).equal("");
     });
 
     it("converts undefined to string", () => {
-        expect(typeConverter.convertToString(undefined)).equal('');
+        expect(typeConverter.convertToString(undefined)).equal("");
     });
 
     it("converts number to string", () => {
-        expect(typeConverter.convertToString(123)).equal('123');
+        expect(typeConverter.convertToString(123)).equal("123");
     });
 
     it("converts true to string", () => {
-        expect(typeConverter.convertToString(true)).equal('true');
+        expect(typeConverter.convertToString(true)).equal("true");
     });
 
     it("converts false to string", () => {
-        expect(typeConverter.convertToString(false)).equal('false');
+        expect(typeConverter.convertToString(false)).equal("false");
     });
 
     it("converts date to string", () => {
-        expect(typeConverter.convertToString(new Date(2018, 1, 18))).equal('18/02/2018, 00:00');
+        expect(typeConverter.convertToString(new Date(2018, 1, 18))).equal("18/02/2018, 00:00");
     });
 
     it("converts date to string locale", () => {
-        expect(typeConverter.convertToString(new Date(2018, 1, 18), 'de')).equal('18.02.18, 00:00');
+        expect(typeConverter.convertToString(new Date(2018, 1, 18), "de")).equal("18.02.18, 00:00");
     });
 
     it("converts string to string", () => {
-        const test = 'sss';
+        const test = "sss";
         expect(typeConverter.convertToString(test)).equal(test);
     });
 
     it("converts object to string", () => {
         const obj = {
-            toString: (): string => 'x'
+            toString: (): string => "x",
         };
-        expect(typeConverter.convertToString(obj)).equal('x');
+        expect(typeConverter.convertToString(obj)).equal("x");
     });
 
     it("converts null to boolean", () => {
@@ -77,10 +79,10 @@ describe("Conversion Service", () => {
     });
 
     it("converts string to boolean", () => {
-        expect(typeConverter.convertToBoolean('False')).false;
-        expect(typeConverter.convertToBoolean('true')).true;
-        expect(typeConverter.convertToBoolean('0')).false;
-        expect(typeConverter.convertToBoolean('1')).false;
+        expect(typeConverter.convertToBoolean("False")).false;
+        expect(typeConverter.convertToBoolean("true")).true;
+        expect(typeConverter.convertToBoolean("0")).false;
+        expect(typeConverter.convertToBoolean("1")).false;
     });
 
     it("fails to converts object to boolean ", () => {
@@ -115,22 +117,22 @@ describe("Conversion Service", () => {
 
     it("converts string to number", () => {
         const n = 123;
-        expect(typeConverter.convertToNumber('123')).equal(n);
+        expect(typeConverter.convertToNumber("123")).equal(n);
     });
 
     it("converts string to number locale", () => {
         const n = 123.2;
-        expect(typeConverter.convertToNumber('123,2', 'de')).equal(n);
+        expect(typeConverter.convertToNumber("123,2", "de")).equal(n);
     });
 
     it("converts number to string", () => {
         const n = 123;
-        expect(typeConverter.convertToString(n)).equal('123');
+        expect(typeConverter.convertToString(n)).equal("123");
     });
 
     it("converts number to string locale", () => {
         const n = 123.5;
-        expect(typeConverter.convertToString(n, 'de')).equal('123,5');
+        expect(typeConverter.convertToString(n, "de")).equal("123,5");
     });
 
     it("fails to converts object to number ", () => {
@@ -146,25 +148,24 @@ describe("Conversion Service", () => {
     });
 
     it("converts string to date", () => {
-        var d = new Date(2018, 1, 18, 20, 12);
-        expect(typeConverter.convertToDate('18/02/2018')).equalDate(d);
-        expect(typeConverter.convertToDate('18/02/2018, 20:12')).equalTime(d);
+        const d = new Date(2018, 1, 18, 20, 12);
+        expect(typeConverter.convertToDate("18/02/2018")).equalDate(d);
+        expect(typeConverter.convertToDate("18/02/2018, 20:12")).equalTime(d);
     });
 
     it("converts string to date locale", () => {
-        var d = new Date(2018, 1, 18, 20, 12);
-        expect(typeConverter.convertToDate('18.02.2018', 'de')).equalDate(d);
-        expect(typeConverter.convertToDate('18.02.18, 20:12', 'de')).equalTime(d);
-        expect(typeConverter.convertToDate('18.02.2018, 20:12:00', 'de')).equalTime(d);
+        const d = new Date(2018, 1, 18, 20, 12);
+        expect(typeConverter.convertToDate("18.02.2018", "de")).equalDate(d);
+        expect(typeConverter.convertToDate("18.02.18, 20:12", "de")).equalTime(d);
+        expect(typeConverter.convertToDate("18.02.2018, 20:12:00", "de")).equalTime(d);
     });
-    
+
     it("converts date to date", () => {
-        var d = new Date(2018, 1, 18);
+        const d = new Date(2018, 1, 18);
         expect(typeConverter.convertToDate(d)).equalTime(d);
     });
 
     it("fails to convert object to date", () => {
-        var d = new Date(2018, 1, 18);
         throws(() => typeConverter.convertToDate({}));
     });
 

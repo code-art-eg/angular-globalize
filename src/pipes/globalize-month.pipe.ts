@@ -1,18 +1,18 @@
-﻿import { BaseGlobalizePipe } from './base-globalize-pipe';
-import { Pipe, Inject, Injectable, ChangeDetectorRef } from '@angular/core';
+﻿import { ChangeDetectorRef, Inject, Injectable, Pipe } from "@angular/core";
+import { BaseGlobalizePipe } from "./base-globalize-pipe";
 
-import { CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from '../services/globalize.service';
-import { CANG_CULTURE_SERVICE, ICultureService } from '../services/current-culture.service';
+import { CANG_CULTURE_SERVICE, ICultureService } from "../services/current-culture.service";
+import { CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from "../services/globalize.service";
 
-type MonthFormat = 'abbreviated' | 'narrow' | 'wide';
+export type MonthFormat = "abbreviated" | "narrow" | "wide";
 
 @Injectable()
-@Pipe({ name: 'gmonth', pure: false })
-export class GlobalizeMonthPipe extends BaseGlobalizePipe<number, 'abbreviated' | 'narrow' | 'wide'> {
-    
+@Pipe({ name: "gmonth", pure: false })
+export class GlobalizeMonthPipe extends BaseGlobalizePipe<number, MonthFormat> {
+
      constructor(@Inject(CANG_GLOBALIZATION_SERVICE) globalizService: IGlobalizationService,
-        @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef,
+                 @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+                 @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef,
         ) {
         super(globalizService, cultureService, changeDetector);
     }
@@ -21,19 +21,19 @@ export class GlobalizeMonthPipe extends BaseGlobalizePipe<number, 'abbreviated' 
         return v1 === v2;
     }
 
-    protected optionsEqual(o1: 'abbreviated' | 'narrow' | 'wide' , o2: 'abbreviated' | 'narrow' | 'wide'): boolean {
+    protected optionsEqual(o1: MonthFormat , o2: MonthFormat): boolean {
         return o1 === o2;
     }
 
-    protected getDefaultOptions(): 'abbreviated' | 'narrow' | 'wide' {
-        return 'wide';
+    protected getDefaultOptions(): MonthFormat {
+        return "wide";
     }
 
-    protected stringToOptions(optionsString: string): 'abbreviated' | 'narrow' | 'wide' {
-        return optionsString as 'abbreviated' | 'narrow' | 'wide';
+    protected stringToOptions(optionsString: string): MonthFormat {
+        return optionsString as MonthFormat;
     }
 
-    protected convertValue(input: number, locale: string, options: 'abbreviated' | 'narrow' | 'wide'): string {
+    protected convertValue(input: number, locale: string, options: MonthFormat): string {
         return this.globalizService.getMonthName(input, locale, options);
     }
 }
