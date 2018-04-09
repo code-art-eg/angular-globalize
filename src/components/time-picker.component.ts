@@ -1,8 +1,12 @@
-﻿import { AfterViewInit, ChangeDetectorRef, Component, ElementRef,
-    forwardRef, Inject, OnDestroy, ViewChild } from "@angular/core";
+﻿import {
+    AfterViewInit, ChangeDetectorRef, Component, ElementRef,
+    forwardRef, Inject, OnDestroy, ViewChild,
+} from "@angular/core";
 import { NG_VALUE_ACCESSOR } from "@angular/forms";
-import { CANG_CULTURE_SERVICE, CANG_GLOBALIZATION_SERVICE,
-    globalizeStatic, ICultureService, IGlobalizationService} from "@code-art/angular-globalize";
+import {
+    CANG_CULTURE_SERVICE, CANG_GLOBALIZATION_SERVICE,
+    globalizeStatic, ICultureService, IGlobalizationService,
+} from "@code-art/angular-globalize";
 import { Subscription } from "rxjs/Subscription";
 import { BaseTimeValueAccessor } from "../base-time-value-accessor";
 import { IComponentFocus } from "../interfaces";
@@ -196,7 +200,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
             formatTimeComponent(this.globalizeService,
                 this.twelveHours ?
                     (this.hours === 0 || this.hours === 12 ? 12 : this.hours % 12)
-                        : this.hours, this.effectiveLocale);
+                    : this.hours, this.effectiveLocale);
     }
 
     set secondsText(val: string) {

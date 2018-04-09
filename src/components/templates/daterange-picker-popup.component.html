@@ -3,14 +3,14 @@
     <div class="picker-popup dropdown-menu show" *ngIf="isVisible"
          [ngClass]="{'orient-top': orientTop, 'orient-bottom': !orientTop, 'orient-left': !orientRight, 'orient-right': orientRight }">
         <ca-daterangepicker [minDate]="minDate"
-                       [maxDate]="maxDate"
-                       [homeButton]="homeButton"
-                       [resetButton]="resetButton"
-                       [locale]="effectiveLocale"
-                       [handleKeyboardEvents]="handleKeyboardEvents"
-                       [todayHighlight]="todayHighlight"
-                       [todayDate]="todayDate"
-                       [highlightDays]="highlightDays"
-                       [(value)]="value"></ca-daterangepicker>
+                            [maxDate]="maxDate"
+                            [homeButton]="homeButton"
+                            [resetButton]="resetButton"
+                            [locale]="effectiveLocale"
+                            [handleKeyboardEvents]="handleKeyboardEvents"
+                            [todayHighlight]="todayHighlight"
+                            [todayDate]="todayDate"
+                            [highlightDays]="highlightDays"
+                            [(value)]="value"></ca-daterangepicker>
     </div>
 </div>

@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Inject, Input } from "@angular/core";
-import { CANG_CULTURE_SERVICE, CANG_TYPE_CONVERTER_SERVICE,
-    ICultureService, ITypeConverterService } from "@code-art/angular-globalize";
+import {
+    CANG_CULTURE_SERVICE, CANG_TYPE_CONVERTER_SERVICE,
+    ICultureService, ITypeConverterService,
+} from "@code-art/angular-globalize";
 
 import { BaseDateRangeAccessor } from "./base-date-range-accessor";
 import { IDatePicker } from "./interfaces";

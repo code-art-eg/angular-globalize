@@ -1,5 +1,6 @@
 ﻿import { Component, EventEmitter, HostListener, Inject, Input, OnInit, Output } from "@angular/core";
-import { CANG_CULTURE_SERVICE,
+import {
+    CANG_CULTURE_SERVICE,
     CANG_GLOBALIZATION_SERVICE, ICultureService, IGlobalizationService } from "@code-art/angular-globalize";
 import { createDate, formatYear, IMonthYearSelection, KEY_CODE, NextPrevAction, twelveArray } from "../util";
 

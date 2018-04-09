@@ -31,7 +31,9 @@ export function applyMixins(derivedCtor: Function, ...baseCtors: Function[]) {
 }
 
 export function isPlainObject(val: any): boolean {
-    if (!val) { return false; }
+    if (!val) {
+        return false;
+    }
     return typeof val === "object"
         && val.constructor === Object;
 }

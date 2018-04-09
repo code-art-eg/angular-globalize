@@ -1,8 +1,12 @@
 ﻿import { Component, EventEmitter, HostListener, Inject, Input, OnInit, Output } from "@angular/core";
-import { CANG_CULTURE_SERVICE, CANG_GLOBALIZATION_SERVICE,
-    ICultureService, IGlobalizationService } from "@code-art/angular-globalize";
-import { addDays, createDate, dateInRange, formatYear,
-    IMonthYearSelection, KEY_CODE, NextPrevAction, sevenArray, sixArray } from "../util";
+import {
+    CANG_CULTURE_SERVICE, CANG_GLOBALIZATION_SERVICE,
+    ICultureService, IGlobalizationService,
+} from "@code-art/angular-globalize";
+import {
+    addDays, createDate, dateInRange, formatYear,
+    IMonthYearSelection, KEY_CODE, NextPrevAction, sevenArray, sixArray,
+} from "../util";
 
 @Component({
     selector: "ca-days-view",
@@ -39,8 +43,7 @@ export class DaysViewComponent implements OnInit {
     private _focusDate: Date;
 
     constructor(@Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
-                @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService,
-    ) {
+                @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService) {
         const date = createDate();
         this.month = date.getUTCMonth();
         this.year = date.getUTCFullYear();

@@ -2,14 +2,14 @@ import {
     ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, Directive, ElementRef, forwardRef, Inject,
     Injector, ViewContainerRef,
 } from "@angular/core";
-import {NG_VALUE_ACCESSOR} from "@angular/forms";
+import { NG_VALUE_ACCESSOR } from "@angular/forms";
 import {
     CANG_CULTURE_SERVICE, CANG_GLOBALIZATION_SERVICE, CANG_TYPE_CONVERTER_SERVICE, ICultureService,
     IGlobalizationService, ITypeConverterService,
 } from "@code-art/angular-globalize";
-import {BaseDatePickerComponent} from "../components/base-date-picker.component";
-import {DateRangePickerComponent} from "../components/date-range-picker.component";
-import {BaseDatePickerDirective} from "./base-date-picker.directive";
+import { BaseDatePickerComponent } from "../components/base-date-picker.component";
+import { DateRangePickerComponent } from "../components/date-range-picker.component";
+import { BaseDatePickerDirective } from "./base-date-picker.directive";
 
 @Directive({
     providers: [{

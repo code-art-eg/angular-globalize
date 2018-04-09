@@ -1,56 +1,55 @@
-﻿
-<table dir="ltr" class="time-picker">
+﻿<table dir="ltr" class="time-picker">
     <tbody>
-        <tr>
-            <td *ngIf="twelveHours && isRtl" (click)="switchAmPm()">
-                <span class="glyphicon glyphicon-chevron-up"></span>
-            </td>
-            <td (click)="hours = hours - 1">
-                <span class="glyphicon glyphicon-chevron-up"></span>
-            </td>
-            <td (click)="decreaseMinutes()">
-                <span class="glyphicon glyphicon-chevron-up"></span>
-            </td>
-            <td (click)="decreaseSeconds()" *ngIf="showSeconds">
-                <span class="glyphicon glyphicon-chevron-up"></span>
-            </td>
-            <td *ngIf="twelveHours && !isRtl" (click)="switchAmPm()">
-                <span class="glyphicon glyphicon-chevron-up"></span>
-            </td>
-        </tr>
-        <tr>
-            <td *ngIf="twelveHours && isRtl">
-                <input [(ngModel)]="amPmText" type="text" #amPmInput1 [attr.maxlength]="amPmMaxLength" />
-            </td>
-            <td>
-                <input [(ngModel)]="hoursText" type="text" #hoursInput maxlength="2" />
-            </td>
-            <td>
-                <input [(ngModel)]="minutesText" type="text" #minutesInput maxlength="2" />
-            </td>
-            <td *ngIf="showSeconds">
-                <input [(ngModel)]="secondsText" type="text" #secondsInput maxlength="2" />
-            </td>
-            <td *ngIf="twelveHours && !isRtl">
-                <input [(ngModel)]="amPmText" type="text" #amPmInput1 [attr.maxlength]="amPmMaxLength" />
-            </td>
-        </tr>
-        <tr>
-            <td *ngIf="twelveHours && isRtl" (click)="switchAmPm()">
-                <span class="glyphicon glyphicon-chevron-down"></span>
-            </td>
-            <td (click)="hours = hours + 1">
-                <span class="glyphicon glyphicon-chevron-down"></span>
-            </td>
-            <td (click)="increaseMinutes()">
-                <span class="glyphicon glyphicon-chevron-down"></span>
-            </td>
-            <td (click)="increaseSeconds()" *ngIf="showSeconds">
-                <span class="glyphicon glyphicon-chevron-down"></span>
-            </td>
-            <td *ngIf="twelveHours && !isRtl" (click)="switchAmPm()">
-                <span class="glyphicon glyphicon-chevron-down"></span>
-            </td>
-        </tr>
+    <tr>
+        <td *ngIf="twelveHours && isRtl" (click)="switchAmPm()">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+        </td>
+        <td (click)="hours = hours - 1">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+        </td>
+        <td (click)="decreaseMinutes()">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+        </td>
+        <td (click)="decreaseSeconds()" *ngIf="showSeconds">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+        </td>
+        <td *ngIf="twelveHours && !isRtl" (click)="switchAmPm()">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+        </td>
+    </tr>
+    <tr>
+        <td *ngIf="twelveHours && isRtl">
+            <input [(ngModel)]="amPmText" type="text" #amPmInput1 [attr.maxlength]="amPmMaxLength"/>
+        </td>
+        <td>
+            <input [(ngModel)]="hoursText" type="text" #hoursInput maxlength="2"/>
+        </td>
+        <td>
+            <input [(ngModel)]="minutesText" type="text" #minutesInput maxlength="2"/>
+        </td>
+        <td *ngIf="showSeconds">
+            <input [(ngModel)]="secondsText" type="text" #secondsInput maxlength="2"/>
+        </td>
+        <td *ngIf="twelveHours && !isRtl">
+            <input [(ngModel)]="amPmText" type="text" #amPmInput1 [attr.maxlength]="amPmMaxLength"/>
+        </td>
+    </tr>
+    <tr>
+        <td *ngIf="twelveHours && isRtl" (click)="switchAmPm()">
+            <span class="glyphicon glyphicon-chevron-down"></span>
+        </td>
+        <td (click)="hours = hours + 1">
+            <span class="glyphicon glyphicon-chevron-down"></span>
+        </td>
+        <td (click)="increaseMinutes()">
+            <span class="glyphicon glyphicon-chevron-down"></span>
+        </td>
+        <td (click)="increaseSeconds()" *ngIf="showSeconds">
+            <span class="glyphicon glyphicon-chevron-down"></span>
+        </td>
+        <td *ngIf="twelveHours && !isRtl" (click)="switchAmPm()">
+            <span class="glyphicon glyphicon-chevron-down"></span>
+        </td>
+    </tr>
     </tbody>
 </table>

@@ -1,4 +1,4 @@
-﻿import { CurrentCultureService, DefaultGlobalizationService} from "@code-art/angular-globalize";
+﻿import { CurrentCultureService, DefaultGlobalizationService } from "@code-art/angular-globalize";
 import { expect } from "chai";
 import { YearsViewComponent } from "../../src/components/years-view.component";
 import { formatYear, IMonthYearSelection, KEY_CODE } from "../../src/util";

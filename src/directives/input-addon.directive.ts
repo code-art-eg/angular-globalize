@@ -1,5 +1,7 @@
-﻿import { ComponentFactoryResolver, ComponentRef,
-    Directive, ElementRef, Inject, Input, OnDestroy, OnInit, ViewContainerRef } from "@angular/core";
+﻿import {
+    ComponentFactoryResolver, ComponentRef,
+    Directive, ElementRef, Inject, Input, OnDestroy, OnInit, ViewContainerRef,
+} from "@angular/core";
 import { InputAddonHostComponent } from "../components/input-addon-host.component";
 
 @Directive({

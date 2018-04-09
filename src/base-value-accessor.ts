@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, EventEmitter, Input, OnDestroy, Output } from "@angular/core";
-import { combineLatest} from "rxjs/observable/combineLatest";
+import { combineLatest } from "rxjs/observable/combineLatest";
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import { Subscription } from "rxjs/Subscription";
 
 import { ICultureService } from "@code-art/angular-globalize";
-import { IBaseValueAccessor, ICompositeObject  } from "./interfaces";
+import { IBaseValueAccessor, ICompositeObject } from "./interfaces";
 
 export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAccessor<T>, ICompositeObject<T> {
     @Output() public readonly valueChange: EventEmitter<any> = new EventEmitter<any>();
@@ -23,12 +23,12 @@ export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAcces
 
     private readonly _localeSubscription =
         combineLatest(this._localeObservable, this.cultureService.cultureObservable)
-        .subscribe({
-            next: (vals) => {
-                const [localeVal, cultureVal] = vals;
-                this.effectiveLocale = localeVal || cultureVal;
-            },
-        });
+            .subscribe({
+                next: (vals) => {
+                    const [localeVal, cultureVal] = vals;
+                    this.effectiveLocale = localeVal || cultureVal;
+                },
+            });
 
     constructor(readonly cultureService: ICultureService, readonly changeDetector: ChangeDetectorRef) {
         this.effectiveLocale = this.cultureService.currentCulture;
@@ -204,13 +204,19 @@ export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAcces
         this.valueChange.emit(val);
     }
 
-   private compareValuesInternal(v1: any, v2: any): boolean {
+    private compareValuesInternal(v1: any, v2: any): boolean {
         if (v1 === v2) {
             return true;
         }
-        if (v1 === null || v1 === undefined) { return false; }
-        if (v2 === null || v2 === undefined) { return false; }
-        if (typeof v1 !== typeof v2) { return false; }
+        if (v1 === null || v1 === undefined) {
+            return false;
+        }
+        if (v2 === null || v2 === undefined) {
+            return false;
+        }
+        if (typeof v1 !== typeof v2) {
+            return false;
+        }
         return this.compareValues(v1, v2);
     }
 }

@@ -1,8 +1,12 @@
-import { ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, Directive, ElementRef,
-    forwardRef, HostListener, Inject, Injector, Input, OnDestroy, OnInit, ViewContainerRef } from "@angular/core";
+import {
+    ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, Directive, ElementRef,
+    forwardRef, HostListener, Inject, Injector, Input, OnDestroy, OnInit, ViewContainerRef,
+} from "@angular/core";
 import { NG_VALUE_ACCESSOR } from "@angular/forms";
-import { CANG_CULTURE_SERVICE, CANG_GLOBALIZATION_SERVICE,
-    ICultureService, IGlobalizationService } from "@code-art/angular-globalize";
+import {
+    CANG_CULTURE_SERVICE, CANG_GLOBALIZATION_SERVICE,
+    ICultureService, IGlobalizationService,
+} from "@code-art/angular-globalize";
 
 import { BaseTimeValueAccessor } from "../base-time-value-accessor";
 import { TimePickerComponent } from "../components/time-picker.component";
@@ -35,8 +39,7 @@ export class TimePickerDirective extends BaseTimeValueAccessor
                 @Inject(Injector) injector: Injector,
                 @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
                 @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService,
-                @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef,
-    ) {
+                @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
         super(cultureService, globalizationService, changeDetector);
         this.initPopupDirective(resolver, viewContainerRef, el, injector);
     }

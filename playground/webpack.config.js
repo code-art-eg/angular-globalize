@@ -4,15 +4,15 @@ const webpack = require('webpack');
 const deployDir = __dirname;
 module.exports = {
     entry: {
-            'main-client': './main.ts'
+        'main-client': './main.ts'
     },
-    stats: { modules: false },
+    stats: {modules: false},
     context: __dirname,
-    resolve: { 
+    resolve: {
         extensions: ['.ts', '.js'],
         alias: {
             '@code-art/angular-datepicker': path.join(deployDir, '../src/module.ts')
-        }, 
+        },
         symlinks: false
     },
     output: {
@@ -22,10 +22,10 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.ts$/, use: ['awesome-typescript-loader?silent=true', 'angular2-template-loader']},
-            { test: /\.html/, use: 'html-loader?minimize=false' },
-            { test: /\.less$/, use: ['to-string-loader', 'css-loader', 'less-loader'] },
-            { test: /(^|\/|(\s+))globalize/i, loader: 'imports-loader?define=>false' }
+            {test: /\.ts$/, use: ['awesome-typescript-loader?silent=true', 'angular2-template-loader']},
+            {test: /\.html/, use: 'html-loader?minimize=false'},
+            {test: /\.less$/, use: ['to-string-loader', 'css-loader', 'less-loader']},
+            {test: /(^|\/|(\s+))globalize/i, loader: 'imports-loader?define=>false'}
         ]
     },
     plugins: [
@@ -38,11 +38,10 @@ module.exports = {
             moduleFilenameTemplate: path.relative(deployDir, '[resourcePath]') // Point sourcemap entries to the original file locations on disk
         }),
         new webpack.NamedModulesPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        
+        new webpack.HotModuleReplacementPlugin()
     ],
     devServer: {
         contentBase: './',
         hot: true
-    },
-}
+    }
+};

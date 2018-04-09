@@ -12,9 +12,15 @@
     ],
     "target": "es5",
     "skipLibCheck": true,
-    "types": ["globalize", "node", "webpack-env"],
+    "types": [
+      "globalize",
+      "node",
+      "webpack-env"
+    ],
     "paths": {
-      "@code-art/angular-datepicker": [ "../src/module.ts" ]
+      "@code-art/angular-datepicker": [
+        "../src/module.ts"
+      ]
     }
   }
 }

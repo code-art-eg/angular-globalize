@@ -1,15 +1,16 @@
 import {
     ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, ElementRef, HostListener, Inject, Injector,
-    Input, OnDestroy, OnInit, ViewContainerRef } from "@angular/core";
+    Input, OnDestroy, OnInit, ViewContainerRef,
+} from "@angular/core";
 import {
     CANG_CULTURE_SERVICE, CANG_GLOBALIZATION_SERVICE, CANG_TYPE_CONVERTER_SERVICE, ICultureService,
     IGlobalizationService, ITypeConverterService,
 } from "@code-art/angular-globalize";
-import {BaseDatePickerAccessor} from "../base-date-picker-accessor";
-import {BaseDatePickerComponent} from "../components/base-date-picker.component";
-import {IDatePicker, IPopupDirective} from "../interfaces";
-import {applyMixins, isPlainObject} from "../util";
-import {PopupDirective} from "./popup.directive";
+import { BaseDatePickerAccessor } from "../base-date-picker-accessor";
+import { BaseDatePickerComponent } from "../components/base-date-picker.component";
+import { IDatePicker, IPopupDirective } from "../interfaces";
+import { applyMixins, isPlainObject } from "../util";
+import { PopupDirective } from "./popup.directive";
 
 export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor<IDatePicker>
     implements IPopupDirective<IDatePicker>, IDatePicker, OnInit, OnDestroy {
@@ -110,13 +111,13 @@ export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor<IDa
             case "medium":
             case "long":
             case "full":
-                options = {date: format};
+                options = { date: format };
                 break;
             default:
                 if (format.indexOf("raw:")) {
-                    options = {raw: format.substr(4)};
+                    options = { raw: format.substr(4) };
                 } else {
-                    options = {skeleton: format};
+                    options = { skeleton: format };
                 }
                 break;
         }

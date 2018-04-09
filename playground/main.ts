@@ -26,7 +26,7 @@ import { LanguageSwitchComponent } from "./language-switch.component";
         BrowserModule, FormsModule,
         // Specify the library's modules as imports
         GlobalizationModule, GlobalizationServicesModule, DatePickerModule,
-        ],
+    ],
     providers: [
         // Provide a string array of languages your application support
         { provide: CANG_SUPPORTED_CULTURES, useValue: ["en-GB", "de", "ar-EG"] },
@@ -34,7 +34,7 @@ import { LanguageSwitchComponent } from "./language-switch.component";
     ],
 })
 class AppModule {
-    constructor( @Inject(CANG_GLOBALIZE_STATIC) globalize: GlobalizeStatic) {
+    constructor(@Inject(CANG_GLOBALIZE_STATIC) globalize: GlobalizeStatic) {
 
         globalize.load(require("cldr-data/supplemental/metaZones.json"));
         globalize.load(require("cldr-data/supplemental/timeData.json"));

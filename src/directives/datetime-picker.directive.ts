@@ -1,11 +1,15 @@
-import { ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, Directive, ElementRef,
-    forwardRef, HostListener, Inject, Injector, Input, OnDestroy, OnInit, ViewContainerRef } from "@angular/core";
+import {
+    ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, Directive, ElementRef,
+    forwardRef, HostListener, Inject, Injector, Input, OnDestroy, OnInit, ViewContainerRef,
+} from "@angular/core";
 import { NG_VALUE_ACCESSOR } from "@angular/forms";
-import { CANG_CULTURE_SERVICE, CANG_GLOBALIZATION_SERVICE,
+import {
+    CANG_CULTURE_SERVICE, CANG_GLOBALIZATION_SERVICE,
     CANG_TYPE_CONVERTER_SERVICE, ICultureService,
-    IGlobalizationService, ITypeConverterService } from "@code-art/angular-globalize";
+    IGlobalizationService, ITypeConverterService,
+} from "@code-art/angular-globalize";
 import { BaseDatePickerAccessor } from "../base-date-picker-accessor";
-import { DateTimePickerComponent} from "../components/datetime-picker.component";
+import { DateTimePickerComponent } from "../components/datetime-picker.component";
 import { IBaseValueAccessor, IDateTimePicker, IPopupDirective } from "../interfaces";
 import { TimePickerOptions } from "../time-picker-options";
 import { applyMixins } from "../util";
@@ -42,8 +46,7 @@ export class DateTimePickerDirective extends BaseDatePickerAccessor<IDateTimePic
                 @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
                 @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService,
                 @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef,
-                @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
-    ) {
+                @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService) {
         super(cultureService, converterService, changeDetector);
         this.initPopupDirective(resolver, viewContainerRef, el, injector);
     }

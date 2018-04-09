@@ -1,9 +1,11 @@
-import { ChangeDetectorRef, ComponentFactory,
+import {
+    ChangeDetectorRef, ComponentFactory,
     ComponentFactoryResolver, ElementRef,
-    EventEmitter, Injector, ViewContainerRef } from "@angular/core";
+    EventEmitter, Injector, ViewContainerRef,
+} from "@angular/core";
 import { ControlValueAccessor } from "@angular/forms";
 
-import { ICultureService} from "@code-art/angular-globalize";
+import { ICultureService } from "@code-art/angular-globalize";
 
 export interface IComponentFocus {
     focus?: boolean;
@@ -11,7 +13,9 @@ export interface IComponentFocus {
 
 export interface ICompositeObject<T> {
     parent: IBaseValueAccessor<T> & T;
+
     addBoundChild(child: IBaseValueAccessor<T> & T): void;
+
     removeBoundChild(child: IBaseValueAccessor<T> & T);
 }
 
@@ -23,22 +27,30 @@ export interface IBaseValueAccessor<T> extends ControlValueAccessor, ICompositeO
     locale: string;
     effectiveLocale: string;
     changeDetector?: ChangeDetectorRef;
+
     coerceValue(val: any): any;
+
     compareValues(v1: any, v2: any);
+
     raiseOnTouch(): void;
 }
 
-export interface IPopupDirective<T> extends IBaseValueAccessor<T>  {
+export interface IPopupDirective<T> extends IBaseValueAccessor<T> {
     format: string;
     orientRight: boolean;
     orientTop: boolean;
+
     resolveFactory(resolver: ComponentFactoryResolver): ComponentFactory<IBaseValueAccessor<T>>;
+
     getDefaultFormat(): string;
+
     initPopupDirective(resolver: ComponentFactoryResolver,
                        viewContainerRef: ViewContainerRef,
                        el: ElementRef,
                        injector: Injector);
+
     formatValue(val: any, locale: string, format: string): string;
+
     parseValue?(val: string): any;
 }
 

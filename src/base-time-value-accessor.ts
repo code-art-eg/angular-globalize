@@ -1,9 +1,9 @@
-import {ChangeDetectorRef, Inject, Input} from "@angular/core";
-import {ICultureService, IGlobalizationService} from "@code-art/angular-globalize";
-import {BaseValueAccessor} from "./base-value-accessor";
-import {ITimePicker} from "./interfaces";
-import {TimePickerOptions} from "./time-picker-options";
-import {applyMixins} from "./util";
+import { ChangeDetectorRef, Inject, Input } from "@angular/core";
+import { ICultureService, IGlobalizationService } from "@code-art/angular-globalize";
+import { BaseValueAccessor } from "./base-value-accessor";
+import { ITimePicker } from "./interfaces";
+import { TimePickerOptions } from "./time-picker-options";
+import { applyMixins } from "./util";
 
 export abstract class BaseTimeValueAccessor extends BaseValueAccessor<ITimePicker> implements ITimePicker {
     private static readonly maximumValue = 24 * 3600 * 1000 - 1;
@@ -16,8 +16,6 @@ export abstract class BaseTimeValueAccessor extends BaseValueAccessor<ITimePicke
     @Input() public showSeconds: boolean;
     private _minTime: number = BaseTimeValueAccessor.maximumValue;
     private _maxTime: number = BaseTimeValueAccessor.minimumValue;
-    private _showSeconds = false;
-
     constructor(cultureService: ICultureService,
                 protected readonly globalizeService: IGlobalizationService,
                 @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {

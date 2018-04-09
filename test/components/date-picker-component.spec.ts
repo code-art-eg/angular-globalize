@@ -150,9 +150,11 @@ describe("DatePickerComponent", () => {
 
     it("raises onchange", () => {
         let raised = false;
+
         function callback() {
             raised = true;
         }
+
         const c = new DatePickerComponent(cultureService, typeConverter);
 
         c.registerOnChange(callback);
@@ -175,9 +177,11 @@ describe("DatePickerComponent", () => {
 
     it("raises ontouched", () => {
         let raised = false;
+
         function callback() {
             raised = true;
         }
+
         const c = new DatePickerComponent(cultureService, typeConverter);
 
         c.registerOnTouched(callback);

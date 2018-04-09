@@ -1,5 +1,4 @@
-﻿
-<div class="row">
+﻿<div class="row">
     <p *ngFor="let culture of supportedCultures" class="col-4 col-sm-4 col-md-2">
         <button (click)="cultureService.currentCulture = culture"
                 [disabled]="cultureService.currentCulture === culture"

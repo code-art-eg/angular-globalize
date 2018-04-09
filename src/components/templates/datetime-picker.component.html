@@ -1,12 +1,16 @@
 ﻿<table>
     <tr *ngIf="!time">
-        <td><ca-datepicker [(value)]="dateValue"></ca-datepicker></td>
+        <td>
+            <ca-datepicker [(value)]="dateValue"></ca-datepicker>
+        </td>
     </tr>
     <tr *ngIf="time">
         <td class="viewbutton" (click)="time = false"><span class="glyphicon glyphicon-calendar"></span></td>
     </tr>
     <tr *ngIf="time">
-        <td><ca-timepicker [(value)]="timeValue"></ca-timepicker></td>
+        <td>
+            <ca-timepicker [(value)]="timeValue"></ca-timepicker>
+        </td>
     </tr>
     <tr *ngIf="!time">
         <td class="viewbutton" (click)="time = true"><span class="glyphicon glyphicon-time"></span></td>

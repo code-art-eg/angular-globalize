@@ -24,7 +24,7 @@ export class NextPreviousComponent {
         this.homeButton = true;
     }
 
-    public getClass(type: "next"|"prev"): string {
+    public getClass(type: "next" | "prev"): string {
         if (type === "next") {
             return this.cultureService.isRightToLeft(this.locale) ?
                 NextPreviousComponent.leftArrow : NextPreviousComponent.rightArrow;

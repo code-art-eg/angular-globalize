@@ -1,4 +1,4 @@
-﻿import { CurrentCultureService} from "@code-art/angular-globalize";
+﻿import { CurrentCultureService } from "@code-art/angular-globalize";
 import { expect } from "chai";
 import { NextPreviousComponent } from "../../src/components/next-prev.component";
 

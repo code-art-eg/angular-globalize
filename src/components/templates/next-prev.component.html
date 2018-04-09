@@ -1,11 +1,10 @@
-﻿
-<table class="next-prev-container">
+﻿<table class="next-prev-container">
     <colgroup>
-        <col />
-        <col *ngIf="homeButton" />
-        <col *ngIf="resetButton" />
-        <col colspan="5" />
-        <col />
+        <col/>
+        <col *ngIf="homeButton"/>
+        <col *ngIf="resetButton"/>
+        <col colspan="5"/>
+        <col/>
     </colgroup>
     <tr>
         <td class="prev" (click)="clicked.emit('prev')">

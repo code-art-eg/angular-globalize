@@ -1,8 +1,10 @@
-﻿import {ChangeDetectorRef, Component, forwardRef, Inject, OnDestroy} from "@angular/core";
-import {NG_VALUE_ACCESSOR} from "@angular/forms";
-import { CANG_CULTURE_SERVICE, CANG_TYPE_CONVERTER_SERVICE, ICultureService,
-    ITypeConverterService } from "@code-art/angular-globalize";
-import {BaseDatePickerComponent} from "./base-date-picker.component";
+﻿import { ChangeDetectorRef, Component, forwardRef, Inject, OnDestroy } from "@angular/core";
+import { NG_VALUE_ACCESSOR } from "@angular/forms";
+import {
+    CANG_CULTURE_SERVICE, CANG_TYPE_CONVERTER_SERVICE, ICultureService,
+    ITypeConverterService,
+} from "@code-art/angular-globalize";
+import { BaseDatePickerComponent } from "./base-date-picker.component";
 
 @Component({
     providers: [{

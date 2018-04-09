@@ -1,11 +1,11 @@
-import {ChangeDetectorRef, Inject, OnDestroy} from "@angular/core";
+import { ChangeDetectorRef, Inject, OnDestroy } from "@angular/core";
 import {
     CANG_CULTURE_SERVICE, CANG_TYPE_CONVERTER_SERVICE, ICultureService,
     ITypeConverterService,
 } from "@code-art/angular-globalize";
-import {BaseDatePickerAccessor} from "../base-date-picker-accessor";
-import {IDatePicker} from "../interfaces";
-import {dateInRange, getMonthYear, IMonthYearSelection, similarInLocal, similarInUtc, ViewType} from "../util";
+import { BaseDatePickerAccessor } from "../base-date-picker-accessor";
+import { IDatePicker } from "../interfaces";
+import { dateInRange, getMonthYear, IMonthYearSelection, similarInLocal, similarInUtc, ViewType } from "../util";
 
 export abstract class BaseDatePickerComponent extends BaseDatePickerAccessor<IDatePicker> implements OnDestroy {
     public view: ViewType = "days";
@@ -83,7 +83,7 @@ export abstract class BaseDatePickerComponent extends BaseDatePickerAccessor<IDa
                     }
                 }
             }
-            this.value = s === null || e === null ? null : {from: s, to: e};
+            this.value = s === null || e === null ? null : { from: s, to: e };
         }
         this.raiseOnTouch();
     }

@@ -1,4 +1,4 @@
-﻿import { CurrentCultureService, DefaultGlobalizationService} from "@code-art/angular-globalize";
+﻿import { CurrentCultureService, DefaultGlobalizationService } from "@code-art/angular-globalize";
 import { expect } from "chai";
 import { DaysViewComponent } from "../../src/components/days-view.component";
 import { addDays, createDate, dateInRange, IMonthYearSelection, KEY_CODE } from "../../src/util";

@@ -1,5 +1,5 @@
-import {Input} from "@angular/core";
-import {IBaseValueAccessor, ICompositeObject, ITimePickerOptions} from "./interfaces";
+import { Input } from "@angular/core";
+import { IBaseValueAccessor, ICompositeObject, ITimePickerOptions } from "./interfaces";
 
 function coerceIncrement(val: number): number {
     return val && 60 % val === val ? val : 5;

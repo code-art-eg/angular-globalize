@@ -1,11 +1,9 @@
-﻿
-
-<div class="year-month-view-container" caDirection [rtlCssClass]="'isrtl'">
-    <ca-next-prev [locale]="locale" 
-               [homeButton]="homeButton"
-               [resetButton]="resetButton"
-               (clicked)="onNextPrevClicked($event)" 
-               [text]="nextPrevText"></ca-next-prev>
+﻿<div class="year-month-view-container" caDirection [rtlCssClass]="'isrtl'">
+    <ca-next-prev [locale]="locale"
+                  [homeButton]="homeButton"
+                  [resetButton]="resetButton"
+                  (clicked)="onNextPrevClicked($event)"
+                  [text]="nextPrevText"></ca-next-prev>
     <span *ngFor="let m of months" [ngClass]="{'selected': m === month, 
           'focused': m === focusMonth, 
           'disabled': isDisabled(m)

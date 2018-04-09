@@ -1,9 +1,11 @@
-﻿import { ComponentFactory, ComponentFactoryResolver, ComponentRef,
-    ElementRef, EventEmitter, Injector, OnDestroy, OnInit, ViewContainerRef } from "@angular/core";
+﻿import {
+    ComponentFactory, ComponentFactoryResolver, ComponentRef,
+    ElementRef, EventEmitter, Injector, OnDestroy, OnInit, ViewContainerRef,
+} from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { ICultureService } from "@code-art/angular-globalize";
 import { Observable } from "rxjs/Observable";
-import {combineLatest} from "rxjs/observable/combineLatest";
+import { combineLatest } from "rxjs/observable/combineLatest";
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import { Subscription } from "rxjs/Subscription";
 import { PopupComponent } from "../components/popup.component";
@@ -34,16 +36,25 @@ export abstract class PopupDirective<T> implements OnInit, OnDestroy, IPopupDire
     private _resolver: ComponentFactoryResolver;
 
     public abstract resolveFactory(): ComponentFactory<IBaseValueAccessor<T>>;
+
     public abstract coerceValue(val: any): any;
+
     public abstract compareValues(v1: any, v2: any);
+
     public abstract raiseOnTouch(): void;
+
     public abstract addBoundChild(child: IBaseValueAccessor<T> & T): void;
+
     public abstract removeBoundChild(child: IBaseValueAccessor<T> & T): void;
+
     public abstract writeValue(val: any): void;
+
     public abstract registerOnChange(fn: any): void;
+
     public abstract registerOnTouched(fn: any): void;
 
     public abstract getDefaultFormat();
+
     public abstract formatValue(val: any, locale: string, format: string): string;
 
     public initPopupDirective(resolver: ComponentFactoryResolver,
@@ -165,7 +176,7 @@ export abstract class PopupDirective<T> implements OnInit, OnDestroy, IPopupDire
         }
         if (!this._controlValueAccessor) {
             throw new Error(`No ControlValueAccessor available for the control. `
-            + `Make sure FormsModule from @angular/forms is imported in your application.`);
+                + `Make sure FormsModule from @angular/forms is imported in your application.`);
         }
         this._controlValueAccessor.registerOnChange((v) => {
             this._controlValue = v;

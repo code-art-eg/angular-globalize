@@ -46,6 +46,7 @@ export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions>
             this._minDate = val;
         }
     }
+
     get minDate(): Date | null {
         if (this.parent) {
             return this.parent.minDate;
