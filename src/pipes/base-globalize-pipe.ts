@@ -1,10 +1,14 @@
-﻿import {ChangeDetectorRef, Inject, OnDestroy, PipeTransform, WrappedValue} from "@angular/core";
-import {Observable} from "rxjs/Observable";
-import {combineLatest} from "rxjs/observable/combineLatest";
-import {Subscription} from "rxjs/Subscription";
+﻿import { ChangeDetectorRef, Inject, OnDestroy, PipeTransform, WrappedValue } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import { combineLatest } from "rxjs/observable/combineLatest";
+import { Subscription } from "rxjs/Subscription";
 
-import {CANG_CULTURE_SERVICE, ICultureService} from "../services/current-culture.service";
-import {CANG_GLOBALIZATION_SERVICE, IGlobalizationService} from "../services/globalize.service";
+import { CANG_CULTURE_SERVICE, ICultureService } from "../services/current-culture.service";
+import { CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from "../services/globalize.service";
+
+function isValidCulture(locale: string): boolean {
+    return /^[A-Za-z]{2}([-_][A-Za-z0-9]{2,8})*$/.test(locale);
+}
 
 export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, PipeTransform {
     private _subscription: Subscription | null;
@@ -19,10 +23,9 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
     private _latestSource: Observable<TInput>;
     private _latest: Observable<[string, TInput]>;
 
-    constructor( @Inject(CANG_GLOBALIZATION_SERVICE) protected readonly globalizService: IGlobalizationService,
-                 @Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
-                 private changeDetector: ChangeDetectorRef,
-    ) {
+    constructor(@Inject(CANG_GLOBALIZATION_SERVICE) protected readonly globalizService: IGlobalizationService,
+                @Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
+                private changeDetector: ChangeDetectorRef) {
         this._obj = null;
         this._objType = null;
 
@@ -56,9 +59,13 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
     }
 
     protected abstract inputsEqual(v1: TInput, v2: TInput): boolean;
+
     protected abstract optionsEqual(o1: TOptions, o2: TOptions): boolean;
+
     protected abstract getDefaultOptions(): TOptions;
+
     protected abstract stringToOptions(optionsString: string): TOptions;
+
     protected abstract convertValue(input: TInput, locale: string, options: TOptions): string;
 
     protected doTransform(input: TInput | Observable<TInput> | null | undefined,
@@ -111,8 +118,8 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
 
     private resolveObject(input: TInput | Observable<TInput> | null | undefined,
                           locale: string | null,
-                          options: TOptions | undefined)
-        : [Observable<any> | null, "culture" | "input" | "both" | null, TInput | null] {
+                          options: TOptions | undefined): [Observable<any> | null, "culture" | "input" | "both" | null,
+        TInput | null] {
         if (input === null) {
             this._latestValue = this._latestReturnedValue = null;
             return [null, null, null];
@@ -164,7 +171,7 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
                 locale = null;
                 options = undefined;
             } else if (typeof (localeOrOptionsOrFormat) === "string") {
-                if (this.isValidCulture(localeOrOptionsOrFormat)) {
+                if (isValidCulture(localeOrOptionsOrFormat)) {
                     locale = localeOrOptionsOrFormat;
                 } else {
                     options = this.stringToOptions(localeOrOptionsOrFormat);
@@ -187,7 +194,9 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
         this._options = options;
 
         this._subscription = this._obj.subscribe({
-            error: (e: any) => { throw e; },
+            error: (e: any) => {
+                throw e;
+            },
             next: (vals: string | TInput | [string, TInput]) => this.updateLatestValues(vals),
         });
     }
@@ -208,9 +217,5 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
         if (this.changeDetector) {
             this.changeDetector.markForCheck();
         }
-    }
-
-    private isValidCulture(locale: string): boolean {
-        return /^[A-Za-z]{2}([-_][A-Za-z0-9]{2,8})*$/.test(locale);
     }
 }

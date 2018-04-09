@@ -41,48 +41,78 @@ interface GlobalizeStaticWithCalendar extends GlobalizeStatic {
  */
 export interface IGlobalizationService {
     formatDuration(val: null, options?: DurationFormatOptions | undefined): null;
+
     formatDuration(val: undefined, options?: DurationFormatOptions | undefined): undefined;
+
     formatDuration(val: number, options?: DurationFormatOptions | undefined): string;
+
     formatDuration(val: null, locale: string, options?: DurationFormatOptions | undefined): null;
+
     formatDuration(val: undefined, locale: string, options?: DurationFormatOptions | undefined): undefined;
+
     formatDuration(val: number, locale: string, options?: DurationFormatOptions | undefined): string;
 
     parseDate(val: null, options?: DateFormatterOptions | undefined): null;
+
     parseDate(val: undefined, options?: DateFormatterOptions | undefined): undefined;
+
     parseDate(val: string, options?: DateFormatterOptions | undefined): Date;
+
     parseDate(val: null, locale: string, options?: DateFormatterOptions | undefined): null;
+
     parseDate(val: undefined, locale: string, options?: DateFormatterOptions | undefined): undefined;
+
     parseDate(val: string, locale: string, options?: DateFormatterOptions | undefined): Date;
 
     formatDate(val: null, options?: DateFormatterOptions | undefined): null;
+
     formatDate(val: undefined, options?: DateFormatterOptions | undefined): undefined;
+
     formatDate(val: Date, options?: DateFormatterOptions | undefined): string;
+
     formatDate(val: null, locale: string, options?: DateFormatterOptions | undefined): null;
+
     formatDate(val: undefined, locale: string, options?: DateFormatterOptions | undefined): undefined;
+
     formatDate(val: Date, locale: string, options?: DateFormatterOptions | undefined): string;
 
     parseNumber(val: null, options?: NumberParserOptions | undefined): null;
+
     parseNumber(val: undefined, options?: NumberParserOptions | undefined): undefined;
+
     parseNumber(val: string, options?: NumberParserOptions | undefined): number;
+
     parseNumber(val: null, locale: string, options?: NumberParserOptions | undefined): null;
+
     parseNumber(val: undefined, locale: string, options?: NumberParserOptions | undefined): undefined;
+
     parseNumber(val: string, locale: string, options?: NumberParserOptions | undefined): number;
 
     formatNumber(val: null, options?: NumberFormatterOptions | undefined): null;
+
     formatNumber(val: undefined, options?: NumberFormatterOptions | undefined): undefined;
+
     formatNumber(val: number, options?: NumberFormatterOptions | undefined): string;
+
     formatNumber(val: null, locale: string, options?: NumberFormatterOptions | undefined): null;
+
     formatNumber(val: undefined, locale: string, options?: NumberFormatterOptions | undefined): undefined;
+
     formatNumber(val: number, locale: string, options?: NumberFormatterOptions | undefined): string;
 
     formatCurrency(val: null, currency: string, options?: CurrencyFormatterOptions | undefined): null;
+
     formatCurrency(val: undefined, currency: string, options?: CurrencyFormatterOptions | undefined): undefined;
+
     formatCurrency(val: number, currency: string, options?: CurrencyFormatterOptions | undefined): string;
+
     formatCurrency(val: null, currency: string, locale: string, options?: CurrencyFormatterOptions | undefined): null;
+
     formatCurrency(val: undefined,
                    currency: string,
                    locale: string,
                    options?: CurrencyFormatterOptions | undefined): undefined;
+
     formatCurrency(val: number,
                    currency: string,
                    locale: string,
@@ -91,17 +121,27 @@ export interface IGlobalizationService {
     getCalendar(locale?: string, calendarName?: string): ICalendarService;
 
     getMonthName(month: undefined, locale?: string, type?: "abbreviated" | "narrow" | "wide"): undefined;
+
     getMonthName(month: null, locale?: string, type?: "abbreviated" | "narrow" | "wide"): null;
+
     getMonthName(month: number, locale?: string, type?: "abbreviated" | "narrow" | "wide"): string;
+
     getMonthName(month: undefined, type?: "abbreviated" | "narrow" | "wide"): undefined;
+
     getMonthName(month: null, type?: "abbreviated" | "narrow" | "wide"): null;
+
     getMonthName(month: number, type?: "abbreviated" | "narrow" | "wide"): string;
 
     getDayName(day: undefined, locale?: string, type?: "abbreviated" | "short" | "narrow" | "wide"): undefined;
+
     getDayName(day: null, locale?: string, type?: "abbreviated" | "short" | "narrow" | "wide"): null;
+
     getDayName(day: number, locale?: string, type?: "abbreviated" | "short" | "narrow" | "wide"): string;
+
     getDayName(day: undefined, type?: "abbreviated" | "short" | "narrow" | "wide"): undefined;
+
     getDayName(day: null, type?: "abbreviated" | "short" | "narrow" | "wide"): null;
+
     getDayName(day: number, type?: "abbreviated" | "short" | "narrow" | "wide"): string;
 }
 
@@ -113,9 +153,9 @@ export class DefaultGlobalizationService implements IGlobalizationService {
 
     private static readonly globalizeInstances: { [key: string]: GlobalizeStatic } = {};
     private static readonly numberParsers: { [key: string]: (n: string) => number } = {};
-    private static readonly dateParsers: { [key: string]: (n: string) => Date } = { };
-    private static readonly numberFormatters: { [key: string]: (n: number) => string } = { };
-    private static readonly currencyFormatters: { [key: string]: (n: number) => string } = { };
+    private static readonly dateParsers: { [key: string]: (n: string) => Date } = {};
+    private static readonly numberFormatters: { [key: string]: (n: number) => string } = {};
+    private static readonly currencyFormatters: { [key: string]: (n: number) => string } = {};
     private static readonly dateFormatters: { [key: string]: (n: Date) => string } = {};
     private static readonly numberFormatInfos: { [key: string]: NumberFormatInfo } = {};
 
@@ -165,8 +205,8 @@ export class DefaultGlobalizationService implements IGlobalizationService {
 
     // using any for globaize parameter in the constructor
     // because the angular compiler complains about GlobalizeStatic type
-    constructor( @Inject(CANG_GLOBALIZE_STATIC) globalize: any,
-                 @Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService) {
+    constructor(@Inject(CANG_GLOBALIZE_STATIC) globalize: any,
+                @Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService) {
         this.globalize = globalize as GlobalizeStatic;
     }
 
@@ -474,7 +514,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             }
         }
 
-        const formatter = this.getNumberFormatter(locale, { style: "decimal" } );
+        const formatter = this.getNumberFormatter(locale, { style: "decimal" });
         const info = this.getNumberFormatInfo(locale);
 
         const negative = val < 0;
@@ -639,6 +679,7 @@ export class DefaultGlobalizationService implements IGlobalizationService {
             }
             return [hasValue, result];
         }
+
         try {
             const [, r] = formatPart(pattern);
             return r;

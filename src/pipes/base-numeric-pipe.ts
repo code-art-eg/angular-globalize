@@ -1,4 +1,4 @@
-import {BaseGlobalizePipe} from "./base-globalize-pipe";
+import { BaseGlobalizePipe } from "./base-globalize-pipe";
 
 export abstract class BaseNumericPipe<TOptions> extends BaseGlobalizePipe<number, TOptions> {
 

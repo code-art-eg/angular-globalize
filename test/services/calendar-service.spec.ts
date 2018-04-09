@@ -101,7 +101,7 @@ describe("Calendar Service", () => {
     });
 
     function generateIt(languageName: string,
-                        daysOrMonths: "months"|"days",
+                        daysOrMonths: "months" | "days",
                         lang: string | undefined,
                         type: string,
                         obj: { [key: string]: string[] },

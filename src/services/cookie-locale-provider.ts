@@ -1,4 +1,4 @@
-import {Inject, Injectable, Optional} from "@angular/core";
+import { Inject, Injectable, Optional } from "@angular/core";
 import {
     CANG_COOKIE_DURATION_DAYS, CANG_COOKIE_NAME, CANG_COOKIE_PATH, CANG_DEFAULT_COOKIE_DURATION_DAYS,
     CANG_DEFAULT_COOKIE_NAME, ILocaleProvider,

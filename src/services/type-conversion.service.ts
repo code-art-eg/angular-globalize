@@ -6,8 +6,11 @@ export const CANG_TYPE_CONVERTER_SERVICE
 
 export interface ITypeConverterService {
     convertToString(val: any, locale?: string): string | null;
+
     convertToBoolean(val: any): boolean;
+
     convertToNumber(val: any, locale?: string): number | null;
+
     convertToDate(val: any, locale?: string): Date | null;
 }
 
@@ -24,7 +27,7 @@ export class TypeConverterService implements ITypeConverterService {
         { date: "full" },
     ];
 
-    constructor( @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService) {
+    constructor(@Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService) {
 
     }
 
@@ -63,7 +66,7 @@ export class TypeConverterService implements ITypeConverterService {
         throw new Error(`Cannot convert value ${val} of type ${typeof val} to Boolean.`);
     }
 
-   public convertToNumber(val: any, locale?: string): number | null {
+    public convertToNumber(val: any, locale?: string): number | null {
         if (val === null || val === undefined) {
             return null;
         }

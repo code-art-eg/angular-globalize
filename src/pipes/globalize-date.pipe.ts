@@ -10,8 +10,7 @@ export class GlobalizeDatePipe extends BaseDatePipe {
 
     constructor(@Inject(CANG_GLOBALIZATION_SERVICE) globalizService: IGlobalizationService,
                 @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-                @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef,
-        ) {
+                @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
         super(globalizService, cultureService, changeDetector);
     }
 
@@ -31,7 +30,7 @@ export class GlobalizeDatePipe extends BaseDatePipe {
                     };
                 }
                 return {
-                        skeleton: optionsString,
+                    skeleton: optionsString,
                 };
         }
     }

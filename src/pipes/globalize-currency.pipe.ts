@@ -10,10 +10,9 @@ import { BaseNumericPipe } from "./base-numeric-pipe";
 export class GlobalizeCurrencyPipe extends BaseNumericPipe<CurrencyFormatterOptions> {
     private _currency: string;
 
-    constructor( @Inject(CANG_GLOBALIZATION_SERVICE) globalizService: IGlobalizationService,
-                 @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-                 @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef,
-        ) {
+    constructor(@Inject(CANG_GLOBALIZATION_SERVICE) globalizService: IGlobalizationService,
+                @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+                @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
         super(globalizService, cultureService, changeDetector);
     }
 
@@ -37,7 +36,7 @@ export class GlobalizeCurrencyPipe extends BaseNumericPipe<CurrencyFormatterOpti
                      currency: string,
                      localeOrOptionsOrFormat?: CurrencyFormatterOptions | string | undefined,
                      optionsOrFormat?: CurrencyFormatterOptions | string | undefined)
-                    : string | null | undefined | WrappedValue {
+                        : string | null | undefined | WrappedValue {
         this._currency = currency;
         return this.doTransform(input, localeOrOptionsOrFormat, optionsOrFormat);
     }
@@ -54,7 +53,7 @@ export class GlobalizeCurrencyPipe extends BaseNumericPipe<CurrencyFormatterOpti
                 };
             default:
                 throw new Error(
-                    `Invalid number format '${optionsString}'. Valid values are symbol, accounting, name or code`);
+                `Invalid number format '${optionsString}'.Valid values are symbol, accounting, name or code`);
         }
     }
 

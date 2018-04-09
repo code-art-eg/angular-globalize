@@ -10,10 +10,9 @@ export type MonthFormat = "abbreviated" | "narrow" | "wide";
 @Pipe({ name: "gmonth", pure: false })
 export class GlobalizeMonthPipe extends BaseGlobalizePipe<number, MonthFormat> {
 
-     constructor(@Inject(CANG_GLOBALIZATION_SERVICE) globalizService: IGlobalizationService,
-                 @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-                 @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef,
-        ) {
+    constructor(@Inject(CANG_GLOBALIZATION_SERVICE) globalizService: IGlobalizationService,
+                @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+                @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
         super(globalizService, cultureService, changeDetector);
     }
 
@@ -21,7 +20,7 @@ export class GlobalizeMonthPipe extends BaseGlobalizePipe<number, MonthFormat> {
         return v1 === v2;
     }
 
-    protected optionsEqual(o1: MonthFormat , o2: MonthFormat): boolean {
+    protected optionsEqual(o1: MonthFormat, o2: MonthFormat): boolean {
         return o1 === o2;
     }
 

@@ -1,6 +1,6 @@
-import {Inject, Injectable, Optional} from "@angular/core";
-import {Observable} from "rxjs/Observable";
-import {ReplaySubject} from "rxjs/ReplaySubject";
+import { Inject, Injectable, Optional } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import { ReplaySubject } from "rxjs/ReplaySubject";
 
 export const CANG_SUPPORTED_CULTURES = "CaAngularGlobalizeSupportedCultures";
 export const CANG_CULTURE_SERVICE = "CaAngularGlobalizeCultureService";
@@ -18,6 +18,7 @@ export const CANG_DEFAULT_COOKIE_DURATION_DAYS = 365;
 export interface ICultureService {
     currentCulture: string;
     cultureObservable: Observable<string>;
+
     isRightToLeft(locale?: string): boolean;
 }
 
@@ -76,9 +77,8 @@ export class CurrentCultureService implements ICultureService {
     private readonly _cultureSubject: ReplaySubject<string>;
     private _culture: string;
 
-    constructor( @Inject(CANG_SUPPORTED_CULTURES) private readonly supportedCultures: string[],
-                 @Optional() @Inject(CA_ANGULAR_LOCALE_PROVIDER) private readonly localeProviders?: ILocaleProvider[],
-    ) {
+    constructor(@Inject(CANG_SUPPORTED_CULTURES) private readonly supportedCultures: string[],
+                @Optional() @Inject(CA_ANGULAR_LOCALE_PROVIDER) private readonly localeProviders?: ILocaleProvider[]) {
         if (supportedCultures === null || supportedCultures === undefined) {
             throw new Error("Parameter supportedCultures passed to CurrentCultureService constructor cannot be null.");
         }
@@ -88,14 +88,14 @@ export class CurrentCultureService implements ICultureService {
         const index = this.findSupportedCultureIndex((v) => v === null || v === undefined || v === "");
         if (index >= 0) {
             throw new Error("Parameter supportedCultures passed to "
-            + "CurrentCultureService constructor cannot contain empty values. "
-             + `Empty value found at index:${index}.`);
+                + "CurrentCultureService constructor cannot contain empty values. "
+                + `Empty value found at index:${index}.`);
         }
         if (this.localeProviders) {
             for (let i = 0; i < this.localeProviders.length; i++) {
                 if (!this.localeProviders[i]) {
                     throw new Error("Parameter localeProviders is invalid. "
-                    + `Null or undefined value found at index:${i}.`);
+                        + `Null or undefined value found at index:${i}.`);
                 }
             }
         }
@@ -104,7 +104,7 @@ export class CurrentCultureService implements ICultureService {
         this.currentCulture = null;
     }
 
-   get currentCulture(): string {
+    get currentCulture(): string {
         if (this._culture) {
             return this._culture;
         }
@@ -126,7 +126,9 @@ export class CurrentCultureService implements ICultureService {
 
     public isRightToLeft(locale?: string): boolean {
         locale = (locale || this.currentCulture).toLowerCase();
-        if (!locale) { return false; }
+        if (!locale) {
+            return false;
+        }
         let index = locale.indexOf("-");
         if (index < 0) {
             index = locale.indexOf("_");

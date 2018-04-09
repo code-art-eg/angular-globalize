@@ -10,10 +10,9 @@ export type DayFormat = "abbreviated" | "short" | "narrow" | "wide";
 @Pipe({ name: "gday", pure: false })
 export class GlobalizeDayPipe extends BaseGlobalizePipe<number, "abbreviated" | "short" | "narrow" | "wide"> {
 
-    constructor( @Inject(CANG_GLOBALIZATION_SERVICE) globalizService: IGlobalizationService,
-                 @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-                 @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef,
-    ) {
+    constructor(@Inject(CANG_GLOBALIZATION_SERVICE) globalizService: IGlobalizationService,
+                @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+                @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
         super(globalizService, cultureService, changeDetector);
     }
 

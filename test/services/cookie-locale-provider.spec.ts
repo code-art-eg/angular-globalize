@@ -1,4 +1,4 @@
-﻿import { CookieLocaleProvider} from "../../src/module";
+﻿import { CookieLocaleProvider } from "../../src/module";
 
 import { expect } from "chai";
 

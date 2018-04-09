@@ -1,14 +1,4 @@
-﻿<style>
-    .red {
-        color: red;
-        direction: rtl;
-    }
-
-    .blue {
-        color: blue;
-    }
-</style>
-<div caDirection [rtlCssClass]="'red'" [ltrCssClass]="'blue'">
+﻿<div caDirection [rtlCssClass]="'red'" [ltrCssClass]="'blue'">
 
     <div class="row">
         <div class="col-sm-4">
@@ -138,7 +128,8 @@
 
     <div class="row">
         <div class="col-sm-4">
-            <code>1234567.98765 | gcurrency:'EGP':'ar-EG':{{ '{' }} style: 'name', maximumFractionDigits:3, minimumFractionDigits:3 {{ '}' }}</code>
+            <code>1234567.98765 | gcurrency:'EGP':'ar-EG':{{ '{' }} style: 'name', maximumFractionDigits:3,
+                minimumFractionDigits:3 {{ '}' }}</code>
         </div>
         <div class="col-sm-8">
             <span>{{ 1234567.98765 | gcurrency:'EGP':'ar-EG':{ style: 'name', maximumFractionDigits:3, minimumFractionDigits:3 } }}</span>

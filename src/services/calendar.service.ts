@@ -1,9 +1,12 @@
-
 export interface ICalendarService {
     name: string;
+
     getMonthNames(type?: "abbreviated" | "narrow" | "wide"): ReadonlyArray<string>;
+
     getDayNames(type?: "abbreviated" | "narrow" | "short" | "wide"): ReadonlyArray<string>;
+
     getMonthsInYear(year: number): number;
+
     getDaysInMonth(year: number, month: number): number;
 }
 
@@ -51,7 +54,7 @@ export class GregorianCalendarService implements ICalendarService {
         type = type || "wide";
         const days = this.cldr.main(["dates/calendars/gregorian/days", "stand-alone", type]);
         if (!days) {
-            throw new Error("CLDR data for dates/calendars/gregorian/days/stand-alone/" + type +  " is not loaded.");
+            throw new Error("CLDR data for dates/calendars/gregorian/days/stand-alone/" + type + " is not loaded.");
         }
         return [days.sun, days.mon, days.tue, days.wed, days.thu, days.fri, days.sat];
     }
@@ -60,7 +63,7 @@ export class GregorianCalendarService implements ICalendarService {
         type = type || "wide";
         const months = this.cldr.main(["dates/calendars/gregorian/months", "stand-alone", type]);
         if (!months) {
-            throw new Error("CLDR data for dates/calendars/gregorian/months/stand-alone/" + type +  " is not loaded.");
+            throw new Error("CLDR data for dates/calendars/gregorian/months/stand-alone/" + type + " is not loaded.");
         }
         return [months["1"], months["2"], months["3"], months["4"],
             months["5"], months["6"], months["7"], months["8"],

@@ -15,8 +15,7 @@ export class GlobalizeDirectionDirective implements OnDestroy {
 
     constructor(@Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
                 @Inject(ElementRef) private readonly el: ElementRef,
-                @Inject(Renderer2) private readonly renderer: Renderer2,
-    ) {
+                @Inject(Renderer2) private readonly renderer: Renderer2) {
         this.handleLocaleChange();
         this.sub = this.cultureService.cultureObservable.subscribe(() => {
             this.handleLocaleChange();

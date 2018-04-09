@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
-    "rootDirs": ["./", "../src/"],
+    "rootDirs": [
+      "./",
+      "../src/"
+    ],
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "module": "commonjs",
@@ -13,7 +16,16 @@
     ],
     "target": "es5",
     "skipLibCheck": true,
-    "types": ["globalize", "node", "chai", "mocha", "chai-datetime"]
+    "types": [
+      "globalize",
+      "node",
+      "chai",
+      "mocha",
+      "chai-datetime"
+    ]
   },
-  "include": ["./**/*.ts", "../src/**/*.ts"]
+  "include": [
+    "./**/*.ts",
+    "../src/**/*.ts"
+  ]
 }

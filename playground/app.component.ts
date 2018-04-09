@@ -10,8 +10,9 @@ import { Observable } from "rxjs/Observable";
 export class AppComponent {
     public jsDate: Date;
     public currentTime: Observable<Date>;
+
     constructor() {
         this.jsDate = new Date();
-        this.currentTime = Observable.timer(0, 1000).map((v) => new Date());
+        this.currentTime = Observable.timer(0, 1000).map(() => new Date());
     }
 }

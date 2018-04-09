@@ -65,8 +65,7 @@ function pipeIt(expection: string,
                 callback: () => void,
                 value: any,
                 moreArgs: any[],
-                ...args: any[],
-) {
+                ...args: any[]) {
     it(expection, () => {
         const mock = new ChangeDetectorMock();
         const pipe = pipeFactory(mock);
@@ -88,17 +87,15 @@ function pipeIt(expection: string,
     });
 }
 
-function generateTests(
-    pipeFactory: (ref: ChangeDetectorRef) => PipeTransform,
-    lang: string,
-    testVal: any,
-    formatMethod: (...args) => string,
-    style: string,
-    defaultOptions: any,
-    styleOptions: any,
-    options: any,
-    ...args: any[],
-    ): void {
+function generateTests(pipeFactory: (ref: ChangeDetectorRef) => PipeTransform,
+                       lang: string,
+                       testVal: any,
+                       formatMethod: (...args) => string,
+                       style: string,
+                       defaultOptions: any,
+                       styleOptions: any,
+                       options: any,
+                       ...args: any[]): void {
 
     pipeIt("transforms null to null", pipeFactory, 0, null, null, null, args);
     pipeIt("transforms null:lang to null", pipeFactory, 0, null, null, null, args, lang);

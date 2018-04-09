@@ -1,4 +1,4 @@
-import {BaseGlobalizePipe} from "./base-globalize-pipe";
+import { BaseGlobalizePipe } from "./base-globalize-pipe";
 
 export abstract class BaseDatePipe extends BaseGlobalizePipe<Date, DateFormatterOptions> {
 

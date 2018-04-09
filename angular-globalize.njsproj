@@ -113,18 +113,14 @@
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="src\" />
     <Folder Include="src\directives\" />
+    <Folder Include="src\services\" />
     <Folder Include="test\" />
     <Folder Include="playground" />
     <Folder Include="src\pipes\" />
     <Folder Include="test\pipes\" />
     <Folder Include="test\services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="playground\webpack.config.vendor.js" />
-    <Compile Include="playground\webpack.config.js">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->
