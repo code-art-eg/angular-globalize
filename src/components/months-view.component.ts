@@ -1,16 +1,29 @@
-﻿import { Input, Component, Inject, EventEmitter, Output, HostListener, OnInit } from '@angular/core';
-import { IGlobalizationService, CANG_GLOBALIZATION_SERVICE, CANG_CULTURE_SERVICE, ICultureService } from '@code-art/angular-globalize';
-import { IMonthYearSelection, twelveArray, formatYear, KEY_CODE, NextPrevAction, createDate } from '../util';
+﻿import { Component, EventEmitter, HostListener, Inject, Input, OnInit, Output } from "@angular/core";
+import { CANG_CULTURE_SERVICE,
+    CANG_GLOBALIZATION_SERVICE, ICultureService, IGlobalizationService } from "@code-art/angular-globalize";
+import { createDate, formatYear, IMonthYearSelection, KEY_CODE, NextPrevAction, twelveArray } from "../util";
 
 @Component({
-    selector: 'ca-months-view',
-    templateUrl: './templates/months-view.component.html',
-    styleUrls: ['./styles/year-month-view.less']
+    selector: "ca-months-view",
+    styleUrls: ["./styles/year-month-view.less"],
+    templateUrl: "./templates/months-view.component.html",
 })
 export class MonthsViewComponent implements OnInit {
+    @Input() public homeButton: boolean;
+    @Input() public resetButton: boolean;
+    @Input() public maxDate: Date;
+    @Input() public minDate: Date;
+    @Input() public month: number;
+    @Input() public handleKeyboardEvents: boolean;
+    @Output() public command: EventEmitter<IMonthYearSelection>;
+    public focusMonth: number;
+    public nextPrevText: string;
+    public readonly months = twelveArray;
+    private _year: number;
+    private _locale: string;
 
     constructor(@Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
-        @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService) {
+                @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService) {
         this._year = undefined;
         this._locale = undefined;
         this.month = undefined;
@@ -20,22 +33,12 @@ export class MonthsViewComponent implements OnInit {
         this.handleKeyboardEvents = false;
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.focusMonth = null;
     }
 
-    private _year: number;
-    private _locale: string;
-    focusMonth: number;
-
-    @Input()
-    handleKeyboardEvents: boolean;
-
-    @Output()
-    command: EventEmitter<IMonthYearSelection>;
-
-    @HostListener('window:keyup', ['$event'])
-    keyEvent(event: KeyboardEvent) {
+    @HostListener("window:keyup", ["$event"])
+    public keyEvent(event: KeyboardEvent) {
         if (!this.handleKeyboardEvents) {
             return;
         }
@@ -48,46 +51,10 @@ export class MonthsViewComponent implements OnInit {
         } else if (event.keyCode === KEY_CODE.DOWN_ARROW) {
             this.addFocusMonth(3);
         } else if (event.keyCode === KEY_CODE.ENTER) {
-            this.monthClick(typeof(this.focusMonth) === 'number' ? this.focusMonth : this.month);
+            this.monthClick(typeof(this.focusMonth) === "number" ? this.focusMonth : this.month);
             this.focusMonth = null;
         }
     }
-
-    private addFocusMonth(val: number): void {
-        if (typeof this.focusMonth === 'number') {
-            this.focusMonth = this.focusMonth + val;
-            if (this.focusMonth < 0 || this.focusMonth > 11) {
-                let newYear = this.year;
-                while (this.focusMonth < 0) {
-                    this.focusMonth += 12;
-                    newYear--;
-                }
-                while (this.focusMonth > 11) {
-                    this.focusMonth -= 12;
-                    newYear++;
-                }
-                this.command.emit({
-                    year: newYear
-                });
-            }
-        } else {
-            this.focusMonth = this.month;
-        }
-    }
-
-    @Input()
-    homeButton: boolean;
-    
-    @Input()
-    resetButton: boolean;
-
-    @Input()
-    maxDate: Date;
-    @Input()
-    minDate: Date;
-
-    @Input()
-    month: number;
 
     @Input()
     set year(val: number) {
@@ -109,55 +76,76 @@ export class MonthsViewComponent implements OnInit {
         return this._locale;
     }
 
-    nextPrevText: string;
-
-    readonly months = twelveArray;
-
-    onNextPrevClicked(evt: NextPrevAction): void {
-        if (evt === 'next') {
+    public onNextPrevClicked(evt: NextPrevAction): void {
+        if (evt === "next") {
             this.command.emit({
-                year: this.year + 1
+                year: this.year + 1,
             });
-        } else if (evt === 'prev') {
+        } else if (evt === "prev") {
             this.command.emit({
-                year: this.year - 1
+                year: this.year - 1,
             });
-        } else if (evt === 'text') {
+        } else if (evt === "text") {
             this.command.emit({
-                view: 'years'
+                view: "years",
             });
-        } else if (evt === 'home') {
+        } else if (evt === "home") {
             this.command.emit({
-                view: 'home'
+                view: "home",
             });
-        } else if (evt === 'reset') {
+        } else if (evt === "reset") {
             this.command.emit({
-                reset: true
+                reset: true,
             });
         }
     }
 
-    monthClick(month: number): void {
+    public monthClick(month: number): void {
         if (this.isDisabled(month)) {
             return;
         }
         this.command.emit({
-            month: month,
-            view: 'days'
+            month,
+            view: "days",
         });
     }
 
-    isDisabled(month: number): boolean {
+    public isDisabled(month: number): boolean {
         if (this.maxDate) {
-            let start = createDate(this.year, month, 1);
-            if (start.valueOf() > this.maxDate.valueOf())
+            const start = createDate(this.year, month, 1);
+            if (start.valueOf() > this.maxDate.valueOf()) {
                 return true;
+            }
         }
         if (this.minDate) {
-            let end = createDate(this.year, month, this.globalizationService.getCalendar(this.locale).getDaysInMonth(this.year, month));
-            if (end.valueOf() < this.minDate.valueOf())
+            const end = createDate(this.year, month,
+                this.globalizationService.getCalendar(this.locale).getDaysInMonth(this.year, month));
+            if (end.valueOf() < this.minDate.valueOf()) {
                 return true;
+            }
         }
         return false;
+    }
+
+    private addFocusMonth(val: number): void {
+        if (typeof this.focusMonth === "number") {
+            this.focusMonth = this.focusMonth + val;
+            if (this.focusMonth < 0 || this.focusMonth > 11) {
+                let newYear = this.year;
+                while (this.focusMonth < 0) {
+                    this.focusMonth += 12;
+                    newYear--;
+                }
+                while (this.focusMonth > 11) {
+                    this.focusMonth -= 12;
+                    newYear++;
+                }
+                this.command.emit({
+                    year: newYear,
+                });
+            }
+        } else {
+            this.focusMonth = this.month;
+        }
     }
 }

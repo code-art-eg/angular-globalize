@@ -21,7 +21,7 @@
     <div class="row">
         <div class="col-sm-6 col-12">
             <h4>Time Picker Directive</h4>
-            <input class='form-control' caTimePicker [caInputAddon]="'time'" [(ngModel)]="valt" />
+            <input class='form-control' caTimePicker [caInputAddon]="'time'" [(ngModel)]="valt" title="time" />
             <div>
                 Value: {{ valt | json }}
                 <br />
@@ -29,7 +29,8 @@
         </div>
         <div class="col-sm-6 col-12">
             <h4>Time Directive w/o addon, w. second</h4>
-            <input class='form-control' caTimePicker [(ngModel)]="valts" [showSeconds]="true" [format]="'medium'" />
+            <input class='form-control' caTimePicker [(ngModel)]="valts" [showSeconds]="true" 
+                   [format]="'medium'" title="time"/>
             <div>
                 Value: {{ valts | json }}
                 <br />
@@ -58,7 +59,8 @@
     <div class="row">
         <div class="col-sm-6 col-12">
             <h4>Date Range Directive</h4>
-            <input class='form-control' caDateRangePicker caInputAddon [(ngModel)]="valpr" />
+            <input class='form-control' caDateRangePicker caInputAddon [(ngModel)]="valpr"
+                   title="date range"/>
             <div>
                 Value: {{ valpr | json }}
                 <br />
@@ -66,7 +68,7 @@
         </div>
         <div class="col-sm-6 col-12">
             <h4>Date Directive</h4>
-            <input class='form-control' caDatePicker [(ngModel)]="valp" />
+            <input class='form-control' caDatePicker [(ngModel)]="valp" title="date"/>
             <div>
                 Value: {{ valp | json }}
                 <br />
@@ -96,7 +98,7 @@
     <div class="row">
         <div class="col-sm-6 col-12">
             <h4>Date time Directive</h4>
-            <input class='form-control' caDateTimePicker caInputAddon [(ngModel)]="vald" />
+            <input class='form-control' caDateTimePicker caInputAddon [(ngModel)]="vald" title="datetime" />
             <div>
                 Value: {{ vald | json }}
                 <br />
@@ -104,7 +106,7 @@
         </div>
         <div class="col-sm-6 col-12">
             <h4>Date time Directive</h4>
-            <input class='form-control' caDateTimePicker [(ngModel)]="vald" />
+            <input class='form-control' caDateTimePicker [(ngModel)]="vald" title="datetime"/>
             <div>
                 Value: {{ vald | json }}
                 <br />

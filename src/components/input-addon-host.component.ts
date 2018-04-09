@@ -1,48 +1,30 @@
-﻿import { Component, Inject, Renderer2, ElementRef, AfterViewInit, ViewChild, OnDestroy } from "@angular/core";
+﻿import { AfterViewInit, Component, ElementRef, Inject, OnDestroy, Renderer2, ViewChild } from "@angular/core";
 import { CANG_CULTURE_SERVICE, ICultureService } from "@code-art/angular-globalize";
 import { Subscription } from "rxjs/Subscription";
 
 @Component({
-    templateUrl: './templates/input-addon-host.component.html'
+    templateUrl: "./templates/input-addon-host.component.html",
 })
 export class InputAddonHostComponent implements AfterViewInit, OnDestroy {
-
-    @ViewChild("inputhost") inputHost: ElementRef;
-    hostedElement: ElementRef;
-    private readonly sub: Subscription;
+    @ViewChild("inputhost") public inputHost: ElementRef;
+    public type: string;
+    public hostedElement: ElementRef;
+    private readonly _sub: Subscription;
 
     constructor(@Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
-        @Inject(Renderer2) private readonly renderer: Renderer2) {
-        this.type = 'calendar';
+                @Inject(Renderer2) private readonly renderer: Renderer2) {
+        this.type = "calendar";
 
-        this.sub = this.cultureService.cultureObservable.subscribe(o => {
+        this._sub = this.cultureService.cultureObservable.subscribe(() => {
             this.applyStyles();
         });
     }
 
-    private applyStyles(): void {
-        if (this.hostedElement) {
-            let s = this.getRtlControlStyle();
-            let rtl = this.cultureService.isRightToLeft();
-            for (let key in s) {
-                if (s.hasOwnProperty(key)) {
-                    if (rtl) {
-                        this.renderer.setStyle(this.hostedElement.nativeElement, key, s[key]);
-                    } else {
-                        this.renderer.removeStyle(this.hostedElement.nativeElement, key);
-                    }
-                }
-            }
-        }
+    public ngOnDestroy(): void {
+        this._sub.unsubscribe();
     }
 
-    type: string;
-
-    ngOnDestroy(): void {
-        this.sub.unsubscribe();
-    }
-
-    ngAfterViewInit(): void {
+    public ngAfterViewInit(): void {
 
         const parent = this.renderer.parentNode(this.inputHost.nativeElement);
 
@@ -66,26 +48,43 @@ export class InputAddonHostComponent implements AfterViewInit, OnDestroy {
         this.applyStyles();
     }
 
-    getRtlControlStyle(): { [key: string]: string } {
+    // noinspection JSMethodCanBeStatic
+    public getRtlControlStyle(): { [key: string]: string } {
         return {
-            'border-top-right-radius': '4px',
-            'border-bottom-right-radius': '4px',
-            'border-top-left-radius': '0px',
-            'border-bottom-left-radius': '0px',
+            "border-bottom-left-radius": "0px",
+            "border-bottom-right-radius": "4px",
+            "border-top-left-radius": "0px",
+            "border-top-right-radius": "4px",
         };
     }
 
-    getAddonStyle(): { [key: string]: string } {
+    public getAddonStyle(): { [key: string]: string } {
         if (this.cultureService.isRightToLeft()) {
             return {
-                'border-top-right-radius': '0',
-                'border-bottom-right-radius': '0',
-                'border-top-left-radius': '4px',
-                'border-bottom-left-radius': '4px',
-                'border-right-width': '0',
-                'border-left': '1px solid rgb(204, 204, 204)'
+                "border-bottom-left-radius": "4px",
+                "border-bottom-right-radius": "0",
+                "border-left": "1px solid rgb(204, 204, 204)",
+                "border-right-width": "0",
+                "border-top-left-radius": "4px",
+                "border-top-right-radius": "0",
             };
         }
         return {};
+    }
+
+    private applyStyles(): void {
+        if (this.hostedElement) {
+            const s = this.getRtlControlStyle();
+            const rtl = this.cultureService.isRightToLeft();
+            for (const key in s) {
+                if (s.hasOwnProperty(key)) {
+                    if (rtl) {
+                        this.renderer.setStyle(this.hostedElement.nativeElement, key, s[key]);
+                    } else {
+                        this.renderer.removeStyle(this.hostedElement.nativeElement, key);
+                    }
+                }
+            }
+        }
     }
 }

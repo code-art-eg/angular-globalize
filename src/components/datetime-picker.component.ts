@@ -1,41 +1,42 @@
-﻿import { Component, EventEmitter, ChangeDetectorRef, Inject, OnDestroy, Input, forwardRef } from "@angular/core";
-import { BaseDatePickerAccessor } from "../base-date-picker-accessor";
-import { ICultureService, ITypeConverterService, CANG_TYPE_CONVERTER_SERVICE, CANG_CULTURE_SERVICE } from "@code-art/angular-globalize";
-import { Subscription } from "rxjs/Subscription";
-import { similarInLocal, createDate, applyMixins } from "../util";
-import { ITimePickerOptions, IDateTimePicker, IBaseValueAccessor } from "../interfaces";
-import { TimePickerOptions } from "../base-time-value-accessor";
+﻿import { ChangeDetectorRef, Component, forwardRef, Inject, Input, OnDestroy } from "@angular/core";
 import { NG_VALUE_ACCESSOR } from "@angular/forms";
-
+import { CANG_CULTURE_SERVICE, CANG_TYPE_CONVERTER_SERVICE,
+    ICultureService, ITypeConverterService } from "@code-art/angular-globalize";
+import { BaseDatePickerAccessor } from "../base-date-picker-accessor";
+import { IBaseValueAccessor, IDateTimePicker } from "../interfaces";
+import { TimePickerOptions } from "../time-picker-options";
+import { applyMixins, createDate, similarInLocal } from "../util";
 
 @Component({
-    selector: 'ca-datetimepicker',
-    templateUrl: './templates/datetime-picker.component.html',
-    styleUrls: ['./styles/datetime-picker.component.less'],
     providers: [{
-        provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DateTimePickerComponent), multi: true
-    }]
+        multi: true,
+        provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DateTimePickerComponent),
+    }],
+    selector: "ca-datetimepicker",
+    styleUrls: ["./styles/datetime-picker.component.less"],
+    templateUrl: "./templates/datetime-picker.component.html",
 })
-export class DateTimePickerComponent extends BaseDatePickerAccessor<IDateTimePicker> implements OnDestroy, IDateTimePicker {
+export class DateTimePickerComponent
+    extends BaseDatePickerAccessor<IDateTimePicker> implements OnDestroy, IDateTimePicker {
 
-    @Input() minutesIncrement: number;
-    @Input() secondsIncrement: number;
-    @Input() showSeconds: boolean;
+    @Input() public minutesIncrement: number;
+    @Input() public secondsIncrement: number;
+    @Input() public showSeconds: boolean;
 
-    parent: IBaseValueAccessor<IDateTimePicker> & IDateTimePicker;
+    public parent: IBaseValueAccessor<IDateTimePicker> & IDateTimePicker;
 
-    time: boolean = false;
+    public time: boolean = false;
     constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
-        @Inject(ChangeDetectorRef) changeDetector?: ChangeDetectorRef) {
+                @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
+                @Inject(ChangeDetectorRef) changeDetector?: ChangeDetectorRef) {
         super(cultureService, converterService, changeDetector);
         this.rangeSelection = false;
     }
 
     get dateValue(): Date {
-        let d = this.value;
+        const d = this.value;
         if (d instanceof Date) {
-            var newD = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+            const newD = new Date(d.getFullYear(), d.getMonth(), d.getDate());
             if (newD.getFullYear() !== d.getFullYear()) {
                 newD.setFullYear(d.getFullYear());
             }
@@ -46,11 +47,11 @@ export class DateTimePickerComponent extends BaseDatePickerAccessor<IDateTimePic
 
     set dateValue(val: Date) {
         if (val instanceof Date) {
-            let d = new Date(val.getFullYear(), val.getMonth(), val.getDate());
+            const d = new Date(val.getFullYear(), val.getMonth(), val.getDate());
             if (d.getFullYear() !== val.getFullYear()) {
                 d.setFullYear(val.getFullYear());
             }
-            let oldVal = this.value;
+            const oldVal = this.value;
             if (oldVal instanceof Date) {
                 d.setHours(oldVal.getHours());
                 d.setMinutes(oldVal.getMinutes());
@@ -58,8 +59,7 @@ export class DateTimePickerComponent extends BaseDatePickerAccessor<IDateTimePic
                 d.setMilliseconds(oldVal.getMilliseconds());
             }
             this.value = d;
-        }
-        else {
+        } else {
             this.value = null;
         }
     }
@@ -78,7 +78,7 @@ export class DateTimePickerComponent extends BaseDatePickerAccessor<IDateTimePic
     }
 
     get timeValue(): number {
-        let d = this.value;
+        const d = this.value;
         if (d instanceof Date) {
             return ((d.getHours() * 60 + d.getMinutes()) * 60 + d.getSeconds()) * 1000;
         }

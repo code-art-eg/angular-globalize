@@ -1,20 +1,14 @@
-import { Component } from '@angular/core';
-
+import { Component } from "@angular/core";
 
 @Component({
-    selector: 'app',
-    templateUrl: './app.component.html'
+    selector: "app",
+    templateUrl: "./app.component.html",
 })
-export class AppComponent
-{
-    constructor() {
-       
-    }
-
-    valdr: any;
-    valpr: any;
-    vald: any;
-    valp: any;
-    valt: number;
-    valts: number;
+export class AppComponent {
+    public valdr: any;
+    public valpr: any;
+    public vald: any;
+    public valp: any;
+    public valt: number;
+    public valts: number;
 }

@@ -30,6 +30,8 @@
     <Content Include="playground\language-switch.component.html" />
     <Content Include="playground\tsconfig.json" />
     <Content Include="README.MD" />
+    <Content Include="src\components\base-date-picker.component.ts" />
+    <Content Include="src\components\date-range-picker.component.ts" />
     <Content Include="src\components\styles\common.less">
       <SubType>Code</SubType>
     </Content>
@@ -75,10 +77,12 @@
     <Content Include="src\components\templates\years-view.component.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\directives\base-date-picker.directive.ts" />
     <Content Include="src\directives\popup-host.directive.ts">
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\interfaces.ts" />
+    <Content Include="src\time-picker-options.ts" />
     <Content Include="src\util.ts" />
     <Content Include="test\tsconfig.json">
       <SubType>Code</SubType>

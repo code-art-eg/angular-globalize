@@ -1,12 +1,11 @@
-﻿import { YearsViewComponent } from '../../src/components/years-view.component';
-import { expect } from 'chai';
-import { IGlobalizationService, ICultureService, DefaultGlobalizationService, CurrentCultureService } from '@code-art/angular-globalize';
-import { loadedGlobalize } from '../load-globalize-data';
-import { formatYear, IMonthYearSelection, KEY_CODE } from '../../src/util';
-
+﻿import { CurrentCultureService, DefaultGlobalizationService} from "@code-art/angular-globalize";
+import { expect } from "chai";
+import { YearsViewComponent } from "../../src/components/years-view.component";
+import { formatYear, IMonthYearSelection, KEY_CODE } from "../../src/util";
+import { loadedGlobalize } from "../load-globalize-data";
 
 describe("YearsViewComponent", () => {
-    const cultureService = new CurrentCultureService(['en-GB', 'ar-EG', 'de']);
+    const cultureService = new CurrentCultureService(["en-GB", "ar-EG", "de"]);
     const globalizeService = new DefaultGlobalizationService(loadedGlobalize, cultureService);
 
     it("initializes correctly", () => {
@@ -16,14 +15,14 @@ describe("YearsViewComponent", () => {
         expect(c.handleKeyboardEvents).false;
     });
 
-
     it("calculates ranges correctly in years view", () => {
         const c = new YearsViewComponent(cultureService, globalizeService);
-        c.locale = 'ar-EG';
+        c.locale = "ar-EG";
         c.year = 2018;
         c.numberOfYears = 1;
         expect(c.ranges).lengthOf(12);
-        expect(c.nextPrevText).equal(`${formatYear(globalizeService, 2010, c.locale)} - ${formatYear(globalizeService, 2019, c.locale)}`)
+        expect(c.nextPrevText).equal(`${formatYear(globalizeService,
+            2010, c.locale)} - ${formatYear(globalizeService, 2019, c.locale)}`);
         for (let i = 0; i < c.ranges.length; i++) {
             expect(c.ranges[i]).equal(formatYear(globalizeService, 2010 + i, c.locale));
         }
@@ -31,25 +30,31 @@ describe("YearsViewComponent", () => {
 
     it("calculates ranges correctly in decades view", () => {
         const c = new YearsViewComponent(cultureService, globalizeService);
-        c.locale = 'de';
+        c.locale = "de";
         c.year = 2018;
         c.numberOfYears = 10;
         expect(c.ranges).lengthOf(12);
-        expect(c.nextPrevText).equal(`${formatYear(globalizeService, 2000, c.locale)} - ${formatYear(globalizeService, 2099, c.locale)}`)
+        expect(c.nextPrevText).equal(`${formatYear(globalizeService,
+            2000, c.locale)} - ${formatYear(globalizeService, 2099, c.locale)}`);
         for (let i = 0; i < c.ranges.length; i++) {
-            expect(c.ranges[i]).equal(`${formatYear(globalizeService, 2000 + i * 10, c.locale)} - ${formatYear(globalizeService, 2000 + (i + 1) * 10 - 1, c.locale)}`);
+            expect(c.ranges[i]).equal(`${formatYear(globalizeService,
+                2000 + i * 10, c.locale)} - ${formatYear(globalizeService, 2000 + (i + 1) * 10 - 1,
+                c.locale)}`);
         }
     });
 
     it("calculates ranges correctly in centuries view", () => {
         const c = new YearsViewComponent(cultureService, globalizeService);
-        c.locale = 'de';
+        c.locale = "de";
         c.year = 2018;
         c.numberOfYears = 100;
         expect(c.ranges).lengthOf(12);
-        expect(c.nextPrevText).equal(`${formatYear(globalizeService, 2000, c.locale)} - ${formatYear(globalizeService, 2999, c.locale)}`)
+        expect(c.nextPrevText).equal(`${formatYear(globalizeService,
+            2000, c.locale)} - ${formatYear(globalizeService, 2999, c.locale)}`);
         for (let i = 0; i < c.ranges.length; i++) {
-            expect(c.ranges[i]).equal(`${formatYear(globalizeService, 2000 + i * 100, c.locale)} - ${formatYear(globalizeService, 2000 + (i + 1) * 100 - 1, c.locale)}`);
+            expect(c.ranges[i]).equal(`${formatYear(globalizeService,
+                2000 + i * 100, c.locale)} - ${formatYear(globalizeService,
+                2000 + (i + 1) * 100 - 1, c.locale)}`);
         }
     });
 
@@ -58,12 +63,12 @@ describe("YearsViewComponent", () => {
         c.year = 1;
         c.numberOfYears = 10;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('home');
+        c.onNextPrevClicked("home");
         expect(e).not.null.and.not.undefined;
-        expect(e.view).equal('home');
+        expect(e.view).equal("home");
         expect(e.month).undefined;
         expect(e.year).undefined;
         expect(e.reset).not.equal(true);
@@ -75,10 +80,10 @@ describe("YearsViewComponent", () => {
         c.year = 1;
         c.numberOfYears = 10;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('reset');
+        c.onNextPrevClicked("reset");
         expect(e).not.null.and.not.undefined;
         expect(e.view).undefined;
         expect(e.month).undefined;
@@ -92,10 +97,10 @@ describe("YearsViewComponent", () => {
         c.year = 2018;
         c.numberOfYears = 1;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('next');
+        c.onNextPrevClicked("next");
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.year).equal(2028);
@@ -109,10 +114,10 @@ describe("YearsViewComponent", () => {
         c.year = 2018;
         c.numberOfYears = 1;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('prev');
+        c.onNextPrevClicked("prev");
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.year).equal(2008);
@@ -126,10 +131,10 @@ describe("YearsViewComponent", () => {
         c.year = 2018;
         c.numberOfYears = 10;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('next');
+        c.onNextPrevClicked("next");
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.year).equal(2118);
@@ -143,10 +148,10 @@ describe("YearsViewComponent", () => {
         c.year = 2018;
         c.numberOfYears = 10;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('prev');
+        c.onNextPrevClicked("prev");
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.year).equal(1918);
@@ -160,10 +165,10 @@ describe("YearsViewComponent", () => {
         c.year = 2018;
         c.numberOfYears = 100;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('next');
+        c.onNextPrevClicked("next");
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.year).equal(3018);
@@ -177,10 +182,10 @@ describe("YearsViewComponent", () => {
         c.year = 2018;
         c.numberOfYears = 100;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('prev');
+        c.onNextPrevClicked("prev");
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.year).equal(1018);
@@ -194,14 +199,14 @@ describe("YearsViewComponent", () => {
         c.year = 2018;
         c.numberOfYears = 1;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('text');
+        c.onNextPrevClicked("text");
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.year).undefined;
-        expect(e.view).equal('decades');
+        expect(e.view).equal("decades");
         expect(e.reset).not.equal(true);
         sub.unsubscribe();
     });
@@ -211,14 +216,14 @@ describe("YearsViewComponent", () => {
         c.year = 2018;
         c.numberOfYears = 10;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('text');
+        c.onNextPrevClicked("text");
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.year).undefined;
-        expect(e.view).equal('centuries');
+        expect(e.view).equal("centuries");
         expect(e.reset).not.equal(true);
         sub.unsubscribe();
     });
@@ -228,14 +233,14 @@ describe("YearsViewComponent", () => {
         c.year = 2018;
         c.numberOfYears = 100;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('text');
+        c.onNextPrevClicked("text");
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.year).undefined;
-        expect(e.view).equal('centuries');
+        expect(e.view).equal("centuries");
         expect(e.reset).not.equal(true);
         sub.unsubscribe();
     });
@@ -337,37 +342,31 @@ describe("YearsViewComponent", () => {
         const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 1;
-        for (let i = 0; i < 12; i++) {
-            expect(c.isRange(i)).false;
-        }
+        expect(c.isRange()).false;
     });
 
     it("returns range false in decades view", () => {
         const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 10;
-        for (let i = 0; i < 12; i++) {
-            expect(c.isRange(i)).true;
-        }
+        expect(c.isRange()).true;
     });
 
     it("returns range false in centuries view", () => {
         const c = new YearsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         c.numberOfYears = 100;
-        for (let i = 0; i < 12; i++) {
-            expect(c.isRange(i)).true;
-        }
+        expect(c.isRange()).true;
     });
 
     it("does nothing when clicking disabled range", () => {
         const c = new YearsViewComponent(cultureService, globalizeService);
-        c.minYear = 2014
+        c.minYear = 2014;
         c.year = 2018;
         c.maxYear = 2018;
         c.numberOfYears = 1;
         let e: IMonthYearSelection = null;
-        let sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
         c.rangeClick(0);
@@ -376,6 +375,7 @@ describe("YearsViewComponent", () => {
         expect(e).null;
         c.rangeClick(4);
         expect(e).not.null;
+        sub.unsubscribe();
     });
 
     it("range click in years view", () => {
@@ -385,15 +385,16 @@ describe("YearsViewComponent", () => {
         c.maxYear = 9999;
         c.numberOfYears = 1;
         let e: IMonthYearSelection = null;
-        let sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
         c.rangeClick(0);
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.reset).not.true;
-        expect(e.view).equal('months');
+        expect(e.view).equal("months");
         expect(e.year).equal(2010);
+        sub.unsubscribe();
     });
 
     it("range click in decades view", () => {
@@ -403,15 +404,16 @@ describe("YearsViewComponent", () => {
         c.maxYear = 9999;
         c.numberOfYears = 10;
         let e: IMonthYearSelection = null;
-        let sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
         c.rangeClick(4);
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.reset).not.true;
-        expect(e.view).equal('years');
+        expect(e.view).equal("years");
         expect(e.year).equal(2040);
+        sub.unsubscribe();
     });
 
     it("range click in centuries view", () => {
@@ -421,15 +423,16 @@ describe("YearsViewComponent", () => {
         c.maxYear = 9999;
         c.numberOfYears = 100;
         let e: IMonthYearSelection = null;
-        let sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
         c.rangeClick(6);
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.reset).not.true;
-        expect(e.view).equal('decades');
+        expect(e.view).equal("decades");
         expect(e.year).equal(2600);
+        sub.unsubscribe();
     });
 
     it("ignores keyboard events when handleKeyboardEvents is false", () => {
@@ -441,11 +444,12 @@ describe("YearsViewComponent", () => {
         c.handleKeyboardEvents = false;
         expect(c.focusRange).null;
         let e: IMonthYearSelection = null;
-        let sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
         c.keyEvent({ keyCode: KEY_CODE.LEFT_ARROW } as KeyboardEvent);
         expect(e).null;
+        sub.unsubscribe();
     });
 
     it("handle keyboard enter without focus in years view", () => {
@@ -456,15 +460,16 @@ describe("YearsViewComponent", () => {
         c.numberOfYears = 1;
         c.handleKeyboardEvents = true;
         let e: IMonthYearSelection = null;
-        let sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
         c.keyEvent({ keyCode: KEY_CODE.ENTER } as KeyboardEvent);
         expect(c.focusRange).null;
         expect(e.year).equal(2018);
-        expect(e.view).equal('months');
+        expect(e.view).equal("months");
         expect(e.month).undefined;
         expect(e.reset).not.true;
+        sub.unsubscribe();
     });
 
     it("handle keyboard events in years view", () => {
@@ -477,7 +482,7 @@ describe("YearsViewComponent", () => {
         expect(c.focusRange).null;
 
         let e: IMonthYearSelection = null;
-        let sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
         c.keyEvent({ keyCode: KEY_CODE.LEFT_ARROW } as KeyboardEvent);
@@ -523,7 +528,7 @@ describe("YearsViewComponent", () => {
         expect(e).not.null;
         expect(c.focusRange).null;
         expect(e.year).equal(2018);
-        expect(e.view).equal('months');
+        expect(e.view).equal("months");
         expect(e.month).undefined;
         expect(e.reset).not.true;
         sub.unsubscribe();
@@ -536,11 +541,11 @@ describe("YearsViewComponent", () => {
         c.maxYear = 9999;
         c.numberOfYears = 1;
         c.handleKeyboardEvents = true;
-        c.locale = 'ar-EG';
+        c.locale = "ar-EG";
         expect(c.focusRange).null;
 
         let e: IMonthYearSelection = null;
-        let sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
         c.keyEvent({ keyCode: KEY_CODE.LEFT_ARROW } as KeyboardEvent);
@@ -552,5 +557,6 @@ describe("YearsViewComponent", () => {
         c.keyEvent({ keyCode: KEY_CODE.RIGHT_ARROW } as KeyboardEvent);
         expect(e).null;
         expect(c.focusRange).equal(8); // 2017
+        sub.unsubscribe();
     });
 });

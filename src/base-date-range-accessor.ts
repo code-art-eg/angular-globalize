@@ -1,12 +1,12 @@
-import { EventEmitter, Output, Input, Inject, ChangeDetectorRef } from "@angular/core";
-import { Subscription } from "rxjs/Subscription";
+import { ChangeDetectorRef, Inject, Input } from "@angular/core";
 
-import { ICultureService, ITypeConverterService } from '@code-art/angular-globalize';
+import { ICultureService, ITypeConverterService } from "@code-art/angular-globalize";
 import { BaseValueAccessor } from "./base-value-accessor";
-import { isPlainObject, datesEqual, IDateRange, similarInLocal, createDate } from "./util";
 import { IDateRangeOptions } from "./interfaces";
+import { createDate, datesEqual, isPlainObject, similarInLocal } from "./util";
 
-export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions> extends BaseValueAccessor<T> implements IDateRangeOptions {
+export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions>
+    extends BaseValueAccessor<T> implements IDateRangeOptions {
 
     private static readonly maximumYear = 9999;
     private static readonly minimumYear = 0;
@@ -19,14 +19,14 @@ export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions> extends
     private _maxDate: Date | null = null;
 
     constructor(cultureService: ICultureService,
-        protected readonly converterService: ITypeConverterService, @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
+                protected readonly converterService: ITypeConverterService,
+                @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
         super(cultureService, changeDetector);
         this.defaultMinDate = similarInLocal(createDate(BaseDateRangeAccessor.minimumYear, 0, 1));
         this.defaultMaxDate = similarInLocal(createDate(BaseDateRangeAccessor.maximumYear, 11, 31));
     }
 
     set rangeSelection(val: boolean) {
-        val = !!val;
         if (val !== this._rangeSelection) {
             this._rangeSelection = val;
         }
@@ -95,7 +95,7 @@ export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions> extends
             const oldFrom = v ? v.from : null;
             if (!datesEqual(val, oldFrom)) {
                 const to = v ? v.to : null;
-                this.value = { from: val, to: to };
+                this.value = { from: val, to };
             }
         }
     }
@@ -123,11 +123,11 @@ export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions> extends
         const oldTo = v ? v.to : null;
         if (!datesEqual(val, oldTo)) {
             const from = v ? (v instanceof Date ? v : v.from) : null;
-            this.value = { from: from, to: val };
+            this.value = { from, to: val };
         }
     }
 
-    compareValues(v1: any, v2: any): boolean {
+    public compareValues(v1: any, v2: any): boolean {
         if (v1 instanceof Date && v2 instanceof Date) {
             return datesEqual(v1, v2);
         }
@@ -137,7 +137,7 @@ export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions> extends
         return false;
     }
 
-    coerceValue(val: any): any {
+    public coerceValue(val: any): any {
         let s: Date | null = null;
         let e: Date | null = null;
         if (val !== null && val !== undefined) {
@@ -150,8 +150,7 @@ export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions> extends
             } else {
                 try {
                     s = this.converterService.convertToDate(val, this.effectiveLocale);
-                }
-                catch {
+                } catch {
                     s = null;
                 }
             }
@@ -161,12 +160,12 @@ export abstract class BaseDateRangeAccessor<T extends IDateRangeOptions> extends
             return s;
         } else if (s || e) {
             if (s && e && this.rangeSelection && e.valueOf() < s.valueOf()) {
-                throw 'From date must be before or at to date.';
+                throw new Error("From date must be before or at to date.");
             }
             return {
                 from: s,
-                to: e
-            }
+                to: e,
+            };
         } else {
             return null;
         }

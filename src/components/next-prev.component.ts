@@ -1,15 +1,20 @@
-﻿import { Component, Input, EventEmitter, Output, Inject } from '@angular/core';
-import { NextPrevAction } from '../util';
-import { CANG_CULTURE_SERVICE, ICultureService } from '@code-art/angular-globalize';
+﻿import { Component, EventEmitter, Inject, Input, Output } from "@angular/core";
+import { CANG_CULTURE_SERVICE, ICultureService } from "@code-art/angular-globalize";
+import { NextPrevAction } from "../util";
 
 @Component({
-    selector: 'ca-next-prev',
-    templateUrl: './templates/next-prev.component.html',
-    styleUrls: ['./styles/next-prev.component.less']
+    selector: "ca-next-prev",
+    styleUrls: ["./styles/next-prev.component.less"],
+    templateUrl: "./templates/next-prev.component.html",
 })
 export class NextPreviousComponent {
-    static readonly leftArrow: string = 'glyphicon-chevron-left';
-    static readonly rightArrow: string = 'glyphicon-chevron-right';
+    public static readonly leftArrow: string = "glyphicon-chevron-left";
+    public static readonly rightArrow: string = "glyphicon-chevron-right";
+    @Input() public homeButton: boolean;
+    @Input() public resetButton: boolean;
+    @Input() public locale: string;
+    @Input() public text: string;
+    @Output() public readonly clicked: EventEmitter<NextPrevAction>;
 
     constructor(@Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService) {
         this.locale = null;
@@ -19,28 +24,13 @@ export class NextPreviousComponent {
         this.homeButton = true;
     }
 
-    private _locale: string;
-    
-    @Input()
-    homeButton: boolean;
-    
-    @Input()
-    resetButton: boolean;
-
-    @Input()
-    locale: string;
-
-    getClass(type: 'next'|'prev'): string {
-        if (type === 'next') {
-            return this.cultureService.isRightToLeft(this.locale) ? NextPreviousComponent.leftArrow : NextPreviousComponent.rightArrow;
+    public getClass(type: "next"|"prev"): string {
+        if (type === "next") {
+            return this.cultureService.isRightToLeft(this.locale) ?
+                NextPreviousComponent.leftArrow : NextPreviousComponent.rightArrow;
+        } else {
+            return this.cultureService.isRightToLeft(this.locale) ?
+                NextPreviousComponent.rightArrow : NextPreviousComponent.leftArrow;
         }
-        else
-            return this.cultureService.isRightToLeft(this.locale) ? NextPreviousComponent.rightArrow: NextPreviousComponent.leftArrow;
     }
-
-    @Input()
-    text: string;
-
-    @Output()
-    clicked: EventEmitter<NextPrevAction>;
 }

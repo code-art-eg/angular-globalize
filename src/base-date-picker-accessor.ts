@@ -1,11 +1,13 @@
-import { Input, Inject, ChangeDetectorRef } from "@angular/core";
-import { ICultureService, ITypeConverterService, CANG_TYPE_CONVERTER_SERVICE, CANG_CULTURE_SERVICE } from '@code-art/angular-globalize';
+import { ChangeDetectorRef, Inject, Input } from "@angular/core";
+import { CANG_CULTURE_SERVICE, CANG_TYPE_CONVERTER_SERVICE,
+    ICultureService, ITypeConverterService } from "@code-art/angular-globalize";
 
 import { BaseDateRangeAccessor } from "./base-date-range-accessor";
-import { datesEqual, similarInLocal, createDate } from "./util";
 import { IDatePicker } from "./interfaces";
+import { createDate, datesEqual, similarInLocal } from "./util";
 
-export abstract class BaseDatePickerAccessor<T extends IDatePicker> extends BaseDateRangeAccessor<IDatePicker> implements IDatePicker {
+export abstract class BaseDatePickerAccessor<T extends IDatePicker>
+    extends BaseDateRangeAccessor<IDatePicker> implements IDatePicker {
 
     private _homeButton = true;
     private _resetButton = true;
@@ -14,25 +16,22 @@ export abstract class BaseDatePickerAccessor<T extends IDatePicker> extends Base
     private _todayDate: Date | null = null;
     private _highlightDays: number = 0;
 
-
     constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-        @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
-        @Inject(ChangeDetectorRef) changeDetector?: ChangeDetectorRef) {
+                @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
+                @Inject(ChangeDetectorRef) changeDetector?: ChangeDetectorRef) {
         super(cultureService, converterService, changeDetector);
     }
 
-    
     @Input() set homeButton(val: boolean) {
         if (this.parent) {
             this.parent.homeButton = val;
             return;
         }
-        val = !!val;
-        if (val != this._homeButton) {
+        if (val !== this._homeButton) {
             this._homeButton = val;
         }
     }
-    
+
     get homeButton(): boolean {
         if (this.parent) {
             return this.parent.homeButton;
@@ -45,12 +44,11 @@ export abstract class BaseDatePickerAccessor<T extends IDatePicker> extends Base
             this.parent.resetButton = val;
             return;
         }
-        val = !!val;
-        if (val != this._resetButton) {
+        if (val !== this._resetButton) {
             this._resetButton = val;
         }
     }
-    
+
     get resetButton(): boolean {
         if (this.parent) {
             return this.parent.resetButton;
@@ -63,12 +61,11 @@ export abstract class BaseDatePickerAccessor<T extends IDatePicker> extends Base
             this.parent.handleKeyboardEvents = val;
             return;
         }
-        val = !!val;
-        if (val != this._handleKeyboardEvents) {
+        if (val !== this._handleKeyboardEvents) {
             this._handleKeyboardEvents = val;
         }
     }
-    
+
     get handleKeyboardEvents(): boolean {
         if (this.parent) {
             return this.parent.handleKeyboardEvents;
@@ -80,12 +77,11 @@ export abstract class BaseDatePickerAccessor<T extends IDatePicker> extends Base
         if (this.parent) {
             this.parent.todayHighlight = val;
         }
-        val = !!val;
-        if (val != this._todayHighlight) {
+        if (val !== this._todayHighlight) {
             this._todayHighlight = val;
         }
     }
-    
+
     get todayHighlight(): boolean {
         if (this.parent) {
             return this.parent.todayHighlight;
@@ -103,7 +99,7 @@ export abstract class BaseDatePickerAccessor<T extends IDatePicker> extends Base
             this._todayDate = val;
         }
     }
-    
+
     get todayDate(): Date | null {
         if (this.parent) {
             return this.parent.todayDate;
@@ -124,7 +120,7 @@ export abstract class BaseDatePickerAccessor<T extends IDatePicker> extends Base
             this._highlightDays = val;
         }
     }
-    
+
     get highlightDays(): number {
         if (this.parent) {
             return this.parent.highlightDays;

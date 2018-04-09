@@ -1,17 +1,15 @@
-import { OnDestroy, Input, Output, EventEmitter, AfterViewInit, ChangeDetectorRef } from "@angular/core";
-import { ControlValueAccessor } from "@angular/forms";
-import { Observable } from "rxjs/Observable";
+import { ChangeDetectorRef, EventEmitter, Input, OnDestroy, Output } from "@angular/core";
+import { combineLatest} from "rxjs/observable/combineLatest";
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import { Subscription } from "rxjs/Subscription";
-import 'rxjs/add/observable/combineLatest';
 
-import { ICultureService } from '@code-art/angular-globalize';
+import { ICultureService } from "@code-art/angular-globalize";
 import { IBaseValueAccessor, ICompositeObject  } from "./interfaces";
 
-
 export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAccessor<T>, ICompositeObject<T> {
+    @Output() public readonly valueChange: EventEmitter<any> = new EventEmitter<any>();
 
-    private readonly _boundChildren: (IBaseValueAccessor<T> & T)[] = [];
+    private readonly _boundChildren: Array<IBaseValueAccessor<T> & T> = [];
     private readonly _subs: Subscription[] = [];
     private readonly _localeSubject = new ReplaySubject<string>();
     private readonly _localeObservable = this._localeSubject.asObservable();
@@ -22,14 +20,14 @@ export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAcces
     private _onchange: (val: any) => void = null;
     private _ontouch: () => void = null;
     private _value: any = null;
-    private _valueSet: boolean = false;
-    
-    private readonly _localeSubscription = Observable.combineLatest(this._localeObservable, this.cultureService.cultureObservable)
+
+    private readonly _localeSubscription =
+        combineLatest(this._localeObservable, this.cultureService.cultureObservable)
         .subscribe({
-            next: vals => {
+            next: (vals) => {
                 const [localeVal, cultureVal] = vals;
                 this.effectiveLocale = localeVal || cultureVal;
-            }
+            },
         });
 
     constructor(readonly cultureService: ICultureService, readonly changeDetector: ChangeDetectorRef) {
@@ -38,10 +36,10 @@ export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAcces
 
     }
 
-    addBoundChild(child: IBaseValueAccessor<T> & T): void {
-        let thisT = this as IBaseValueAccessor<T> as (IBaseValueAccessor<T> & T);
+    public addBoundChild(child: IBaseValueAccessor<T> & T): void {
+        const thisT = this as IBaseValueAccessor<T> as (IBaseValueAccessor<T> & T);
         if (child === thisT) {
-            throw `Cannot bind to self`;
+            throw new Error(`Cannot bind to self`);
         }
         if (child.parent === thisT || this._boundChildren.indexOf(child) >= 0) {
             return;
@@ -49,7 +47,7 @@ export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAcces
 
         this._boundChildren.push(child);
         child.value = this.value;
-        this._subs.push(this.valueChange.asObservable().subscribe(v => {
+        this._subs.push(this.valueChange.asObservable().subscribe((v) => {
             child.valueChange.emit(v);
         }));
         child.parent = thisT;
@@ -58,8 +56,8 @@ export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAcces
         }
     }
 
-    removeBoundChild(child: IBaseValueAccessor<T> & T): void {
-        let thisT = this as IBaseValueAccessor<T> as (IBaseValueAccessor<T> & T);
+    public removeBoundChild(child: IBaseValueAccessor<T> & T): void {
+        const thisT = this as IBaseValueAccessor<T> as (IBaseValueAccessor<T> & T);
         const index = this._boundChildren.indexOf(child);
         if (index >= 0) {
             this._subs[index].unsubscribe();
@@ -99,7 +97,7 @@ export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAcces
             this.parent.disabled = val;
             return;
         }
-        this._disabled = !!val;
+        this._disabled = val;
     }
 
     get disabled(): boolean {
@@ -127,7 +125,7 @@ export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAcces
         return this._locale;
     }
 
-    writeValue(val: any): void {
+    public writeValue(val: any): void {
         this.value = val;
     }
 
@@ -151,15 +149,9 @@ export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAcces
         this.raiseOnChange(newVal);
     }
 
-    @Output() readonly valueChange: EventEmitter<any> = new EventEmitter<any>();
-
-    protected onIsRtlChanged(): void {
-
-    }
-
-    ngOnDestroy() {
+    public ngOnDestroy() {
         this._localeSubscription.unsubscribe();
-        let thisT = this as IBaseValueAccessor<T> as (IBaseValueAccessor<T> & T);
+        const thisT = this as IBaseValueAccessor<T> as (IBaseValueAccessor<T> & T);
         if (this._parent) {
             this._parent.removeBoundChild(thisT);
         }
@@ -171,51 +163,54 @@ export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAcces
         this._boundChildren.splice(0, this._boundChildren.length);
     }
 
-
-    registerOnChange(fn: any): void {
-        if (typeof fn === 'function') {
+    public registerOnChange(fn: any): void {
+        if (typeof fn === "function") {
             this._onchange = fn;
         }
     }
 
-    private raiseOnChange(val: any): void {
-        if (typeof this._onchange === 'function') {
-            this._onchange(val);
-        }
-        this.valueChange.emit(val)
-    }
-
-    registerOnTouched(fn: any): void {
-        if (typeof fn === 'function') {
+    public registerOnTouched(fn: any): void {
+        if (typeof fn === "function") {
             this._ontouch = fn;
         }
     }
 
-    raiseOnTouch(): void {
-        if (typeof this._ontouch === 'function') {
+    public raiseOnTouch(): void {
+        if (typeof this._ontouch === "function") {
             this._ontouch();
         }
     }
 
-    setDisabledState?(isDisabled: boolean): void {
-        this.disabled = !!isDisabled;
+    public setDisabledState?(isDisabled: boolean): void {
+        this.disabled = isDisabled;
     }
 
-    coerceValue(val: any): any {
+    public coerceValue(val: any): any {
         return val;
     }
 
-    compareValues(v1: any, v2: any): boolean {
+    public compareValues(v1: any, v2: any): boolean {
         return v1 === v2;
     }
 
-    private compareValuesInternal(v1: any, v2: any): boolean {
+    protected onIsRtlChanged(): void {
+        // Do nothing
+    }
+
+    private raiseOnChange(val: any): void {
+        if (typeof this._onchange === "function") {
+            this._onchange(val);
+        }
+        this.valueChange.emit(val);
+    }
+
+   private compareValuesInternal(v1: any, v2: any): boolean {
         if (v1 === v2) {
             return true;
         }
-        if (v1 === null || v1 === undefined) return false;
-        if (v2 === null || v2 === undefined) return false;
-        if (typeof v1 !== typeof v2) return false;
+        if (v1 === null || v1 === undefined) { return false; }
+        if (v2 === null || v2 === undefined) { return false; }
+        if (typeof v1 !== typeof v2) { return false; }
         return this.compareValues(v1, v2);
     }
 }

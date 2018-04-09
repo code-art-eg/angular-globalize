@@ -1,57 +1,70 @@
-﻿
-import { Directive, ComponentFactoryResolver, ViewContainerRef, Inject, ComponentRef, HostListener, Input, forwardRef, ElementRef, Injector, ComponentFactory, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
-import { TimePickerComponent } from '../components/time-picker.component';
-import { CANG_CULTURE_SERVICE, ICultureService, CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from '@code-art/angular-globalize';
-import { BaseTimeValueAccessor } from '../base-time-value-accessor';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IPopupDirective, ITimePicker } from '../interfaces';
-import { PopupDirective } from './popup.directive';
-import { applyMixins } from '../util';
+import { ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, Directive, ElementRef,
+    forwardRef, HostListener, Inject, Injector, Input, OnDestroy, OnInit, ViewContainerRef } from "@angular/core";
+import { NG_VALUE_ACCESSOR } from "@angular/forms";
+import { CANG_CULTURE_SERVICE, CANG_GLOBALIZATION_SERVICE,
+    ICultureService, IGlobalizationService } from "@code-art/angular-globalize";
+
+import { BaseTimeValueAccessor } from "../base-time-value-accessor";
+import { TimePickerComponent } from "../components/time-picker.component";
+import { IPopupDirective, ITimePicker } from "../interfaces";
+import { applyMixins } from "../util";
+import { PopupDirective } from "./popup.directive";
 
 @Directive({
-    selector: '[caTimePicker]',
     providers: [{
-        provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TimePickerDirective), multi: true
-    }]
+        multi: true,
+        provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TimePickerDirective),
+    }],
+    selector: "[caTimePicker]",
 })
-export class TimePickerDirective extends BaseTimeValueAccessor implements IPopupDirective<ITimePicker>, ITimePicker, OnInit, OnDestroy {
-    
+export class TimePickerDirective extends BaseTimeValueAccessor
+    implements IPopupDirective<ITimePicker>, ITimePicker, OnInit, OnDestroy {
+
+    @HostListener("focus") public onFocus: () => void;
+    @HostListener("blur") public onBlur: () => void;
+    @Input() public orientTop: boolean;
+    @Input() public orientRight: boolean;
+    @Input() public format: string;
+    public initPopupDirective: (resolver: ComponentFactoryResolver,
+                                viewContainerRef: ViewContainerRef,
+                                el: ElementRef, injector: Injector) => void;
+
     constructor(@Inject(ComponentFactoryResolver) resolver: ComponentFactoryResolver,
-        @Inject(ViewContainerRef) viewContainerRef: ViewContainerRef,
-        @Inject(ElementRef) el: ElementRef,
-        @Inject(Injector) injector: Injector,
-        @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-        @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService,
-        @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef
+                @Inject(ViewContainerRef) viewContainerRef: ViewContainerRef,
+                @Inject(ElementRef) el: ElementRef,
+                @Inject(Injector) injector: Injector,
+                @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
+                @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService,
+                @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef,
     ) {
         super(cultureService, globalizationService, changeDetector);
         this.initPopupDirective(resolver, viewContainerRef, el, injector);
     }
 
-    formatValue(val: number, locale: string, format: string): string {
+    public formatValue(val: number, locale: string, format: string): string {
         if (val === null || val === undefined) {
-            return '';
+            return "";
         }
-        let d = new Date(2000, 1, 1);
+        const d = new Date(2000, 1, 1);
         d.setTime(val + d.valueOf());
-        let d2 = new Date();
+        const d2 = new Date();
 
         d2.setHours(d.getHours());
         d2.setMinutes(d.getMinutes());
         d2.setSeconds(d.getSeconds());
         d2.setMilliseconds(d.getMilliseconds());
 
-        format = format || 'short';
+        format = format || "short";
         let options: DateFormatterOptions;
         switch (format) {
-            case 'short':
-            case 'medium':
-            case 'long':
-            case 'full':
-                options = { time: format }
+            case "short":
+            case "medium":
+            case "long":
+            case "full":
+                options = { time: format };
                 break;
             default:
-                if (format.indexOf('raw:')) {
+                if (format.indexOf("raw:")) {
                     options = { raw: format.substr(4) };
                 } else {
                     options = { skeleton: format };
@@ -61,31 +74,20 @@ export class TimePickerDirective extends BaseTimeValueAccessor implements IPopup
         return this.globalizationService.formatDate(d2, locale, options);
     }
 
-    getDefaultFormat(): string {
-        return 'short';
+    public getDefaultFormat(): string {
+        return "short";
     }
 
-    initPopupDirective: (resolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, el: ElementRef, injector: Injector) => void;
-
-    resolveFactory(resolver: ComponentFactoryResolver): ComponentFactory<TimePickerComponent> {
+    public resolveFactory(resolver: ComponentFactoryResolver): ComponentFactory<TimePickerComponent> {
         return resolver.resolveComponentFactory(TimePickerComponent);
     }
 
-    @HostListener('focus') onFocus: () => void;
-
-
-    @HostListener('blur') onBlur: () => void;
-
-    @Input() orientTop: boolean;
-    @Input() orientRight: boolean;
-    @Input() format: string;
-
-    ngOnInit(): void {
-
+    public ngOnInit(): void {
+        // Do nothing
     }
 
-    ngOnDestroy(): void {
-
+    public ngOnDestroy(): void {
+        // Do nothing
     }
 }
 

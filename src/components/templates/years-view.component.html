@@ -7,7 +7,7 @@
                (clicked)="onNextPrevClicked($event)" 
                [text]="nextPrevText"></ca-next-prev>
     <span *ngFor="let r of ranges; let i = index" 
-          [ngClass]="{'selected': isSelected(i), 'other': isOther(i), 'disabled': isDisabled(i), 'range': isRange(i), 'focused': i === focusRange}" (click)="rangeClick(i)">
+          [ngClass]="{'selected': isSelected(i), 'other': isOther(i), 'disabled': isDisabled(i), 'range': isRange(), 'focused': i === focusRange}" (click)="rangeClick(i)">
         {{ r }}
     </span>
 </div>

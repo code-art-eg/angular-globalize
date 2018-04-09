@@ -1,32 +1,31 @@
-import { ElementRef, Injector, ComponentFactory, EventEmitter, ViewContainerRef, ComponentFactoryResolver, ChangeDetectorRef } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { Subscription } from "rxjs/Subscription";
-import { ReplaySubject } from "rxjs/ReplaySubject";
-import { Observable } from "rxjs/Observable";
+import { ChangeDetectorRef, ComponentFactory,
+    ComponentFactoryResolver, ElementRef,
+    EventEmitter, Injector, ViewContainerRef } from "@angular/core";
+import { ControlValueAccessor } from "@angular/forms";
 
-import { CANG_CULTURE_SERVICE, ICultureService, CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from '@code-art/angular-globalize';
+import { ICultureService} from "@code-art/angular-globalize";
 
 export interface IComponentFocus {
     focus?: boolean;
 }
 
 export interface ICompositeObject<T> {
-    addBoundChild(child: IBaseValueAccessor<T> & T): void;
     parent: IBaseValueAccessor<T> & T;
+    addBoundChild(child: IBaseValueAccessor<T> & T): void;
     removeBoundChild(child: IBaseValueAccessor<T> & T);
 }
 
 export interface IBaseValueAccessor<T> extends ControlValueAccessor, ICompositeObject<T> {
-    coerceValue(val: any): any;
     value: any;
-    compareValues(v1: any, v2: any);
     cultureService: ICultureService;
     valueChange: EventEmitter<any>;
     disabled: boolean;
     locale: string;
     effectiveLocale: string;
-    raiseOnTouch(): void;
     changeDetector?: ChangeDetectorRef;
+    coerceValue(val: any): any;
+    compareValues(v1: any, v2: any);
+    raiseOnTouch(): void;
 }
 
 export interface IPopupDirective<T> extends IBaseValueAccessor<T>  {
@@ -35,7 +34,10 @@ export interface IPopupDirective<T> extends IBaseValueAccessor<T>  {
     orientTop: boolean;
     resolveFactory(resolver: ComponentFactoryResolver): ComponentFactory<IBaseValueAccessor<T>>;
     getDefaultFormat(): string;
-    initPopupDirective(resolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef, el: ElementRef, injector: Injector);
+    initPopupDirective(resolver: ComponentFactoryResolver,
+                       viewContainerRef: ViewContainerRef,
+                       el: ElementRef,
+                       injector: Injector);
     formatValue(val: any, locale: string, format: string): string;
     parseValue?(val: string): any;
 }

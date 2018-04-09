@@ -1,11 +1,11 @@
-﻿import { MonthsViewComponent } from '../../src/components/months-view.component';
-import { expect } from 'chai';
-import { IGlobalizationService, ICultureService, DefaultGlobalizationService, CurrentCultureService } from '@code-art/angular-globalize';
-import { loadedGlobalize } from '../load-globalize-data';
-import { IMonthYearSelection, createDate, KEY_CODE } from '../../src/util';
+﻿import { CurrentCultureService, DefaultGlobalizationService} from "@code-art/angular-globalize";
+import { expect } from "chai";
+import { MonthsViewComponent } from "../../src/components/months-view.component";
+import { createDate, IMonthYearSelection, KEY_CODE } from "../../src/util";
+import { loadedGlobalize } from "../load-globalize-data";
 
 describe("MonthsViewComponent", () => {
-    const cultureService = new CurrentCultureService(['en-GB', 'ar-EG', 'de']);
+    const cultureService = new CurrentCultureService(["en-GB", "ar-EG", "de"]);
     const globalizeService = new DefaultGlobalizationService(loadedGlobalize, cultureService);
 
     it("initializes correctly", () => {
@@ -24,12 +24,12 @@ describe("MonthsViewComponent", () => {
         const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 1;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('home');
+        c.onNextPrevClicked("home");
         expect(e).not.null.and.not.undefined;
-        expect(e.view).equal('home');
+        expect(e.view).equal("home");
         expect(e.month).undefined;
         expect(e.year).undefined;
         expect(e.reset).not.equal(true);
@@ -40,10 +40,10 @@ describe("MonthsViewComponent", () => {
         const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 1;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('reset');
+        c.onNextPrevClicked("reset");
         expect(e).not.null.and.not.undefined;
         expect(e.view).undefined;
         expect(e.month).undefined;
@@ -56,10 +56,10 @@ describe("MonthsViewComponent", () => {
         const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('next');
+        c.onNextPrevClicked("next");
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.year).equal(2019);
@@ -72,10 +72,10 @@ describe("MonthsViewComponent", () => {
         const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('prev');
+        c.onNextPrevClicked("prev");
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.year).equal(2017);
@@ -88,14 +88,14 @@ describe("MonthsViewComponent", () => {
         const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2018;
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
-        c.onNextPrevClicked('text');
+        c.onNextPrevClicked("text");
         expect(e).not.null.and.not.undefined;
         expect(e.month).undefined;
         expect(e.year).undefined;
-        expect(e.view).equal('years');
+        expect(e.view).equal("years");
         expect(e.reset).not.equal(true);
         sub.unsubscribe();
     });
@@ -103,12 +103,12 @@ describe("MonthsViewComponent", () => {
     it("sets header year when year or locale are changed", () => {
         const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2000;
-        expect(c.nextPrevText).equal('2000');
-        c.locale = 'ar-EG';
-        expect(c.nextPrevText).equal('٢٠٠٠');
+        expect(c.nextPrevText).equal("2000");
+        c.locale = "ar-EG";
+        expect(c.nextPrevText).equal("٢٠٠٠");
         c.year = 1990;
-        c.locale = 'de';
-        expect(c.nextPrevText).equal('1990');
+        c.locale = "de";
+        expect(c.nextPrevText).equal("1990");
     });
 
     it("disables months and handles month clicks", () => {
@@ -117,7 +117,7 @@ describe("MonthsViewComponent", () => {
         c.maxDate = createDate(2000, 7, 12);
         c.minDate = createDate(2000, 3, 12);
         let e: IMonthYearSelection = null;
-        const sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
         for (let i = 0; i < 12; i++) {
@@ -130,7 +130,7 @@ describe("MonthsViewComponent", () => {
             } else {
                 expect(e).not.null;
                 expect(e.month).equal(i);
-                expect(e.view).equal('days');
+                expect(e.view).equal("days");
                 expect(e.year).undefined;
                 expect(e.reset).not.true;
             }
@@ -166,7 +166,7 @@ describe("MonthsViewComponent", () => {
         c.handleKeyboardEvents = false;
         expect(c.focusMonth).null;
         let e: IMonthYearSelection = null;
-        let sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
         c.keyEvent({ keyCode: KEY_CODE.LEFT_ARROW } as KeyboardEvent);
@@ -181,7 +181,7 @@ describe("MonthsViewComponent", () => {
         c.handleKeyboardEvents = true;
         expect(c.focusMonth).null;
         let e: IMonthYearSelection = null;
-        let sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
         c.keyEvent({ keyCode: KEY_CODE.LEFT_ARROW } as KeyboardEvent);
@@ -219,7 +219,7 @@ describe("MonthsViewComponent", () => {
         c.keyEvent({ keyCode: KEY_CODE.ENTER } as KeyboardEvent);
         expect(e).not.null;
         expect(e.month).equal(1);
-        expect(e.view).equal('days');
+        expect(e.view).equal("days");
         expect(e.year).undefined;
         expect(e.reset).not.true;
         expect(c.focusMonth).null;
@@ -232,10 +232,10 @@ describe("MonthsViewComponent", () => {
         c.year = 2018;
         c.month = 1;
         c.handleKeyboardEvents = true;
-        c.locale = 'ar-EG'
+        c.locale = "ar-EG";
         expect(c.focusMonth).null;
         let e: IMonthYearSelection = null;
-        let sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
         c.keyEvent({ keyCode: KEY_CODE.LEFT_ARROW } as KeyboardEvent);
@@ -252,7 +252,6 @@ describe("MonthsViewComponent", () => {
         sub.unsubscribe();
     });
 
-
     it("handles keyboard enter without focus", () => {
         const c = new MonthsViewComponent(cultureService, globalizeService);
         c.year = 2018;
@@ -260,13 +259,13 @@ describe("MonthsViewComponent", () => {
         c.handleKeyboardEvents = true;
         expect(c.focusMonth).null;
         let e: IMonthYearSelection = null;
-        let sub = c.command.asObservable().subscribe(ev => {
+        const sub = c.command.asObservable().subscribe((ev) => {
             e = ev;
         });
         c.keyEvent({ keyCode: KEY_CODE.ENTER } as KeyboardEvent);
         expect(e).not.null;
         expect(e.month).equal(1);
-        expect(e.view).equal('days');
+        expect(e.view).equal("days");
         expect(e.year).undefined;
         expect(e.reset).not.true;
         expect(c.focusMonth).null;

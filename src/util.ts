@@ -1,31 +1,29 @@
-import { IGlobalizationService } from '@code-art/angular-globalize';
+import { IGlobalizationService } from "@code-art/angular-globalize";
 
+// tslint:disable-next-line: ban-types
 export function applyMixins(derivedCtor: Function, ...baseCtors: Function[]) {
-    baseCtors.forEach(function (baseCtor) {
-        Object.getOwnPropertyNames(baseCtor.prototype).forEach(function (name) {
-            if (name === 'constructor') {
+    baseCtors.forEach((baseCtor) => {
+        Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => {
+            if (name === "constructor") {
                 return;
             }
-            var pd = Object.getOwnPropertyDescriptor(baseCtor.prototype, name);
-            var fb;
-            if (typeof pd.value === 'function' && !pd.get && !pd.set) {
-                var fb_1 = pd.value;
-                var fd_1 = derivedCtor.prototype[name];
-                if (typeof fd_1 === 'function') {
-                    derivedCtor.prototype[name] = function () {
-                        var args = [];
-                        for (var _i = 0; _i < arguments.length; _i++) {
-                            args[_i] = arguments[_i];
+            const pd = Object.getOwnPropertyDescriptor(baseCtor.prototype, name);
+            if (typeof pd.value === "function" && !pd.get && !pd.set) {
+                const fb1 = pd.value;
+                const fd1 = derivedCtor.prototype[name];
+                if (typeof fd1 === "function") {
+                    derivedCtor.prototype[name] = function() {
+                        const args = [];
+                        for (let i = 0; i < arguments.length; i++) {
+                            args[i] = arguments[i];
                         }
-                        fb_1.apply(this, args);
-                        fd_1.apply(this, args);
+                        fb1.apply(this, args);
+                        fd1.apply(this, args);
                     };
+                } else {
+                    derivedCtor.prototype[name] = fb1;
                 }
-                else {
-                    derivedCtor.prototype[name] = fb_1;
-                }
-            }
-            else if (pd) {
+            } else if (pd) {
                 Object.defineProperty(derivedCtor.prototype, name, pd);
             }
         });
@@ -33,28 +31,30 @@ export function applyMixins(derivedCtor: Function, ...baseCtors: Function[]) {
 }
 
 export function isPlainObject(val: any): boolean {
-    if (!val) return false;
-    return typeof val === 'object' 
+    if (!val) { return false; }
+    return typeof val === "object"
         && val.constructor === Object;
 }
 
 export function datesEqual(d1: Date | null | undefined, d2: Date | null | undefined): boolean {
-    if (d1 === null || d1 === undefined)
+    if (d1 === null || d1 === undefined) {
         return d2 === null || d2 === undefined;
-    if (d2 === null || d2 === undefined)
+    }
+    if (d2 === null || d2 === undefined) {
         return false;
+    }
     return d1.valueOf() === d2.valueOf();
 }
 
 export function createDate(year?: number, month?: number, date?: number): Date {
     let d = new Date();
-    if (typeof year === 'undefined') {
+    if (typeof year === "undefined") {
         year = d.getFullYear();
     }
-    if (typeof month === 'undefined') {
+    if (typeof month === "undefined") {
         month = d.getMonth();
     }
-    if (typeof date === 'undefined') {
+    if (typeof date === "undefined") {
         date = d.getDate();
     }
     d = new Date(Date.UTC(year, month, date));
@@ -64,10 +64,7 @@ export function createDate(year?: number, month?: number, date?: number): Date {
     return d;
 }
 
-export function similarInUtc(date: null): null;
-export function similarInUtc(date: undefined): undefined;
-export function similarInUtc(date: Date): Date;
-export function similarInUtc(date: Date | null | undefined): Date | null | undefined {
+export function similarInUtc(date: Date): Date {
     if (date === null) {
         return null;
     }
@@ -77,26 +74,22 @@ export function similarInUtc(date: Date | null | undefined): Date | null | undef
     return createDate(date.getFullYear(), date.getMonth(), date.getDate());
 }
 
-export function similarInLocal(date: null): null;
-export function similarInLocal(date: undefined): undefined;
-export function similarInLocal(date: Date): Date;
-export function similarInLocal(date: Date | null | undefined): Date | null | undefined {
+export function similarInLocal(date: Date): Date {
     if (date === null) {
         return null;
     }
     if (date === undefined) {
         return undefined;
     }
-    let d = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+    const d = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
     if (date.getUTCFullYear() !== d.getFullYear()) {
-        d.setFullYear(date.getUTCFullYear())
+        d.setFullYear(date.getUTCFullYear());
     }
     return d;
 }
 
 export function addDays(date: Date, days: number): Date {
-    let newDate = new Date(date.valueOf() + days * 24 * 3600 * 1000);
-    return newDate;
+    return new Date(date.valueOf() + days * 24 * 3600 * 1000);
 }
 
 export function formatYear(service: IGlobalizationService, year: number, locale?: string): string {
@@ -119,10 +112,7 @@ export function formatTimeComponent(service: IGlobalizationService, val: number,
     return res;
 }
 
-export function stripTime(val: undefined): undefined;
-export function stripTime(val: null): null;
-export function stripTime(val: Date): Date;
-export function stripTime(val: Date | null | undefined): Date | null | undefined {
+export function stripTime(val: Date): Date {
     if (val === null) {
         return null;
     }
@@ -132,11 +122,7 @@ export function stripTime(val: Date | null | undefined): Date | null | undefined
     return createDate(val.getUTCFullYear(), val.getUTCMonth(), val.getUTCDate());
 }
 
-
-export function minDate(val: null, ...args: (Date | null | undefined)[]): null;
-export function minDate(val: undefined, ...args: (Date | null | undefined)[]): undefined;
-export function minDate(val: Date, ...args: (Date | null | undefined)[]): Date;
-export function minDate(val: Date | null | undefined, ...args: (Date | null | undefined)[]): Date | null | undefined {
+export function minDate(val: Date, ...args: Date[]): Date {
     if (val === null) {
         return null;
     }
@@ -146,21 +132,21 @@ export function minDate(val: Date | null | undefined, ...args: (Date | null | un
     let min = val;
     if (args) {
         for (let i = 0; i < args.length; i++) {
-            let arg = args[i];
-            if (arg === undefined || arg === null)
+            const arg = args[i];
+            if (arg === undefined || arg === null) {
                 continue;
-            let d = arg as Date;
-            if (d.valueOf() < min.valueOf())
+            }
+            const d = arg as Date;
+            if (d.valueOf() < min.valueOf()) {
                 min = d;
+            }
         }
     }
     return min;
 }
 
-export function maxDate(val: null, ...args: (Date | null | undefined)[]): null;
-export function maxDate(val: undefined, ...args: (Date | null | undefined)[]): undefined;
-export function maxDate(val: Date, ...args: (Date | null | undefined)[]): Date;
-export function maxDate(val: Date | null | undefined, ...args: (Date | null | undefined)[]): Date | null | undefined {
+export function maxDate(val: Date,
+                        ...args: Date[]): Date {
     if (val === null) {
         return null;
     }
@@ -170,26 +156,29 @@ export function maxDate(val: Date | null | undefined, ...args: (Date | null | un
     let max = val;
     if (args) {
         for (let i = 0; i < args.length; i++) {
-            let arg = args[i];
-            if (arg === undefined || arg === null)
+            const arg = args[i];
+            if (arg === undefined || arg === null) {
                 continue;
-            let d = arg as Date;
-            if (d.valueOf() > max.valueOf())
+            }
+            const d = arg as Date;
+            if (d.valueOf() > max.valueOf()) {
                 max = d;
+            }
         }
     }
     return max;
 }
 
-export function dateInRange(val: Date | null | undefined, min: Date | null | undefined, max: Date | null | undefined): boolean {
+export function dateInRange(val: Date | null | undefined,
+                            min: Date | null | undefined,
+                            max: Date | null | undefined): boolean {
     if (val === null || val === undefined) {
         return true;
     }
-    if (min && val.valueOf() < min.valueOf())
+    if (min && val.valueOf() < min.valueOf()) {
         return false;
-    if (max && val.valueOf() > max.valueOf())
-        return false;
-    return true;
+    }
+    return !(max && val.valueOf() > max.valueOf());
 }
 
 export function numArray(length: number): number[] {
@@ -212,8 +201,8 @@ export function getMonthYear(month: number | null, year: number): [number | null
     return [month, year];
 }
 
-export type ViewType = 'days' | 'months' | 'years' | 'decades' | 'centuries' | 'home';
-export type NextPrevAction = 'next' | 'prev' | 'text' | 'home' | 'reset';
+export type ViewType = "days" | "months" | "years" | "decades" | "centuries" | "home";
+export type NextPrevAction = "next" | "prev" | "text" | "home" | "reset";
 
 export interface IMonthYearSelection {
     month?: number;
@@ -231,10 +220,10 @@ export enum KEY_CODE {
     LEFT_ARROW = 37,
     UP_ARROW = 38,
     DOWN_ARROW = 40,
-    ENTER = 13
-};
+    ENTER = 13,
+}
 
 export interface IDateRange {
-    from: Date,
-    to: Date
+    from: Date;
+    to: Date;
 }

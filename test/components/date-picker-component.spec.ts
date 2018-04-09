@@ -1,30 +1,34 @@
-﻿import { Observable } from 'rxjs/Observable';
-import { expect } from 'chai';
-import { isPlainObject } from '../../src/util';
-const chai: Chai.ChaiStatic = require('chai');
-chai.use(require('chai-datetime'));
-import { loadedGlobalize } from '../load-globalize-data';
+﻿import { expect } from "chai";
+import { isPlainObject } from "../../src/util";
+/* tslint:disable:no-var-requires */
+const chai: Chai.ChaiStatic = require("chai");
+chai.use(require("chai-datetime"));
+/* tslint:enable:no-var-requires */
+
 import {
     CurrentCultureService,
+    DefaultGlobalizationService,
     ICultureService,
     IGlobalizationService,
-    DefaultGlobalizationService,
+    ILocaleProvider,
     ITypeConverterService,
     TypeConverterService,
-    ILocaleProvider
-} from '@code-art/angular-globalize';
-import { createDate, similarInLocal, addDays } from '../../src/util';
+} from "@code-art/angular-globalize";
+import { addDays, createDate, similarInLocal } from "../../src/util";
+import { loadedGlobalize } from "../load-globalize-data";
 
-import { DatePickerComponent } from '../../src/components/date-picker.component';
+import { DatePickerComponent } from "../../src/components/date-picker.component";
 
 describe("DatePickerComponent", () => {
     const mockLocaleProvider: ILocaleProvider = {
         canWrite: false,
-        locale: 'en-GB'
+        locale: "en-GB",
     };
 
-    const cultureService: ICultureService = new CurrentCultureService(['en-GB', 'de', 'ar-EG'], [mockLocaleProvider]);
-    const globalizationService: IGlobalizationService = new DefaultGlobalizationService(loadedGlobalize, cultureService);
+    const cultureService: ICultureService = new CurrentCultureService(["en-GB", "de", "ar-EG"],
+        [mockLocaleProvider]);
+    const globalizationService: IGlobalizationService =
+        new DefaultGlobalizationService(loadedGlobalize, cultureService);
     const typeConverter: ITypeConverterService = new TypeConverterService(globalizationService);
 
     it("inits correctly", () => {
@@ -35,7 +39,7 @@ describe("DatePickerComponent", () => {
         expect(c.rangeSelection).false;
         expect(c.minDate).equalTime(similarInLocal(createDate(0, 0, 1)));
         expect(c.maxDate).equalTime(similarInLocal(createDate(9999, 11, 31)));
-        let today = new Date();
+        const today = new Date();
         expect(c.todayDate).equalDate(today);
         expect(c.month).equal(today.getMonth());
         expect(c.year).equal(today.getFullYear());
@@ -48,101 +52,100 @@ describe("DatePickerComponent", () => {
         expect(c.maxYear).equal(9999);
         expect(c.minYear).equal(0);
         expect(c.todayHighlight).true;
-        expect(c.view).equal('days');
+        expect(c.view).equal("days");
     });
 
     it("switches locale correctly", () => {
         const c = new DatePickerComponent(cultureService, typeConverter);
         expect(c.effectiveLocale).equal(mockLocaleProvider.locale);
 
-        c.locale = 'ar-EG';
-        expect(c.effectiveLocale).equal('ar-EG');
+        c.locale = "ar-EG";
+        expect(c.effectiveLocale).equal("ar-EG");
 
-        c.locale = 'de';
-        expect(c.effectiveLocale).equal('de');
+        c.locale = "de";
+        expect(c.effectiveLocale).equal("de");
 
         c.locale = null;
         expect(c.effectiveLocale).equal(mockLocaleProvider.locale);
 
-        cultureService.currentCulture = 'ar-EG';
-        expect(c.effectiveLocale).equal('ar-EG');
+        cultureService.currentCulture = "ar-EG";
+        expect(c.effectiveLocale).equal("ar-EG");
 
-        c.locale = 'de';
-        expect(c.effectiveLocale).equal('de');
+        c.locale = "de";
+        expect(c.effectiveLocale).equal("de");
 
         cultureService.currentCulture = null;
-        expect(c.effectiveLocale).equal('de');
+        expect(c.effectiveLocale).equal("de");
     });
-
-
 
     it("writes values", () => {
 
-        function testWriteValues(c: DatePickerComponent, val: any, expectedFrom: Date | null, expectedTo?: Date | null) {
-            let d = new Date();
-            c.selectionEnd = null;
-            c.selectionStart = null;
-            c.selectionStart = d;
-            c.selectionEnd = d;
-            
-            c.writeValue(val);
+        function testWriteValues(component: DatePickerComponent,
+                                 val: any, expectedFrom: Date | null,
+                                 expectedTo?: Date | null) {
+            const date = new Date();
+            component.selectionEnd = null;
+            component.selectionStart = null;
+            component.selectionStart = date;
+            component.selectionEnd = date;
+
+            component.writeValue(val);
 
             if (expectedFrom) {
-                expect(c.selectionStart).equalTime(expectedFrom);
+                expect(component.selectionStart).equalTime(expectedFrom);
             } else {
-                expect(c.selectionStart).null;
+                expect(component.selectionStart).null;
             }
 
             if (expectedTo) {
-                expect(c.selectionEnd).equalTime(expectedTo);
+                expect(component.selectionEnd).equalTime(expectedTo);
             } else {
-                expect(c.selectionEnd).null;
+                expect(component.selectionEnd).null;
             }
 
-            if (c.rangeSelection) {
+            if (component.rangeSelection) {
                 if (expectedFrom || expectedTo) {
-                    expect(c.value).not.null.and.not.undefined;
-                    expect(isPlainObject(c.value)).true;
+                    expect(component.value).not.null.and.not.undefined;
+                    expect(isPlainObject(component.value)).true;
                     if (expectedFrom) {
-                        expect(c.value.from).equalTime(expectedFrom);
+                        expect(component.value.from).equalTime(expectedFrom);
                     } else {
-                        expect(c.value.from).null;
+                        expect(component.value.from).null;
                     }
                     if (expectedTo) {
-                        expect(c.value.to).equalTime(expectedTo);
+                        expect(component.value.to).equalTime(expectedTo);
                     } else {
-                        expect(c.value.to).null;
+                        expect(component.value.to).null;
                     }
                 } else {
-                    expect(c.value).null;
+                    expect(component.value).null;
                 }
             } else if (expectedFrom) {
-                expect(c.value).equalTime(expectedFrom);
-            }
-            else {
-                expect(c.value).null;
+                expect(component.value).equalTime(expectedFrom);
+            } else {
+                expect(component.value).null;
             }
         }
 
         const c = new DatePickerComponent(cultureService, typeConverter);
-        let d = new Date(2000, 4, 10);
+        const d = new Date(2000, 4, 10);
         testWriteValues(c, null, null);
         testWriteValues(c, undefined, null);
         testWriteValues(c, d, d);
 
-        testWriteValues(c, 'bla', null);
-        testWriteValues(c, '10/05/2000', d);
+        testWriteValues(c, "bla", null);
+        testWriteValues(c, "10/05/2000", d);
         testWriteValues(c, d.valueOf(), d);
-        c.locale = 'de';
-        testWriteValues(c, '10.5.00', d);
+        c.locale = "de";
+        testWriteValues(c, "10.5.00", d);
 
         c.rangeSelection = true;
-        let d2 = addDays(d, 1);
+        const d2 = addDays(d, 1);
         testWriteValues(c, [d, d2], d, d2);
         testWriteValues(c, { from: d, to: d2 }, d, d2);
         testWriteValues(c, null, null, null);
-        testWriteValues(c, { from: '10.5.00', to: '11.5.00' }, d, d2);
-        testWriteValues(c, ['10.5.00', '11.5.00'], d, d2);
+        testWriteValues(c, { from: "10.5.00", to: "11.5.00" }, d, d2);
+        testWriteValues(c, ["10.5.00", "11.5.00"], d, d2);
     });
 
     it("raises onchange", () => {
@@ -153,7 +156,7 @@ describe("DatePickerComponent", () => {
         const c = new DatePickerComponent(cultureService, typeConverter);
 
         c.registerOnChange(callback);
-        let d = new Date();
+        const d = new Date();
         c.selectionStart = d;
         expect(raised).true;
         raised = false;
@@ -178,12 +181,11 @@ describe("DatePickerComponent", () => {
         const c = new DatePickerComponent(cultureService, typeConverter);
 
         c.registerOnTouched(callback);
-        let d = new Date();
         c.onDaysViewDayClick(createDate());
         expect(raised).true;
         raised = false;
         c.onCommand({
-            view: 'months'
+            view: "months",
         });
         expect(raised).true;
     });
@@ -200,7 +202,7 @@ describe("DatePickerComponent", () => {
     it("sets selection onclick", () => {
         const c = new DatePickerComponent(cultureService, typeConverter);
 
-        let d = createDate();
+        const d = createDate();
         c.onDaysViewDayClick(createDate());
         expect(c.selectionStartInternal).equalDate(d);
     });
@@ -220,58 +222,58 @@ describe("DatePickerComponent", () => {
     it("handles commands", () => {
         const c = new DatePickerComponent(cultureService, typeConverter);
         c.onCommand({
-            month: 10
+            month: 10,
         });
         expect(c.month).equals(10);
 
         c.onCommand({
-            year: 2000
+            year: 2000,
         });
         expect(c.year).equals(2000);
 
         c.onCommand({
-            month: -1
+            month: -1,
         });
         expect(c.month).equals(11);
         expect(c.year).equals(1999);
 
         c.onCommand({
-            month: 35
+            month: 35,
         });
         expect(c.month).equals(11);
         expect(c.year).equals(2001);
 
         c.onCommand({
-            view: 'years'
+            view: "years",
         });
-        expect(c.view).equals('years');
+        expect(c.view).equals("years");
 
         c.onCommand({
-            view: 'months'
+            view: "months",
         });
-        expect(c.view).equals('months');
+        expect(c.view).equals("months");
 
         c.onCommand({
-            view: 'decades'
+            view: "decades",
         });
-        expect(c.view).equals('decades');
+        expect(c.view).equals("decades");
 
         c.onCommand({
-            view: 'centuries'
+            view: "centuries",
         });
-        expect(c.view).equals('centuries');
+        expect(c.view).equals("centuries");
 
         c.onCommand({
-            view: 'home'
+            view: "home",
         });
-        expect(c.view).equals('days');
+        expect(c.view).equals("days");
         expect(c.month).equals(c.todayDate.getUTCMonth());
         expect(c.year).equals(c.todayDate.getUTCFullYear());
 
         c.selectionStart = new Date();
         expect(c.selectionStart).equalDate(c.selectionStart);
         c.onCommand({
-            reset: true
+            reset: true,
         });
         expect(c.selectionStart).null;
     });
