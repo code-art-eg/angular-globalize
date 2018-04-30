@@ -10,8 +10,8 @@ import {
 
 @Component({
     selector: "ca-days-view",
-    styleUrls: ["./styles/days-view.component.less"],
-    templateUrl: "./templates/days-view.component.html",
+    styleUrls: ["./days-view.component.less"],
+    templateUrl: "./days-view.component.html",
 })
 export class DaysViewComponent implements OnInit {
     @Input() public homeButton: boolean;

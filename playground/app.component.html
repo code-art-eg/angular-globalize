@@ -21,7 +21,7 @@
     <div class="row">
         <div class="col-sm-6 col-12">
             <h4>Time Picker Directive</h4>
-            <input class='form-control' caTimePicker [caInputAddon]="'time'" [(ngModel)]="valt" title="time"/>
+            <input class='form-control' caTimePicker [(ngModel)]="valt" title="time"/>
             <div>
                 Value: {{ valt | json }}
                 <br/>
@@ -59,7 +59,7 @@
     <div class="row">
         <div class="col-sm-6 col-12">
             <h4>Date Range Directive</h4>
-            <input class='form-control' caDateRangePicker caInputAddon [(ngModel)]="valpr"
+            <input class='form-control' caDateRangePicker [(ngModel)]="valpr"
                    title="date range"/>
             <div>
                 Value: {{ valpr | json }}
@@ -98,7 +98,7 @@
     <div class="row">
         <div class="col-sm-6 col-12">
             <h4>Date time Directive</h4>
-            <input class='form-control' caDateTimePicker caInputAddon [(ngModel)]="vald" title="datetime"/>
+            <input class='form-control' caDateTimePicker [(ngModel)]="vald" title="datetime"/>
             <div>
                 Value: {{ vald | json }}
                 <br/>

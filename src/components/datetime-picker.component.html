@@ -5,7 +5,7 @@
         </td>
     </tr>
     <tr *ngIf="time">
-        <td class="viewbutton" (click)="time = false"><span class="glyphicon glyphicon-calendar"></span></td>
+        <td class="viewbutton" (click)="time = false"><icon-calendar-alt></icon-calendar-alt></td>
     </tr>
     <tr *ngIf="time">
         <td>
@@ -13,6 +13,6 @@
         </td>
     </tr>
     <tr *ngIf="!time">
-        <td class="viewbutton" (click)="time = true"><span class="glyphicon glyphicon-time"></span></td>
+        <td class="viewbutton" (click)="time = true"><icon-clock></icon-clock></td>
     </tr>
 </table>

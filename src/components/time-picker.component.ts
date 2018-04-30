@@ -24,8 +24,8 @@ interface ITimeData {
         provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TimePickerComponent),
     }],
     selector: "ca-timepicker",
-    styleUrls: ["./styles/time-picker.component.less"],
-    templateUrl: "./templates/time-picker.component.html",
+    styleUrls: ["./time-picker.component.less"],
+    templateUrl: "./time-picker.component.html",
 })
 export class TimePickerComponent extends BaseTimeValueAccessor implements AfterViewInit, OnDestroy, IComponentFocus {
     private static _timeZoneData: { [key: string]: ITimeData } = {};

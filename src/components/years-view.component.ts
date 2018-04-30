@@ -7,8 +7,8 @@ import { formatYear, IMonthYearSelection, KEY_CODE, NextPrevAction, ViewType } f
 
 @Component({
     selector: "ca-years-view",
-    styleUrls: ["./styles/year-month-view.less"],
-    templateUrl: "./templates/years-view.component.html",
+    styleUrls: ["./year-month-view.less"],
+    templateUrl: "./years-view.component.html",
 })
 export class YearsViewComponent implements OnInit {
     @Input() public homeButton: boolean;

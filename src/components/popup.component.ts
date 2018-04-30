@@ -6,8 +6,8 @@ import { PopupHostDirective } from "../directives/popup-host.directive";
 import { IBaseValueAccessor, IComponentFocus, IPopupComponent, IPopupDirective } from "../interfaces";
 
 @Component({
-    styleUrls: ["./styles/popup.component.less"],
-    templateUrl: "./templates/popup.component.html",
+    styleUrls: ["./popup.component.less"],
+    templateUrl: "./popup.component.html",
 })
 export class PopupComponent implements AfterViewInit, IPopupComponent<any> {
     public hostedElement: ElementRef;

@@ -4,12 +4,10 @@ import { NextPrevAction } from "../util";
 
 @Component({
     selector: "ca-next-prev",
-    styleUrls: ["./styles/next-prev.component.less"],
-    templateUrl: "./templates/next-prev.component.html",
+    styleUrls: ["./next-prev.component.less"],
+    templateUrl: "./next-prev.component.html",
 })
 export class NextPreviousComponent {
-    public static readonly leftArrow: string = "glyphicon-chevron-left";
-    public static readonly rightArrow: string = "glyphicon-chevron-right";
     @Input() public homeButton: boolean;
     @Input() public resetButton: boolean;
     @Input() public locale: string;
@@ -24,13 +22,7 @@ export class NextPreviousComponent {
         this.homeButton = true;
     }
 
-    public getClass(type: "next" | "prev"): string {
-        if (type === "next") {
-            return this.cultureService.isRightToLeft(this.locale) ?
-                NextPreviousComponent.leftArrow : NextPreviousComponent.rightArrow;
-        } else {
-            return this.cultureService.isRightToLeft(this.locale) ?
-                NextPreviousComponent.rightArrow : NextPreviousComponent.leftArrow;
-        }
+    get isRtl(): boolean {
+        return this.cultureService.isRightToLeft(this.locale);
     }
 }

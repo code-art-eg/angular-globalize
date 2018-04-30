@@ -12,14 +12,14 @@ import { DatePickerComponent } from "./components/date-picker.component";
 import { DateTimePickerComponent } from "./components/datetime-picker.component";
 import { TimePickerComponent } from "./components/time-picker.component";
 
-import { InputAddonHostComponent } from "./components/input-addon-host.component";
 import { PopupComponent } from "./components/popup.component";
+
+import { ICON_COMPONENTS } from "./components/icons/index";
 
 import { DateRangePickerComponent } from "./components/date-range-picker.component";
 import { DatePickerDirective } from "./directives/date-picker.directive";
 import { DateRangePickerDirective } from "./directives/date-range-picker.directive";
 import { DateTimePickerDirective } from "./directives/datetime-picker.directive";
-import { InputAddonDirective } from "./directives/input-addon.directive";
 import { PopupHostDirective } from "./directives/popup-host.directive";
 import { TimePickerDirective } from "./directives/time-picker.directive";
 
@@ -32,7 +32,6 @@ import { TimePickerDirective } from "./directives/time-picker.directive";
         MonthsViewComponent,
         NextPreviousComponent,
         YearsViewComponent,
-        InputAddonHostComponent,
         TimePickerComponent,
         PopupComponent,
 
@@ -41,11 +40,11 @@ import { TimePickerDirective } from "./directives/time-picker.directive";
         TimePickerDirective,
         DateTimePickerDirective,
 
-        InputAddonDirective,
         PopupHostDirective,
+
+        ICON_COMPONENTS,
     ],
     entryComponents: [
-        InputAddonHostComponent,
         PopupComponent,
         TimePickerComponent,
         DatePickerComponent,
@@ -54,7 +53,6 @@ import { TimePickerDirective } from "./directives/time-picker.directive";
     exports: [
         DatePickerComponent,
         DateRangePickerComponent,
-        InputAddonDirective,
         DatePickerDirective,
         DateRangePickerDirective,
         TimePickerComponent,

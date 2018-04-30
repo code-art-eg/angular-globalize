@@ -12,8 +12,8 @@ import { BaseDatePickerComponent } from "./base-date-picker.component";
         provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DateRangePickerComponent),
     }],
     selector: "ca-daterangepicker",
-    styleUrls: ["./styles/date-picker.component.less"],
-    templateUrl: "./templates/date-picker.component.html",
+    styleUrls: ["./date-picker.component.less"],
+    templateUrl: "./date-picker.component.html",
 })
 export class DateRangePickerComponent extends BaseDatePickerComponent implements OnDestroy {
     public rangeSelection = true;

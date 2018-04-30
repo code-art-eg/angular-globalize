@@ -15,8 +15,8 @@ import { applyMixins, createDate, similarInLocal } from "../util";
         provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => DateTimePickerComponent),
     }],
     selector: "ca-datetimepicker",
-    styleUrls: ["./styles/datetime-picker.component.less"],
-    templateUrl: "./templates/datetime-picker.component.html",
+    styleUrls: ["./datetime-picker.component.less"],
+    templateUrl: "./datetime-picker.component.html",
 })
 export class DateTimePickerComponent
     extends BaseDatePickerAccessor<IDateTimePicker> implements OnDestroy, IDateTimePicker {
