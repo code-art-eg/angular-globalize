@@ -43,6 +43,8 @@ export abstract class PopupDirective<T> implements OnInit, OnDestroy, IPopupDire
 
     public abstract raiseOnTouch(): void;
 
+    public abstract raiseOnChange(val: any): void;
+
     public abstract addBoundChild(child: IBaseValueAccessor<T> & T): void;
 
     public abstract removeBoundChild(child: IBaseValueAccessor<T> & T): void;
@@ -180,19 +182,33 @@ export abstract class PopupDirective<T> implements OnInit, OnDestroy, IPopupDire
         }
         this._controlValueAccessor.registerOnChange((v) => {
             this._controlValue = v;
-            const val = typeof this.parseValue === "function" ? this.parseValue(v) : v;
-            if (this.coerceValue(val)) {
-                this.value = val;
+            if (v === null || v === undefined || /^\s*$/.test(v)) {
+                v = null;
+            }
+            const val = v === null ? null : typeof this.parseValue === "function" ? this.parseValue(v) : v;
+            const coercedValue = val === null ? val : this.coerceValue(val);
+            if (v !== null) {
+                if (coercedValue) {
+                    this.value = val;
+                } else {
+                    this.raiseOnChange(v);
+                }
+            } else {
+                this.value = null;
             }
         });
         this._valueChangeSubscription = combineLatest(this.cultureService.cultureObservable,
             this.valueChange.asObservable(), this._formatObservable).subscribe((v) => {
-            const [l, val, f] = v;
-            const locale = this.locale || l;
-            const coercedValue = this.coerceValue(this._controlValue);
-            if (!this.compareValues(coercedValue, val)) {
-                this._controlValueAccessor.writeValue(this.formatValue(val, locale, f));
-            }
+                const [l, val, f] = v;
+                if (typeof val === "string") {
+                    this._controlValueAccessor.writeValue(val);
+                } else {
+                    const locale = this.locale || l;
+                    const coercedValue = this.coerceValue(this._controlValue);
+                    if (!this.compareValues(coercedValue, val)) {
+                        this._controlValueAccessor.writeValue(this.formatValue(val, locale, f));
+                    }
+                }
         }) as any as Subscription;
         this._controlValueAccessor.registerOnTouched(() => {
             this.raiseOnTouch();

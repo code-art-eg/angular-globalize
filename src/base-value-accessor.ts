@@ -149,6 +149,13 @@ export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAcces
         this.raiseOnChange(newVal);
     }
 
+    public raiseOnChange(val: any): void {
+        if (typeof this._onchange === "function") {
+            this._onchange(val);
+        }
+        this.valueChange.emit(val);
+    }
+
     public ngOnDestroy() {
         this._localeSubscription.unsubscribe();
         const thisT = this as IBaseValueAccessor<T> as (IBaseValueAccessor<T> & T);
@@ -195,13 +202,6 @@ export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAcces
 
     protected onIsRtlChanged(): void {
         // Do nothing
-    }
-
-    private raiseOnChange(val: any): void {
-        if (typeof this._onchange === "function") {
-            this._onchange(val);
-        }
-        this.valueChange.emit(val);
     }
 
     private compareValuesInternal(v1: any, v2: any): boolean {
