@@ -9,7 +9,7 @@ import { IBaseValueAccessor, IComponentFocus, IPopupComponent, IPopupDirective }
     styleUrls: ["./popup.component.less"],
     templateUrl: "./popup.component.html",
 })
-export class PopupComponent implements AfterViewInit, IPopupComponent<any> {
+export class PopupComponent implements IPopupComponent<any> {
     public hostedElement: ElementRef;
     public popupDirective: IPopupDirective<any>;
     @ViewChild("inputhost") public inputHost: ElementRef;
@@ -43,14 +43,6 @@ export class PopupComponent implements AfterViewInit, IPopupComponent<any> {
 
     get componenthost(): PopupHostDirective {
         return this._componenthost;
-    }
-
-    public ngAfterViewInit(): void {
-        let element = this.hostedElement.nativeElement;
-        while (element.newNativeElement) {
-            element = element.newNativeElement;
-        }
-        this.renderer.appendChild(this.inputHost.nativeElement, element);
     }
 
     @HostListener("mouseenter")
@@ -102,5 +94,61 @@ export class PopupComponent implements AfterViewInit, IPopupComponent<any> {
 
     get orientRight(): boolean {
         return this.popupDirective.orientRight;
+    }
+
+    get bottom(): string {
+        if (!this.orientTop) {
+            return null;
+        }
+        const el = this.hostedElement.nativeElement as HTMLElement;
+        if (!el) {
+            return null;
+        }
+        const parent = el.offsetParent as HTMLElement;
+        if (!parent) {
+            return null;
+        }
+        const bottom = parent.offsetHeight - el.offsetTop;
+        return `${bottom}px`;
+    }
+
+    get top(): string {
+        if (this.orientTop) {
+            return null;
+        }
+        const el = this.hostedElement.nativeElement as HTMLElement;
+        if (!el) {
+            return null;
+        }
+        const top = el.offsetTop + el.offsetHeight;
+        return `${top}px`;
+    }
+
+    get right(): string {
+        if (!this.orientRight) {
+            return null;
+        }
+        const el = this.hostedElement.nativeElement as HTMLElement;
+        if (!el) {
+            return null;
+        }
+        const parent = el.offsetParent as HTMLElement;
+        if (!parent) {
+            return null;
+        }
+        const right = parent.offsetWidth - (el.offsetLeft + el.offsetWidth);
+        return `${right}px`;
+    }
+
+    get left(): string {
+        if (this.orientRight) {
+            return null;
+        }
+        const el = this.hostedElement.nativeElement as HTMLElement;
+        if (!el) {
+            return null;
+        }
+        const left = el.offsetLeft;
+        return `${left}px`;
     }
 }
