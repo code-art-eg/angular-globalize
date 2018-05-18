@@ -1,17 +1,17 @@
-﻿import { ChangeDetectorRef, Inject, Injectable, Pipe } from "@angular/core";
+﻿import { ChangeDetectorRef, Injectable, Pipe, PipeTransform } from "@angular/core";
+import { DateFormatterOptions } from "globalize";
 
-import { CANG_CULTURE_SERVICE, ICultureService } from "../services/current-culture.service";
-import { CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from "../services/globalize.service";
+import { CurrentCultureService } from "../services/current-culture.service";
+import { GlobalizationService } from "../services/globalize.service";
 import { BaseDatePipe } from "./base-date-pipe";
 
-@Injectable()
 @Pipe({ name: "gdate", pure: false })
-export class GlobalizeDatePipe extends BaseDatePipe {
+export class GlobalizeDatePipe extends BaseDatePipe implements PipeTransform {
 
-    constructor(@Inject(CANG_GLOBALIZATION_SERVICE) globalizService: IGlobalizationService,
-                @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-                @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
-        super(globalizService, cultureService, changeDetector);
+    constructor(globalizeService: GlobalizationService,
+                cultureService: CurrentCultureService,
+                changeDetector: ChangeDetectorRef) {
+        super(globalizeService, cultureService, changeDetector);
     }
 
     protected stringToOptions(optionsString: string): DateFormatterOptions {
@@ -40,6 +40,6 @@ export class GlobalizeDatePipe extends BaseDatePipe {
     }
 
     protected convertValue(input: Date, locale: string, options: DateFormatterOptions): string {
-        return this.globalizService.formatDate(input, locale, options);
+        return this.globalizeService.formatDate(input, locale, options);
     }
 }

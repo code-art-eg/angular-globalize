@@ -1,5 +1,5 @@
 import {Inject, Injectable, LOCALE_ID} from "@angular/core";
-import {ILocaleProvider} from "./current-culture.service";
+import { ILocaleProvider } from "./services-common";
 
 @Injectable()
 export class AngularDefaultLocaleProvider implements ILocaleProvider {

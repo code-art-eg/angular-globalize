@@ -70,9 +70,9 @@ describe("Storage Locale Provider", () => {
         global[localStorageKey] = undefined;
         global[sessionStorageKey] = undefined;
         const service = new StorageLocaleProvider();
-        expect(service.locale).null;
+        expect(service.locale).empty;
         service.locale = testValue;
-        expect(service.locale).null;
+        expect(service.locale).empty;
         global[localStorageKey] = localStorage;
         global[sessionStorageKey] = sessionStorage;
     });

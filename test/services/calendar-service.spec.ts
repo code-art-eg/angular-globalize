@@ -1,17 +1,13 @@
-﻿import { DefaultGlobalizationService, ICultureService } from "../../src/module";
-import { loadedGlobalize } from "./load-globalize-data";
+﻿import { CurrentCultureService, GlobalizationService } from "../../src/module";
+import "../services/load-globalize-data";
 
 import { throws } from "assert";
 import { expect } from "chai";
 
 describe("Calendar Service", () => {
-    const mockCultureService: ICultureService = {
-        cultureObservable: null,
-        currentCulture: "en-GB",
-        isRightToLeft: null,
-    };
+    const cultureService = new CurrentCultureService(["en-GB"]);
 
-    const service = new DefaultGlobalizationService(loadedGlobalize, mockCultureService);
+    const service = new GlobalizationService(cultureService);
     const calendar = service.getCalendar();
 
     const englishDayNames = {

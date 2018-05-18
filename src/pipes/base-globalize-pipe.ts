@@ -1,39 +1,31 @@
-﻿import { ChangeDetectorRef, Inject, OnDestroy, PipeTransform, WrappedValue } from "@angular/core";
-import { Observable } from "rxjs/Observable";
+﻿import { ChangeDetectorRef, Inject, Injectable, OnDestroy, PipeTransform, WrappedValue } from "@angular/core";
+import { Observable, Subscription } from "rxjs";
 import { combineLatest } from "rxjs/observable/combineLatest";
-import { Subscription } from "rxjs/Subscription";
 
-import { CANG_CULTURE_SERVICE, ICultureService } from "../services/current-culture.service";
-import { CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from "../services/globalize.service";
+import { CurrentCultureService } from "../services/current-culture.service";
+import { GlobalizationService } from "../services/globalize.service";
 
 function isValidCulture(locale: string): boolean {
     return /^[A-Za-z]{2}([-_][A-Za-z0-9]{2,8})*$/.test(locale);
 }
 
+@Injectable()
 export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, PipeTransform {
-    private _subscription: Subscription | null;
+    private _subscription: Subscription | null = null;
     private _latestValue: string | null | undefined;
     private _latestReturnedValue: string | null | undefined;
 
-    private _obj: Observable<any> | null;
-    private _objType: "culture" | "input" | "both" | null;
-    private _input: TInput | null;
-    private _locale: string | null;
+    private _obj: Observable<any> | null = null;
+    private _objType: "culture" | "input" | "both" | null = null;
+    private _input: TInput | null | undefined = null;
+    private _locale: string = "";
     private _options: TOptions | undefined;
-    private _latestSource: Observable<TInput>;
-    private _latest: Observable<[string, TInput]>;
+    private _latestSource: Observable<TInput | null | undefined> | null = null;
+    private _latest: Observable<[string, TInput | null | undefined]> | null = null;
 
-    constructor(@Inject(CANG_GLOBALIZATION_SERVICE) protected readonly globalizService: IGlobalizationService,
-                @Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
+    constructor(protected readonly globalizeService: GlobalizationService,
+                private readonly cultureService: CurrentCultureService,
                 private changeDetector: ChangeDetectorRef) {
-        this._obj = null;
-        this._objType = null;
-
-        this._subscription = null;
-        this._latestReturnedValue = null;
-        this._latestValue = null;
-        this._latest = null;
-        this._latestSource = null;
     }
 
     public ngOnDestroy(): void {
@@ -41,20 +33,17 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
     }
 
     public transform(input: null,
-                     localeOrOptionsOrFormat?: TOptions | string | undefined,
-                     optionsOrFormat?: TOptions | string | undefined): null;
+                     localeOrOptionsOrFormat?: TOptions | string | null,
+                     optionsOrFormat?: TOptions | string | undefined | null): null;
     public transform(input: undefined,
-                     localeOrOptionsOrFormat?: TOptions | string | undefined,
-                     optionsOrFormat?: TOptions | string | undefined): undefined;
+                     localeOrOptionsOrFormat?: TOptions | string | null,
+                     optionsOrFormat?: TOptions | string | null): undefined;
     public transform(input: TInput,
-                     localeOrOptionsOrFormat?: TOptions | string | undefined,
-                     optionsOrFormat?: TOptions | string | undefined): string;
-    public transform(input: Observable<TInput>,
-                     localeOrOptionsOrFormat?: TOptions | string | undefined,
-                     optionsOrFormat?: TOptions | string): string;
-    public transform(input: TInput | Observable<TInput> | null | undefined,
-                     localeOrOptionsOrFormat?: TOptions | string | undefined,
-                     optionsOrFormat?: TOptions | string | undefined): string | null | undefined | WrappedValue {
+                     localeOrOptionsOrFormat?: TOptions | string | null,
+                     optionsOrFormat?: TOptions | string | null): string;
+    public transform(input: TInput | Observable<TInput | null | undefined> | null | undefined,
+                     localeOrOptionsOrFormat?: TOptions | string | null,
+                     optionsOrFormat?: TOptions | string | null): string | null | undefined | WrappedValue {
         return this.doTransform(input, localeOrOptionsOrFormat, optionsOrFormat);
     }
 
@@ -66,14 +55,29 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
 
     protected abstract stringToOptions(optionsString: string): TOptions;
 
-    protected abstract convertValue(input: TInput, locale: string, options: TOptions): string;
+    protected abstract convertValue(input: TInput, locale: string|undefined, options: TOptions): string;
 
-    protected doTransform(input: TInput | Observable<TInput> | null | undefined,
-                          localeOrOptionsOrFormat?: TOptions | string | undefined,
-                          optionsOrFormat?: TOptions | string | undefined): string | null | undefined | WrappedValue {
+    protected doTransform(input: TInput | Observable<TInput|null|undefined> | null | undefined,
+                          localeOrOptionsOrFormat?: TOptions | string | null,
+                          optionsOrFormat?: TOptions | string | null): string | null | undefined | WrappedValue {
         const [locale, options] = this.resolveParameters(localeOrOptionsOrFormat, optionsOrFormat);
         const [obj, objType, newInput] = this.resolveObject(input, locale, options);
         return this.transformInternal(obj, objType, newInput, locale, options);
+    }
+
+    private inputsEqualInternal(v1: TInput|null|undefined, v2: TInput|null|undefined): boolean {
+        if (v1 === null) {
+            return v2 === null;
+        } else if (v1 === undefined) {
+            return v2 === undefined;
+        } else if (v2 === null || v2 === undefined) {
+            return false;
+        }
+        return this.inputsEqual(v1, v2);
+    }
+
+    private optionsEqualInternal(o1: TOptions | undefined, o2: TOptions | undefined) {
+        return this.optionsEqual(o1 || this.getDefaultOptions(), o2 || this.getDefaultOptions());
     }
 
     private dispose(): void {
@@ -83,15 +87,20 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
         this._subscription = null;
         this._obj = null;
         this._objType = null;
-        this._options = null;
-        this._locale = null;
+        this._options = undefined;
+        this._locale = "";
         this._latest = null;
         this._latestSource = null;
+        this._latestValue = undefined;
+        this._latestReturnedValue = undefined;
+        this._input = undefined;
     }
 
     private transformInternal(obj: Observable<any> | null,
                               objType: "culture" | "input" | "both" | null,
-                              input: TInput | null, locale, options): string | null | undefined | WrappedValue {
+                              input: TInput | undefined | null,
+                              locale: string,
+                              options: TOptions | undefined): string | null | undefined | WrappedValue {
         if (!this._obj) {
             if (obj) {
                 this.subscribe(obj, objType, input, locale, options);
@@ -102,8 +111,8 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
 
         if (obj !== this._obj
             || objType !== this._objType
-            || !this.inputsEqual(input, this._input)
-            || !this.optionsEqual(options, this._options)
+            || !this.inputsEqualInternal(input, this._input)
+            || !this.optionsEqualInternal(options, this._options)
             || locale !== locale) {
             this.dispose();
             return this.transformInternal(obj, objType, input, locale, options);
@@ -116,20 +125,20 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
         return WrappedValue.wrap(this._latestValue);
     }
 
-    private resolveObject(input: TInput | Observable<TInput> | null | undefined,
-                          locale: string | null,
-                          options: TOptions | undefined): [Observable<any> | null, "culture" | "input" | "both" | null,
-        TInput | null] {
+    private resolveObject(input: TInput | Observable<TInput|null|undefined> | null | undefined,
+                          locale: string,
+                          options: TOptions | undefined):
+             [Observable<any> | null, "culture" | "input" | "both" | null, TInput | undefined | null] {
         if (input === null) {
             this._latestValue = this._latestReturnedValue = null;
             return [null, null, null];
         }
         if (input === undefined) {
             this._latestValue = this._latestReturnedValue = undefined;
-            return [null, null, null];
+            return [null, null, undefined];
         }
         if (input instanceof Observable) {
-            if (locale !== null) {
+            if (locale !== "") {
                 return [input, "input", null];
             }
             if (!this._latest || this._latestSource !== input) {
@@ -138,7 +147,7 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
             }
             return [this._latest, "both", null];
         }
-        if (locale !== null) {
+        if (locale !== "") {
             this._latestValue =
                 this._latestReturnedValue
                     = this.convertValue(input, locale, options || this.getDefaultOptions());
@@ -147,46 +156,48 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
         return [this.cultureService.cultureObservable, "culture", input];
     }
 
-    private resolveParameters(localeOrOptionsOrFormat: TOptions | string | undefined,
-                              optionsOrFormat: TOptions | string | undefined): [string | null, TOptions | undefined] {
-        let locale: string | null = null;
+    private resolveParameters(localeOrOptionsOrFormat: TOptions | string | undefined | null,
+                              optionsOrFormat: TOptions | string | undefined | null):
+                              [string, TOptions | undefined] {
+        let locale: string;
         let options: TOptions | undefined;
         if (optionsOrFormat) {
             if (typeof (localeOrOptionsOrFormat) !== "string") {
-                if (!localeOrOptionsOrFormat) {
-                    locale = null;
-                } else {
+                if (localeOrOptionsOrFormat) {
                     throw new Error("Locale must be a string");
+                } else {
+                    locale = "";
                 }
             } else {
                 locale = localeOrOptionsOrFormat;
                 if (typeof optionsOrFormat === "string") {
                     options = this.stringToOptions(optionsOrFormat);
                 } else {
-                    options = optionsOrFormat || undefined;
+                    options = optionsOrFormat;
                 }
             }
         } else {
             if (!localeOrOptionsOrFormat) {
-                locale = null;
+                locale = "";
                 options = undefined;
             } else if (typeof (localeOrOptionsOrFormat) === "string") {
                 if (isValidCulture(localeOrOptionsOrFormat)) {
                     locale = localeOrOptionsOrFormat;
                 } else {
                     options = this.stringToOptions(localeOrOptionsOrFormat);
+                    locale = "";
                 }
             } else {
-                locale = null;
-                options = localeOrOptionsOrFormat || undefined;
+                locale = "";
+                options = localeOrOptionsOrFormat;
             }
         }
         return [locale, options];
     }
 
     private subscribe(obj: Observable<any>,
-                      objType: "culture" | "input" | "both",
-                      input: TInput | null, locale: string, options: TOptions | undefined): void {
+                      objType: "culture" | "input" | "both" | null,
+                      input: TInput | undefined | null, locale: string, options: TOptions | undefined): void {
         this._obj = obj;
         this._objType = objType;
         this._input = input;
@@ -202,8 +213,8 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
     }
 
     private updateLatestValues(vals: string | TInput | [string, TInput]) {
-        let loc: string;
-        let value: TInput;
+        let loc: string|undefined;
+        let value: TInput|undefined|null;
         if (this._objType === "culture") {
             loc = vals as string;
             value = this._input;
@@ -213,7 +224,13 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
         } else {
             [loc, value] = vals as [string, TInput];
         }
-        this._latestValue = this.convertValue(value, loc, this._options || this.getDefaultOptions());
+        if (value === null) {
+            this._latestValue = null;
+        } else if (value === undefined) {
+            this._latestValue = undefined;
+        } else {
+            this._latestValue = this.convertValue(value, loc, this._options || this.getDefaultOptions());
+        }
         if (this.changeDetector) {
             this.changeDetector.markForCheck();
         }

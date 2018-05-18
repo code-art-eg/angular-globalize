@@ -1,18 +1,17 @@
-﻿import { ChangeDetectorRef, Inject, Injectable, Pipe } from "@angular/core";
+﻿import { ChangeDetectorRef, Injectable, Pipe, PipeTransform } from "@angular/core";
 
-import { CANG_CULTURE_SERVICE, ICultureService } from "../services/current-culture.service";
-import { CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from "../services/globalize.service";
-import { DurationFormatOptions } from "../services/globalize.service";
+import { CurrentCultureService } from "../services/current-culture.service";
+import { GlobalizationService } from "../services/globalize.service";
+import { DurationFormatOptions } from "../services/services-common";
 import { BaseNumericPipe } from "./base-numeric-pipe";
 
-@Injectable()
 @Pipe({ name: "gduration", pure: false })
-export class GlobalizeDurationPipe extends BaseNumericPipe<DurationFormatOptions> {
+export class GlobalizeDurationPipe extends BaseNumericPipe<DurationFormatOptions> implements PipeTransform {
 
-    constructor(@Inject(CANG_GLOBALIZATION_SERVICE) globalizService: IGlobalizationService,
-                @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-                @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
-        super(globalizService, cultureService, changeDetector);
+    constructor(globalizeService: GlobalizationService,
+                cultureService: CurrentCultureService,
+                changeDetector: ChangeDetectorRef) {
+        super(globalizeService, cultureService, changeDetector);
     }
 
     protected stringToOptions(optionsString: string): DurationFormatOptions {
@@ -45,6 +44,6 @@ export class GlobalizeDurationPipe extends BaseNumericPipe<DurationFormatOptions
     }
 
     protected convertValue(input: number, locale: string, options: DurationFormatOptions): string {
-        return this.globalizService.formatDuration(input, locale, options);
+        return this.globalizeService.formatDuration(input, locale, options);
     }
 }

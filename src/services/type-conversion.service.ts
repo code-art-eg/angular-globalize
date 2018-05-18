@@ -1,21 +1,10 @@
-﻿import { Inject, Injectable, InjectionToken } from "@angular/core";
-import { CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from "./globalize.service";
+﻿import { Inject, Injectable } from "@angular/core";
+import { DateFormatterOptions } from "globalize";
 
-export const CANG_TYPE_CONVERTER_SERVICE
-    = new InjectionToken<ITypeConverterService>("CaAngularGlobalizeTypeConverterService");
-
-export interface ITypeConverterService {
-    convertToString(val: any, locale?: string): string | null;
-
-    convertToBoolean(val: any): boolean;
-
-    convertToNumber(val: any, locale?: string): number | null;
-
-    convertToDate(val: any, locale?: string): Date | null;
-}
+import { GlobalizationService } from "./globalize.service";
 
 @Injectable()
-export class TypeConverterService implements ITypeConverterService {
+export class TypeConverterService {
     private static readonly optionsOrder: DateFormatterOptions[] = [
         { date: "short" },
         { datetime: "short" },
@@ -27,7 +16,7 @@ export class TypeConverterService implements ITypeConverterService {
         { date: "full" },
     ];
 
-    constructor(@Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService) {
+    constructor(private readonly globalizationService: GlobalizationService) {
 
     }
 
@@ -104,18 +93,17 @@ export class TypeConverterService implements ITypeConverterService {
         throw new Error(`Cannot convert value ${val} of type ${typeof val} to Date.`);
     }
 
-    private parseDateWithOptions(val: string, locale: string, options: DateFormatterOptions): Date {
-        return this.globalizationService.parseDate(val, locale, options);
+    private parseDateWithOptions(val: string, locale?: string, options?: DateFormatterOptions): Date {
+        return this.globalizationService.parseDate(val, locale, options) as Date;
     }
 
-    private parseDate(val: string, locale: string): Date {
-        for (let i = 0; i < TypeConverterService.optionsOrder.length; i++) {
-            const options = TypeConverterService.optionsOrder[i];
+    private parseDate(val: string, locale?: string): Date {
+        for (const options of TypeConverterService.optionsOrder) {
             const d = this.parseDateWithOptions(val, locale, options);
             if (d) {
                 return d;
             }
         }
-        return null;
+        throw new Error(`Cannot convert value ${val} to Date.`);
     }
 }

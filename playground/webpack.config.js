@@ -17,11 +17,19 @@ module.exports = {
     output: {
         path: path.join(deployDir, './'),
         filename: '[name].js',
+        chunkFilename: '[name].js',
         publicPath: '/'
     },
     module: {
         rules: [
-            { test: /\.ts$/, use: ['awesome-typescript-loader?silent=true', 'angular2-template-loader']},
+            { test: /\.ts$/, use: [{
+                loader: 'ts-loader',
+                options: {
+                    compilerOptions: {
+                        noEmit: false
+                    }
+                }
+            }, 'angular2-template-loader']},
             { test: /\.html/, use: 'html-loader?minimize=false' },
             { test: /(^|\/|(\s+))globalize/i, loader: 'imports-loader?define=>false' }
         ]
@@ -35,7 +43,7 @@ module.exports = {
             filename: '[file].map', // Remove this line if you prefer inline source maps
             moduleFilenameTemplate: path.relative(deployDir, '[resourcePath]') // Point sourcemap entries to the original file locations on disk
         }),
-        new webpack.NamedModulesPlugin(),
+        // new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin()
     ],
     devServer: {

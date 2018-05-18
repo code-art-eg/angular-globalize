@@ -1,73 +1,64 @@
 import { Inject, Injectable, Optional } from "@angular/core";
-import { Observable } from "rxjs/Observable";
-import { ReplaySubject } from "rxjs/ReplaySubject";
-
-export const CANG_SUPPORTED_CULTURES = "CaAngularGlobalizeSupportedCultures";
-export const CANG_CULTURE_SERVICE = "CaAngularGlobalizeCultureService";
-export const CA_ANGULAR_LOCALE_PROVIDER = "CaAngularGlobalizeLocaleProvider";
-export const CANG_LOCALE_STORAGE_KEY = "CaAngularGlobalizeLocaleStorageKey";
-export const CANG_COOKIE_NAME = "CaAngularGlobalizeCookieName";
-export const CANG_COOKIE_DURATION_DAYS = "CaAngularGlobalizeCookieDurationDays";
-export const CANG_COOKIE_PATH = "CaAngularGlobalizeCookiePath";
-export const CANG_USE_SESSION_STORAGE = "CaAngularGlobalizeUseSessionStorage";
-
-export const CANG_DEFAULT_LOCALE_KEY = "CaAngularGlobalizeLocaleId";
-export const CANG_DEFAULT_COOKIE_NAME = "CaAngularGlobalizeLocaleId";
-export const CANG_DEFAULT_COOKIE_DURATION_DAYS = 365;
-
-export interface ICultureService {
-    currentCulture: string;
-    cultureObservable: Observable<string>;
-
-    isRightToLeft(locale?: string): boolean;
-}
-
-export interface ILocaleProvider {
-    canWrite: boolean;
-    locale: string;
-}
+import { Observable, ReplaySubject } from "rxjs";
+import { CA_ANGULAR_LOCALE_PROVIDER, CANG_SUPPORTED_CULTURES, ILocaleProvider } from "./services-common";
 
 @Injectable()
-export class CurrentCultureService implements ICultureService {
+export class CurrentCultureService {
     private static readonly rtlLangs = ["ar", "dv", "fa", "he",
         "ku", "nqo", "pa", "prs", "ps", "sd", "syr", "tzm", "ug", "ur", "yi"];
 
-    private static areEqual(c1: string, c2: string): boolean {
-        if (c2 === null || c2 === undefined || c2 === "") {
-            return c1 === null || c1 === undefined || c1 === "";
+    private static normalizeName(c: string | null | undefined): string {
+        if (!c) {
+            return "";
         }
-        if (c1 === null || c1 === undefined || c1 === "") {
-            return false;
+        c = c.trim().replace("_", "-");
+        const split = c.split("-");
+        if (split.length === 1) {
+            return c.toLocaleLowerCase();
+        } else {
+            let res = "";
+            for (let i = 0; i < split.length; i++) {
+                if (i > 0) {
+                    res += "-";
+                }
+                if (i === 0) {
+                    res += split[i].toLowerCase();
+                } else if (i === 1 && split[i].length > 2) {
+                    res += split[1][0].toUpperCase() + split[1].substring(1).toUpperCase();
+                } else {
+                    res += split[i].toUpperCase();
+                }
+            }
+            return res;
         }
-        c1 = c1.toLowerCase();
-        c2 = c2.toLowerCase();
-        return c1 === c2;
     }
 
     private static sameParent(c1: string, c2: string): boolean {
-        if (CurrentCultureService.areEqual(c1, c2)) {
+        if (c1 === c2) {
             return true;
         }
-        if (!c1 || !c2) {
+
+        if (c1 === "" || c2 === "") {
             return false;
         }
         const hyphen1Index = c1.indexOf("-");
         const hyphen2Index = c2.indexOf("-");
         return hyphen1Index > 0 &&
             hyphen2Index > 0 &&
-            c1.substr(0, hyphen1Index).toLowerCase() === c2.substr(0, hyphen2Index).toLowerCase();
+            c1.substr(0, hyphen1Index) === c2.substr(0, hyphen2Index);
     }
 
     private static isParent(c1: string, c2: string): boolean {
-        if (CurrentCultureService.areEqual(c1, c2)) {
+        if (c1 === c2) {
             return true;
         }
-        if (!c1 || !c2) {
+
+        if (c1 === "" || c2 === "") {
             return false;
         }
         const hyphenIndex = c2.indexOf("-");
         if (hyphenIndex >= 0) {
-            return CurrentCultureService.areEqual(c1, c2.substr(0, hyphenIndex));
+            return c1 === c2.substr(0, hyphenIndex);
         }
         return false;
     }
@@ -75,9 +66,10 @@ export class CurrentCultureService implements ICultureService {
     public readonly cultureObservable: Observable<string>;
 
     private readonly _cultureSubject: ReplaySubject<string>;
-    private _culture: string;
+    private _culture!: string;
+    private readonly _supportedCultures: string[];
 
-    constructor(@Inject(CANG_SUPPORTED_CULTURES) private readonly supportedCultures: string[],
+    constructor(@Inject(CANG_SUPPORTED_CULTURES) supportedCultures: string[],
                 @Optional() @Inject(CA_ANGULAR_LOCALE_PROVIDER) private readonly localeProviders?: ILocaleProvider[]) {
         if (supportedCultures === null || supportedCultures === undefined) {
             throw new Error("Parameter supportedCultures passed to CurrentCultureService constructor cannot be null.");
@@ -85,7 +77,10 @@ export class CurrentCultureService implements ICultureService {
         if (supportedCultures.length === 0) {
             throw new Error("Parameter supportedCultures passed to CurrentCultureService constructor cannot be empty.");
         }
-        const index = this.findSupportedCultureIndex((v) => v === null || v === undefined || v === "");
+        this._supportedCultures = supportedCultures
+                                    .map((v) => CurrentCultureService.normalizeName(v))
+                                    .filter((v, i, self) => self.indexOf(v) === i);
+        const index = this._supportedCultures.findIndex((v) => v === "");
         if (index >= 0) {
             throw new Error("Parameter supportedCultures passed to "
                 + "CurrentCultureService constructor cannot contain empty values. "
@@ -101,7 +96,7 @@ export class CurrentCultureService implements ICultureService {
         }
         this._cultureSubject = new ReplaySubject<string>(1);
         this.cultureObservable = this._cultureSubject.asObservable();
-        this.currentCulture = null;
+        this.currentCulture = "";
     }
 
     get currentCulture(): string {
@@ -140,36 +135,36 @@ export class CurrentCultureService implements ICultureService {
     }
 
     private getSupportedCulture(c: string): string {
-        let index = this.findSupportedCultureIndex((v) => CurrentCultureService.areEqual(v, c));
+        let index = this._supportedCultures.findIndex((v) => v === c);
         if (index < 0) {
-            index = this.findSupportedCultureIndex((v) => CurrentCultureService.isParent(v, c));
+            index = this._supportedCultures.findIndex((v) => CurrentCultureService.isParent(v, c));
         }
         if (index < 0) {
-            index = this.findSupportedCultureIndex((v) => CurrentCultureService.isParent(c, v));
+            index = this._supportedCultures.findIndex((v) => CurrentCultureService.isParent(c, v));
         }
         if (index < 0) {
-            index = this.findSupportedCultureIndex((v) => CurrentCultureService.sameParent(c, v));
+            index = this._supportedCultures.findIndex((v) => CurrentCultureService.sameParent(c, v));
         }
         if (index < 0) {
             index = 0;
         }
-        return this.supportedCultures[index];
+        return this._supportedCultures[index];
     }
 
-    private getProviderCulture(): string | null {
+    private getProviderCulture(): string {
         if (!this.localeProviders) {
-            return null;
+            return "";
         }
         for (let i = this.localeProviders.length - 1; i >= 0; i--) {
             const val = this.localeProviders[i].locale;
             if (val) {
-                return val;
+                return CurrentCultureService.normalizeName(val);
             }
         }
-        return null;
+        return "";
     }
 
-    private setProviderCulture(val: string | null): void {
+    private setProviderCulture(val: string): void {
         if (!this.localeProviders) {
             return;
         }
@@ -178,14 +173,5 @@ export class CurrentCultureService implements ICultureService {
                 this.localeProviders[i].locale = val;
             }
         }
-    }
-
-    private findSupportedCultureIndex(pred: (v: string) => boolean) {
-        for (let i = 0; i < this.supportedCultures.length; i++) {
-            if (pred(this.supportedCultures[i])) {
-                return i;
-            }
-        }
-        return -1;
     }
 }

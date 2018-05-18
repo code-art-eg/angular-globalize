@@ -1,20 +1,18 @@
+import { DayNameFormat, MonthNameFormat } from "./services-common";
+
 export interface ICalendarService {
     name: string;
-
-    getMonthNames(type?: "abbreviated" | "narrow" | "wide"): ReadonlyArray<string>;
-
-    getDayNames(type?: "abbreviated" | "narrow" | "short" | "wide"): ReadonlyArray<string>;
-
+    getMonthNames(type?: MonthNameFormat): ReadonlyArray<string>;
+    getDayNames(type?: DayNameFormat): ReadonlyArray<string>;
     getMonthsInYear(year: number): number;
-
     getDaysInMonth(year: number, month: number): number;
 }
 
 export class GregorianCalendarService implements ICalendarService {
     public readonly name: string = "Gregorian";
     private readonly monthDays: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    private readonly monthNames: { [key: string]: ReadonlyArray<string> };
-    private readonly dayNames: { [key: string]: ReadonlyArray<string> };
+    private readonly monthNames: { readonly [key in MonthNameFormat]: ReadonlyArray<string> };
+    private readonly dayNames: { [key in DayNameFormat]: ReadonlyArray<string> };
 
     constructor(private readonly cldr: Cldr.CldrStatic) {
         this.monthNames = {
@@ -31,11 +29,11 @@ export class GregorianCalendarService implements ICalendarService {
         };
     }
 
-    public getDayNames(type?: "abbreviated" | "narrow" | "short" | "wide"): ReadonlyArray<string> {
+    public getDayNames(type?: DayNameFormat): ReadonlyArray<string> {
         return this.dayNames[type || "wide"];
     }
 
-    public getMonthNames(type?: "abbreviated" | "narrow" | "wide"): ReadonlyArray<string> {
+    public getMonthNames(type?: MonthNameFormat): ReadonlyArray<string> {
         return this.monthNames[type || "wide"];
     }
 
@@ -50,7 +48,7 @@ export class GregorianCalendarService implements ICalendarService {
         return month !== 1 ? this.monthDays[month] : ((year % 4 || (year % 400 && !(year % 100))) ? 28 : 29);
     }
 
-    private getDayNamesInternal(type?: "abbreviated" | "narrow" | "short" | "wide"): ReadonlyArray<string> {
+    private getDayNamesInternal(type?: DayNameFormat): ReadonlyArray<string> {
         type = type || "wide";
         const days = this.cldr.main(["dates/calendars/gregorian/days", "stand-alone", type]);
         if (!days) {
@@ -59,7 +57,7 @@ export class GregorianCalendarService implements ICalendarService {
         return [days.sun, days.mon, days.tue, days.wed, days.thu, days.fri, days.sat];
     }
 
-    private getMonthNamesInternal(type?: "abbreviated" | "narrow" | "wide"): ReadonlyArray<string> {
+    private getMonthNamesInternal(type?: MonthNameFormat): ReadonlyArray<string> {
         type = type || "wide";
         const months = this.cldr.main(["dates/calendars/gregorian/months", "stand-alone", type]);
         if (!months) {

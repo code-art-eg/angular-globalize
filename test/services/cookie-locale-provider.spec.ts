@@ -31,7 +31,7 @@ describe("Cookie Locale Provider", () => {
         test(undefined, () => {
             const service = new CookieLocaleProvider();
             service.locale = testValue;
-            expect(service.locale).null;
+            expect(service.locale).empty;
         });
     });
 });

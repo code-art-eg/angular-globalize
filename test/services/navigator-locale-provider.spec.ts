@@ -30,6 +30,6 @@ describe("Navigator Locale Provider", () => {
     });
 
     it("locale should return null when navigator is not defined", () => {
-        test(undefined, () => expect(service.locale).null);
+        test(undefined, () => expect(service.locale).empty);
     });
 });

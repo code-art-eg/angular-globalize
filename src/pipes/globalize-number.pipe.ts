@@ -1,19 +1,18 @@
-﻿import { ChangeDetectorRef, Inject, Injectable, Pipe } from "@angular/core";
+﻿import { ChangeDetectorRef, Injectable, Pipe, PipeTransform } from "@angular/core";
+import { NumberFormatterOptions } from "globalize";
 
-import { CANG_CULTURE_SERVICE, ICultureService } from "../services/current-culture.service";
-import { CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from "../services/globalize.service";
+import { CurrentCultureService } from "../services/current-culture.service";
+import { GlobalizationService } from "../services/globalize.service";
 import { BaseNumericPipe } from "./base-numeric-pipe";
 
-@Injectable()
 @Pipe({ name: "gnumber", pure: false })
-export class GlobalizeNumberPipe extends BaseNumericPipe<NumberFormatterOptions> {
+export class GlobalizeNumberPipe extends BaseNumericPipe<NumberFormatterOptions> implements PipeTransform {
 
-    constructor(@Inject(CANG_GLOBALIZATION_SERVICE) globalizService: IGlobalizationService,
-                @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-                @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
-        super(globalizService, cultureService, changeDetector);
+    constructor(globalizeService: GlobalizationService,
+                cultureService: CurrentCultureService,
+                changeDetector: ChangeDetectorRef) {
+        super(globalizeService, cultureService, changeDetector);
     }
-
     protected stringToOptions(optionsString: string): NumberFormatterOptions {
         switch (optionsString) {
             case "decimal":
@@ -35,7 +34,7 @@ export class GlobalizeNumberPipe extends BaseNumericPipe<NumberFormatterOptions>
     }
 
     protected convertValue(input: number, locale: string, options: NumberFormatterOptions): string {
-        return this.globalizService.formatNumber(input, locale, options);
+        return this.globalizeService.formatNumber(input, locale, options);
     }
 
     protected optionsEqual(o1: NumberFormatterOptions, o2: NumberFormatterOptions): boolean {

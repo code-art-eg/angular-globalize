@@ -1,19 +1,19 @@
 import { Directive, ElementRef, Inject, Input, OnDestroy, Renderer2 } from "@angular/core";
-import { Subscription } from "rxjs/Subscription";
-import { CANG_CULTURE_SERVICE, ICultureService } from "../services/current-culture.service";
+import { Subscription } from "rxjs";
+import { CurrentCultureService } from "../services/current-culture.service";
 
 @Directive({
     selector: "[caDirection]",
 })
 export class GlobalizeDirectionDirective implements OnDestroy {
 
-    private _rtlCssClass: string = null;
-    private _ltrCssClass: string = null;
-    private _isRtl: boolean;
-    private _locale: string = null;
+    private _rtlCssClass: string|undefined;
+    private _ltrCssClass: string|undefined;
+    private _isRtl: boolean = false;
+    private _locale: string = "";
     private readonly sub: Subscription;
 
-    constructor(@Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
+    constructor(@Inject(CurrentCultureService) private readonly cultureService: CurrentCultureService,
                 @Inject(ElementRef) private readonly el: ElementRef,
                 @Inject(Renderer2) private readonly renderer: Renderer2) {
         this.handleLocaleChange();
@@ -26,8 +26,8 @@ export class GlobalizeDirectionDirective implements OnDestroy {
         this.sub.unsubscribe();
     }
 
-    @Input() set rtlCssClass(val: string) {
-        val = val || null;
+    @Input() set rtlCssClass(val: string | undefined | null ) {
+        val = val || undefined;
         if (val !== this._rtlCssClass) {
             if (this._isRtl && this._rtlCssClass) {
                 this.renderer.removeClass(this.el.nativeElement, this._rtlCssClass);
@@ -39,12 +39,12 @@ export class GlobalizeDirectionDirective implements OnDestroy {
         }
     }
 
-    get rtlCssClass(): string {
+    get rtlCssClass(): string | undefined | null  {
         return this._rtlCssClass;
     }
 
-    @Input() set ltrCssClass(val: string) {
-        val = val || null;
+    @Input() set ltrCssClass(val: string | undefined | null) {
+        val = val || undefined;
         if (val !== this.ltrCssClass) {
             if (!this._isRtl && this._ltrCssClass) {
                 this.renderer.removeClass(this.el.nativeElement, this._ltrCssClass);
@@ -56,12 +56,12 @@ export class GlobalizeDirectionDirective implements OnDestroy {
         }
     }
 
-    get ltrCssClass(): string {
+    get ltrCssClass(): string | undefined | null {
         return this._ltrCssClass;
     }
 
     @Input() set locale(val: string) {
-        val = val || null;
+        val = val || "";
         if (this._locale !== val) {
             this._locale = val;
             this.handleLocaleChange();

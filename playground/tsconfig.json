@@ -2,15 +2,16 @@
   "compilerOptions": {
     "baseUrl": "./",
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "module": "commonjs",
     "noEmit": true,
     "sourceMap": true,
     "lib": [
-      "es5",
+      "es6",
       "dom"
     ],
-    "target": "es5",
+    "target": "es6",
     "skipLibCheck": true,
     "types": ["globalize", "node", "webpack-env"],
     "paths": {

@@ -2,7 +2,7 @@ import { Inject, Injectable, Optional } from "@angular/core";
 import {
     CANG_COOKIE_DURATION_DAYS, CANG_COOKIE_NAME, CANG_COOKIE_PATH, CANG_DEFAULT_COOKIE_DURATION_DAYS,
     CANG_DEFAULT_COOKIE_NAME, ILocaleProvider,
-} from "./current-culture.service";
+} from "./services-common";
 
 @Injectable()
 export class CookieLocaleProvider implements ILocaleProvider {
@@ -47,20 +47,23 @@ export class CookieLocaleProvider implements ILocaleProvider {
     }
 
     public readonly canWrite: boolean = true;
+    private readonly _cookieName: string;
+    private readonly _cookieDuration: number;
+    private readonly _cookiePath: string;
 
-    constructor(@Inject(CANG_COOKIE_NAME) @Optional() private readonly cookieName?: string,
-                @Inject(CANG_COOKIE_DURATION_DAYS) @Optional() private readonly cookieDuration?: number,
-                @Inject(CANG_COOKIE_PATH) @Optional() private readonly cookiePath?: string) {
-        this.cookieName = this.cookieName || CANG_DEFAULT_COOKIE_NAME;
-        this.cookieDuration = this.cookieDuration || CANG_DEFAULT_COOKIE_DURATION_DAYS;
-        this.cookiePath = this.cookiePath || "/";
+    constructor(@Inject(CANG_COOKIE_NAME) @Optional() cookieName?: string,
+                @Inject(CANG_COOKIE_DURATION_DAYS) @Optional() cookieDuration?: number,
+                @Inject(CANG_COOKIE_PATH) @Optional() cookiePath?: string) {
+        this._cookieName = cookieName || CANG_DEFAULT_COOKIE_NAME;
+        this._cookieDuration = cookieDuration || CANG_DEFAULT_COOKIE_DURATION_DAYS;
+        this._cookiePath = cookiePath || "/";
     }
 
     get locale(): string {
-        return CookieLocaleProvider.getCookie(this.cookieName);
+        return CookieLocaleProvider.getCookie(this._cookieName) || "";
     }
 
     set locale(val: string) {
-        CookieLocaleProvider.createCookie(this.cookieName, val, this.cookieDuration, this.cookiePath);
+        CookieLocaleProvider.createCookie(this._cookieName, val, this._cookieDuration, this._cookiePath);
     }
 }

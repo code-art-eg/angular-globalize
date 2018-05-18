@@ -1,24 +1,24 @@
+import { ChangeDetectorRef, Injectable } from "@angular/core";
+import { DateFormatterOptions } from "globalize";
+
+import { CurrentCultureService } from "../services/current-culture.service";
+import { GlobalizationService } from "../services/globalize.service";
 import { BaseGlobalizePipe } from "./base-globalize-pipe";
 
+@Injectable()
 export abstract class BaseDatePipe extends BaseGlobalizePipe<Date, DateFormatterOptions> {
 
+    constructor(globalizeService: GlobalizationService,
+                cultureService: CurrentCultureService,
+                changeDetector: ChangeDetectorRef) {
+        super(globalizeService, cultureService, changeDetector);
+    }
+
     protected inputsEqual(v1: Date, v2: Date): boolean {
-        if (!v1) {
-            return !v2;
-        }
-        if (!v2) {
-            return false;
-        }
         return v1.valueOf() === v2.valueOf();
     }
 
     protected optionsEqual(o1: DateFormatterOptions, o2: DateFormatterOptions): boolean {
-        if (!o1) {
-            return !o2;
-        }
-        if (!o2) {
-            return false;
-        }
         return o1.date === o2.date
             && o1.datetime === o2.datetime
             && o1.raw === o2.raw

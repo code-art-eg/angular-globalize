@@ -1,27 +1,25 @@
-﻿import { ChangeDetectorRef, Inject, Injectable, Pipe } from "@angular/core";
-import { BaseGlobalizePipe } from "./base-globalize-pipe";
+﻿import { ChangeDetectorRef, Injectable, Pipe, PipeTransform } from "@angular/core";
 
-import { CANG_CULTURE_SERVICE, ICultureService } from "../services/current-culture.service";
-import { CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from "../services/globalize.service";
+import { CurrentCultureService } from "../services/current-culture.service";
+import { GlobalizationService } from "../services/globalize.service";
+import { BaseGlobalizePipe } from "./base-globalize-pipe";
 
 export type DayFormat = "abbreviated" | "short" | "narrow" | "wide";
 
-@Injectable()
 @Pipe({ name: "gday", pure: false })
-export class GlobalizeDayPipe extends BaseGlobalizePipe<number, "abbreviated" | "short" | "narrow" | "wide"> {
+export class GlobalizeDayPipe extends BaseGlobalizePipe<number, DayFormat> implements PipeTransform {
 
-    constructor(@Inject(CANG_GLOBALIZATION_SERVICE) globalizService: IGlobalizationService,
-                @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-                @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
-        super(globalizService, cultureService, changeDetector);
+    constructor(globalizeService: GlobalizationService,
+                cultureService: CurrentCultureService,
+                changeDetector: ChangeDetectorRef) {
+        super(globalizeService, cultureService, changeDetector);
     }
 
     protected inputsEqual(v1: number, v2: number): boolean {
         return v1 === v2;
     }
 
-    protected optionsEqual(o1: DayFormat,
-                           o2: DayFormat): boolean {
+    protected optionsEqual(o1: DayFormat, o2: DayFormat): boolean {
         return o1 === o2;
     }
 
@@ -36,6 +34,6 @@ export class GlobalizeDayPipe extends BaseGlobalizePipe<number, "abbreviated" | 
     protected convertValue(input: number,
                            locale: string,
                            options: DayFormat): string {
-        return this.globalizService.getDayName(input, locale, options);
+        return this.globalizeService.getDayName(input, locale, options);
     }
 }

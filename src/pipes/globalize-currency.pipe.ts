@@ -1,19 +1,19 @@
-﻿import { ChangeDetectorRef, Inject, Injectable, Pipe, WrappedValue } from "@angular/core";
-import { Observable } from "rxjs/Observable";
+﻿import { ChangeDetectorRef, Inject, Injectable, Pipe, PipeTransform, WrappedValue } from "@angular/core";
+import { CurrencyFormatterOptions } from "globalize";
+import { Observable } from "rxjs";
 
-import { CANG_CULTURE_SERVICE, ICultureService } from "../services/current-culture.service";
-import { CANG_GLOBALIZATION_SERVICE, IGlobalizationService } from "../services/globalize.service";
+import { CurrentCultureService } from "../services/current-culture.service";
+import { GlobalizationService } from "../services/globalize.service";
 import { BaseNumericPipe } from "./base-numeric-pipe";
 
-@Injectable()
 @Pipe({ name: "gcurrency", pure: false })
-export class GlobalizeCurrencyPipe extends BaseNumericPipe<CurrencyFormatterOptions> {
-    private _currency: string;
+export class GlobalizeCurrencyPipe extends BaseNumericPipe<CurrencyFormatterOptions> implements PipeTransform {
+    private _currency!: string;
 
-    constructor(@Inject(CANG_GLOBALIZATION_SERVICE) globalizService: IGlobalizationService,
-                @Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-                @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
-        super(globalizService, cultureService, changeDetector);
+    constructor(globalizeService: GlobalizationService,
+                cultureService: CurrentCultureService,
+                changeDetector: ChangeDetectorRef) {
+        super(globalizeService, cultureService, changeDetector);
     }
 
     public transform(input: null,
@@ -36,7 +36,7 @@ export class GlobalizeCurrencyPipe extends BaseNumericPipe<CurrencyFormatterOpti
                      currency: string,
                      localeOrOptionsOrFormat?: CurrencyFormatterOptions | string | undefined,
                      optionsOrFormat?: CurrencyFormatterOptions | string | undefined)
-                        : string | null | undefined | WrappedValue {
+        : string | null | undefined | WrappedValue {
         this._currency = currency;
         return this.doTransform(input, localeOrOptionsOrFormat, optionsOrFormat);
     }
@@ -53,7 +53,7 @@ export class GlobalizeCurrencyPipe extends BaseNumericPipe<CurrencyFormatterOpti
                 };
             default:
                 throw new Error(
-                `Invalid number format '${optionsString}'.Valid values are symbol, accounting, name or code`);
+                    `Invalid number format '${optionsString}'.Valid values are symbol, accounting, name or code`);
         }
     }
 
@@ -62,17 +62,11 @@ export class GlobalizeCurrencyPipe extends BaseNumericPipe<CurrencyFormatterOpti
     }
 
     protected convertValue(input: number, locale: string, options: CurrencyFormatterOptions): string {
-        return this.globalizService.formatCurrency(input, this._currency, locale, options);
+        return this.globalizeService.formatCurrency(input, this._currency, locale, options);
     }
 
     protected optionsEqual(o1: CurrencyFormatterOptions, o2: CurrencyFormatterOptions): boolean {
         if (!BaseNumericPipe.commonOptionsEqual(o1, o2)) {
-            return false;
-        }
-        if (!o1) {
-            return !o2;
-        }
-        if (!o2) {
             return false;
         }
         return o1.style === o2.style;

@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
-import { ILocaleProvider } from "./current-culture.service";
+import { ILocaleProvider } from "./services-common";
 
-@Injectable()
 export class NavigatorLanguageLocaleProvider implements ILocaleProvider {
     public readonly canWrite: boolean = false;
 
@@ -14,6 +13,6 @@ export class NavigatorLanguageLocaleProvider implements ILocaleProvider {
                 return navigator.language;
             }
         }
-        return null;
+        return "";
     }
 }

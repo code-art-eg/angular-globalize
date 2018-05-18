@@ -1,7 +1,7 @@
 ﻿import { throws } from "assert";
 import { expect } from "chai";
-import { DefaultGlobalizationService, ICultureService, TypeConverterService } from "../../src/module";
-import { loadedGlobalize } from "./load-globalize-data";
+import { CurrentCultureService, GlobalizationService, TypeConverterService } from "../../src/module";
+import "./load-globalize-data";
 // tslint:disable-next-line
 const chai: Chai.ChaiStatic = require("chai");
 // tslint:disable-next-line
@@ -9,12 +9,9 @@ chai.use(require("chai-datetime"));
 
 describe("Conversion Service", () => {
 
-    const mockCultureService: ICultureService = {
-        cultureObservable: null,
-        currentCulture: "en-GB",
-        isRightToLeft: null,
-    };
-    const globalizeService = new DefaultGlobalizationService(loadedGlobalize, mockCultureService);
+    const mockCultureService = new CurrentCultureService(["en-GB"]);
+
+    const globalizeService = new GlobalizationService(mockCultureService);
     const typeConverter = new TypeConverterService(globalizeService);
 
     it("converts null to string", () => {

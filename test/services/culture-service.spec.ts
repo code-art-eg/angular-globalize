@@ -68,7 +68,7 @@ describe("Culture Service ", () => {
             canWrite: true,
             locale: "de-de",
         };
-        expect(new CurrentCultureService(["EN-GB", "DE", "AR-EG"], [mock]).currentCulture).equals("DE");
+        expect(new CurrentCultureService(["EN-GB", "DE", "AR-EG"], [mock]).currentCulture).equals("de");
     });
 
     it("uses culture child", () => {

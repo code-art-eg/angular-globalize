@@ -3,7 +3,7 @@ import { Observable } from "rxjs/Observable";
 import { ReplaySubject } from "rxjs/ReplaySubject";
 import { Subject } from "rxjs/Subject";
 
-import { CurrentCultureService, DefaultGlobalizationService } from "../../src/module";
+import { CurrentCultureService, GlobalizationService } from "../../src/module";
 import { GlobalizeCurrencyPipe } from "../../src/pipes/globalize-currency.pipe";
 import { GlobalizeDatePipe } from "../../src/pipes/globalize-date.pipe";
 import { GlobalizeDateTimePipe } from "../../src/pipes/globalize-datetime.pipe";
@@ -12,12 +12,12 @@ import { GlobalizeDurationPipe } from "../../src/pipes/globalize-duration.pipe";
 import { GlobalizeMonthPipe } from "../../src/pipes/globalize-month.pipe";
 import { GlobalizeNumberPipe } from "../../src/pipes/globalize-number.pipe";
 import { GlobalizeTimePipe } from "../../src/pipes/globalize-time.pipe";
-import { loadedGlobalize } from "../services/load-globalize-data";
+import "../services/load-globalize-data";
 
 import { expect } from "chai";
 
 const cultureService = new CurrentCultureService(["en-GB", "de"], [{ locale: "en-GB", canWrite: false }]);
-const globalizeService = new DefaultGlobalizationService(loadedGlobalize, cultureService);
+const globalizeService = new GlobalizationService(cultureService);
 
 class ChangeDetectorMock extends ChangeDetectorRef {
 

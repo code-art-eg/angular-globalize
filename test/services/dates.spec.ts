@@ -1,5 +1,5 @@
-import { DefaultGlobalizationService, ICultureService } from "../../src/module";
-import { loadedGlobalize } from "./load-globalize-data";
+import { CurrentCultureService, GlobalizationService } from "../../src/module";
+import "./load-globalize-data";
 
 import { expect } from "chai";
 // tslint:disable-next-line
@@ -9,22 +9,18 @@ chai.use(require("chai-datetime"));
 
 describe("Globalization date formatting", () => {
 
-    const mockCultureService: ICultureService = {
-        cultureObservable: null,
-        currentCulture: "en-GB",
-        isRightToLeft: null,
-    };
+    const cultureService = new CurrentCultureService(["en-GB"]);
 
-    const service = new DefaultGlobalizationService(loadedGlobalize, mockCultureService);
+    const service = new GlobalizationService(cultureService);
 
     it("formats date null or undefined", () => {
-        expect(service.formatDate(null)).null;
-        expect(service.formatDate(undefined)).undefined;
-        expect(service.formatDate(null, { date: "short" })).null;
-        expect(service.formatDate(undefined, { date: "short" })).undefined;
+        expect(service.formatDate(null)).empty;
+        expect(service.formatDate(undefined)).empty;
+        expect(service.formatDate(null, { date: "short" })).empty;
+        expect(service.formatDate(undefined, { date: "short" })).empty;
 
-        expect(service.formatDate(null, "de", { date: "short" })).null;
-        expect(service.formatDate(undefined, "de", { date: "short" })).undefined;
+        expect(service.formatDate(null, "de", { date: "short" })).empty;
+        expect(service.formatDate(undefined, "de", { date: "short" })).empty;
     });
 
     it("formats date using current culture", () => {
@@ -61,12 +57,12 @@ describe("Globalization date formatting", () => {
 
     it("parses date null or undefined", () => {
         expect(service.parseDate(null)).null;
-        expect(service.parseDate(undefined)).undefined;
+        expect(service.parseDate(undefined)).null;
         expect(service.parseDate(null, { date: "short" })).null;
-        expect(service.parseDate(undefined, { date: "short" })).undefined;
+        expect(service.parseDate(undefined, { date: "short" })).null;
 
         expect(service.parseDate(null, "de", { date: "short" })).null;
-        expect(service.parseDate(undefined, "de", { date: "short" })).undefined;
+        expect(service.parseDate(undefined, "de", { date: "short" })).null;
     });
 
     it("parses date using current culture", () => {

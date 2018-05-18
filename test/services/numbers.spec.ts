@@ -1,5 +1,5 @@
-import { DefaultGlobalizationService, ICultureService } from "../../src/module";
-import { loadedGlobalize } from "./load-globalize-data";
+import { CurrentCultureService, GlobalizationService } from "../../src/module";
+import "./load-globalize-data";
 
 import { expect } from "chai";
 // tslint:disable-next-line
@@ -7,23 +7,19 @@ const Cldr = require("cldrjs");
 
 describe("Globalization number formatting", () => {
 
-    const mockCultureService: ICultureService = {
-        cultureObservable: null,
-        currentCulture: "en-GB",
-        isRightToLeft: null,
-    };
+    const cultureService = new CurrentCultureService(["en-GB"]);
 
-    const service = new DefaultGlobalizationService(loadedGlobalize, mockCultureService);
+    const service = new GlobalizationService(cultureService);
     const currency = "USD";
 
     it("formats number null or undefined", () => {
-        expect(service.formatNumber(null)).null;
-        expect(service.formatNumber(undefined)).undefined;
-        expect(service.formatNumber(null, { style: "decimal" })).null;
-        expect(service.formatNumber(undefined, { style: "decimal" })).undefined;
+        expect(service.formatNumber(null)).empty;
+        expect(service.formatNumber(undefined)).empty;
+        expect(service.formatNumber(null, { style: "decimal" })).empty;
+        expect(service.formatNumber(undefined, { style: "decimal" })).empty;
 
-        expect(service.formatNumber(null, "de", { style: "decimal" })).null;
-        expect(service.formatNumber(undefined, "de", { style: "decimal" })).undefined;
+        expect(service.formatNumber(null, "de", { style: "decimal" })).empty;
+        expect(service.formatNumber(undefined, "de", { style: "decimal" })).empty;
     });
 
     it("formats number using current culture", () => {
@@ -60,12 +56,12 @@ describe("Globalization number formatting", () => {
 
     it("parses number null or undefined", () => {
         expect(service.parseNumber(null)).null;
-        expect(service.parseNumber(undefined)).undefined;
+        expect(service.parseNumber(undefined)).null;
         expect(service.parseNumber(null, { style: "decimal" })).null;
-        expect(service.parseNumber(undefined, { style: "decimal" })).undefined;
+        expect(service.parseNumber(undefined, { style: "decimal" })).null;
 
         expect(service.parseNumber(null, "de", { style: "decimal" })).null;
-        expect(service.parseNumber(undefined, "de", { style: "decimal" })).undefined;
+        expect(service.parseNumber(undefined, "de", { style: "decimal" })).null;
     });
 
     it("parses number using current culture", () => {
@@ -84,13 +80,13 @@ describe("Globalization number formatting", () => {
     });
 
     it("formats currency null or undefined", () => {
-        expect(service.formatCurrency(null, currency)).null;
-        expect(service.formatCurrency(undefined, currency)).undefined;
-        expect(service.formatCurrency(null, currency, { style: "symbol" })).null;
-        expect(service.formatCurrency(undefined, currency, { style: "symbol" })).undefined;
+        expect(service.formatCurrency(null, currency)).empty;
+        expect(service.formatCurrency(undefined, currency)).empty;
+        expect(service.formatCurrency(null, currency, { style: "symbol" })).empty;
+        expect(service.formatCurrency(undefined, currency, { style: "symbol" })).empty;
 
-        expect(service.formatCurrency(null, currency, "de", { style: "symbol" })).null;
-        expect(service.formatCurrency(undefined, currency, "de", { style: "symbol" })).undefined;
+        expect(service.formatCurrency(null, currency, "de", { style: "symbol" })).empty;
+        expect(service.formatCurrency(undefined, currency, "de", { style: "symbol" })).empty;
     });
 
     it("formats currency using current culture", () => {

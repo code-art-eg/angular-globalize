@@ -1,26 +1,22 @@
-import { DefaultGlobalizationService, ICultureService } from "../../src/module";
-import { loadedGlobalize } from "./load-globalize-data";
+import { CurrentCultureService, GlobalizationService } from "../../src/module";
+import "./load-globalize-data";
 
 import { expect } from "chai";
 
 describe("Globalization duration formatting", () => {
 
-    const mockCultureService: ICultureService = {
-        cultureObservable: null,
-        currentCulture: "en-GB",
-        isRightToLeft: null,
-    };
+    const cultureService = new CurrentCultureService(["en-GB"]);
 
-    const service = new DefaultGlobalizationService(loadedGlobalize, mockCultureService);
+    const service = new GlobalizationService(cultureService);
 
     it("formats duration null or undefined", () => {
-        expect(service.formatDuration(null)).null;
-        expect(service.formatDuration(undefined)).undefined;
-        expect(service.formatDuration(null, { style: "constant" })).null;
-        expect(service.formatDuration(undefined, { style: "constant" })).undefined;
+        expect(service.formatDuration(null)).empty;
+        expect(service.formatDuration(undefined)).empty;
+        expect(service.formatDuration(null, { style: "constant" })).empty;
+        expect(service.formatDuration(undefined, { style: "constant" })).empty;
 
-        expect(service.formatDuration(null, "de", { style: "constant" })).null;
-        expect(service.formatDuration(undefined, "de", { style: "constant" })).undefined;
+        expect(service.formatDuration(null, "de", { style: "constant" })).empty;
+        expect(service.formatDuration(undefined, "de", { style: "constant" })).empty;
     });
 
     it("formats duration using current culture", () => {
