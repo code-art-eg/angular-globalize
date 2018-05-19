@@ -7,12 +7,12 @@ import { BaseNumericPipe } from "./base-numeric-pipe";
 
 @Pipe({ name: "gnumber", pure: false })
 export class GlobalizeNumberPipe extends BaseNumericPipe<NumberFormatterOptions> implements PipeTransform {
-
     constructor(globalizeService: GlobalizationService,
                 cultureService: CurrentCultureService,
                 changeDetector: ChangeDetectorRef) {
         super(globalizeService, cultureService, changeDetector);
     }
+
     protected stringToOptions(optionsString: string): NumberFormatterOptions {
         switch (optionsString) {
             case "decimal":

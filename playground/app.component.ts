@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
-import "rxjs/add/observable/timer";
-import "rxjs/add/operator/map";
-import { Observable } from "rxjs/Observable";
+import { Observable, timer } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Component({
     selector: "app",
@@ -13,6 +12,6 @@ export class AppComponent {
 
     constructor() {
         this.jsDate = new Date();
-        this.currentTime = Observable.timer(0, 1000).map(() => new Date());
+        this.currentTime = timer(0, 1000).pipe(map(() => new Date()));
     }
 }

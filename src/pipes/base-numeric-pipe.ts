@@ -17,11 +17,11 @@ export abstract class BaseNumericPipe<TOptions> extends BaseGlobalizePipe<number
             && o1.useGrouping === o2.useGrouping;
     }
 
-    constructor(globalizeService: GlobalizationService,
-                cultureService: CurrentCultureService,
-                changeDetector: ChangeDetectorRef) {
-        super(globalizeService, cultureService, changeDetector);
-    }
+    // constructor(globalizeService: GlobalizationService,
+    //             cultureService: CurrentCultureService,
+    //             changeDetector: ChangeDetectorRef) {
+    //     super(globalizeService, cultureService, changeDetector);
+    // }
 
     protected inputsEqual(v1: number, v2: number): boolean {
         return v1 === v2;

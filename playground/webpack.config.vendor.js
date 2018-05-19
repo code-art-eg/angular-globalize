@@ -11,11 +11,7 @@ var modules = [
     '@angular/platform-browser-dynamic',
     'zone.js',
     'globalize',
-    'rxjs/Observable',
-    'rxjs/ReplaySubject',
-    'rxjs/Subscription',
-    'rxjs/observable/combineLatest',
-    'rxjs/add/observable/of',
+    'rxjs',
     'es6-promise',
     'es6-shim',
     'event-source-polyfill',
@@ -71,9 +67,7 @@ module.exports = {
     },
     plugins: [
         extractCSS,
-        new webpack.ContextReplacementPlugin(/@angular\b.*\b(bundles|linker)/, path.join(__dirname, './')), // Workaround for https://github.com/angular/angular/issues/11580
-        new webpack.ContextReplacementPlugin(/angular[\\\/]ore[\\\/]@angular/, path.join(__dirname, './')), // Workaround for https://github.com/angular/angular/issues/14898
-        new webpack.ContextReplacementPlugin(/@angular[\\\/]core[\\\/]esm5/, path.join(__dirname, './')),
+        new webpack.ContextReplacementPlugin(/@angular[\\\/]core[\\\/]fesm5/, path.join(__dirname, './')),
         new webpack.IgnorePlugin(/^vertx$/), // Workaround for https://github.com/stefanpenner/es6-promise/issues/100
         new webpack.DllPlugin({
             path: path.join(deployDir, '[name]-manifest.json'),

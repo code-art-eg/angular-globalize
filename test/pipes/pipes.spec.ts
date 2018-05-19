@@ -1,7 +1,5 @@
 ﻿import { ChangeDetectorRef, PipeTransform, WrappedValue } from "@angular/core";
-import { Observable } from "rxjs/Observable";
-import { ReplaySubject } from "rxjs/ReplaySubject";
-import { Subject } from "rxjs/Subject";
+import { Observable, ReplaySubject, Subject } from "rxjs";
 
 import { CurrentCultureService, GlobalizationService } from "../../src/module";
 import { GlobalizeCurrencyPipe } from "../../src/pipes/globalize-currency.pipe";

@@ -1,6 +1,5 @@
 ﻿import { ChangeDetectorRef, Inject, Injectable, OnDestroy, PipeTransform, WrappedValue } from "@angular/core";
-import { Observable, Subscription } from "rxjs";
-import { combineLatest } from "rxjs/observable/combineLatest";
+import { combineLatest, Observable, Subscription } from "rxjs";
 
 import { CurrentCultureService } from "../services/current-culture.service";
 import { GlobalizationService } from "../services/globalize.service";
@@ -142,7 +141,7 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
                 return [input, "input", null];
             }
             if (!this._latest || this._latestSource !== input) {
-                this._latest = combineLatest(this.cultureService.cultureObservable, input);
+                this._latest =  combineLatest(this.cultureService.cultureObservable, input);
                 this._latestSource = input;
             }
             return [this._latest, "both", null];
