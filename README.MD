@@ -2,7 +2,7 @@
 
 ## About the library
 
-The ```@code-art/angular-globalize``` library is a javascript library that provides pipes for date, number and currency formatting for [Angular 5](https://angular.io).
+The ```@code-art/angular-globalize``` library is a javascript library that provides pipes for date, number and currency formatting for [Angular 6](https://angular.io).
 It also provides services for parsing and formatting dates and numbers as well as setting the current culture. It depends on and leverages the [globalize](https://github.com/globalizejs) javascript library for performing this.
 
 ## Consuming the library
@@ -18,7 +18,8 @@ and then from your Angular `AppModule`:
 
 ```typescript
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, Inject } from '@angular/core';
+import { NgModule } from '@angular/core';
+import * as Globalize from "globalize";
 
 import { AppComponent } from './app.component';
 
@@ -26,7 +27,6 @@ import { AppComponent } from './app.component';
 import {
     GlobalizationModule, // This modules export pipes for formatting date, number and currency.
     GlobalizationServicesModule, // This module provides default implementation for services required by GlobalizatioModule
-    CANG_GLOBALIZE_STATIC, // This import is needed to load cldr-data while initializing your AppModule
     CANG_SUPPORTED_CULTURES, // This import is needed to provide the languages your application support
 } from '@code-art/angular-globalize';
 
@@ -48,7 +48,7 @@ import {
   bootstrap: [AppComponent]
 })
 export class AppModule { 
-    constructor( @Inject(CANG_GLOBALIZE_STATIC) Globalize: GlobalizeStatic) {
+    constructor() {
         
         // Load CLDR data. Refer to Globalize documentation for which data to load.
         // gdate, gdatetime, gtime pipes use date and week data
@@ -120,28 +120,28 @@ Once the library is imported and cldr data is loaded, you can use its components
 
 ## Getting/Setting Current Culture
 
-By default the component will use the value provided by [LOCALE_ID](https://angular.io/api/core/LOCALE_ID) in Angular. To change current culture you can is the ```ICultureService``` interface which can be injected in your component or service using the ```CANG_CULTURE_SERVICE``` injection token.
+By default the component will use the value provided by [LOCALE_ID](https://angular.io/api/core/LOCALE_ID) in Angular. To change current culture you can is the ```CurrentCultureService``` service which can be injected in your component or service.
 
 Example: 
 
 ```typescript
 import { Component, Inject } from '@angular/core';
 
-import { CANG_GLOBALIZATION_SERVICE, ICultureService } from '@code-art/angular-globalize';
+import { CurrentCultureService } from '@code-art/angular-globalize';
 
 @Component({
     selector: 'my',
     templateUrl: './my.component.html'
 })
 export class MyComponent {
-    constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService) {
+    constructor(cultureService: CurrentCultureService) {
         cultureService.currentCulture = 'de'; // Change the language to german
     }
     
 }
 ```
 
-In addition to the ```currentCulture``` property, the ```ICultureService``` interface exposes a ```cultureObservable``` property of type ```Observable<string>``` which you can use to subscribe to current culture change events.
+In addition to the ```currentCulture``` property, the ```CurrentCultureService``` interface exposes a ```cultureObservable``` property of type ```Observable<string>``` which you can use to subscribe to current culture change events.
 
 ## (Optional) Saving Culture between sessions
 
