@@ -10,12 +10,14 @@ import { GlobalizeDurationPipe } from "../../src/pipes/globalize-duration.pipe";
 import { GlobalizeMonthPipe } from "../../src/pipes/globalize-month.pipe";
 import { GlobalizeNumberPipe } from "../../src/pipes/globalize-number.pipe";
 import { GlobalizeTimePipe } from "../../src/pipes/globalize-time.pipe";
+import { CldrService } from "../../src/services/cldr.service";
 import "../services/load-globalize-data";
 
 import { expect } from "chai";
 
 const cultureService = new CurrentCultureService(["en-GB", "de"], [{ locale: "en-GB", canWrite: false }]);
-const globalizeService = new GlobalizationService(cultureService);
+const cldrService = new CldrService();
+const globalizeService = new GlobalizationService(cldrService, cultureService);
 
 class ChangeDetectorMock extends ChangeDetectorRef {
 

@@ -1,7 +1,9 @@
 ﻿import { throws } from "assert";
 import { expect } from "chai";
 import { CurrentCultureService, GlobalizationService, TypeConverterService } from "../../src/module";
+import { CldrService } from "../../src/services/cldr.service";
 import "./load-globalize-data";
+
 // tslint:disable-next-line
 const chai: Chai.ChaiStatic = require("chai");
 // tslint:disable-next-line
@@ -11,7 +13,7 @@ describe("Conversion Service", () => {
 
     const mockCultureService = new CurrentCultureService(["en-GB"]);
 
-    const globalizeService = new GlobalizationService(mockCultureService);
+    const globalizeService = new GlobalizationService(new CldrService(), mockCultureService);
     const typeConverter = new TypeConverterService(globalizeService);
 
     it("converts null to string", () => {

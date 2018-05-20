@@ -1,52 +1,30 @@
 ﻿import { Inject, Injectable, InjectionToken } from "@angular/core";
 import * as Globalize from "globalize";
+
+import { Dictionary, FormatterFactory, FormatterFunction,
+     NumberFormatInfo, ParserFactory, ParserFunction } from "../models";
 import { GregorianCalendarService, ICalendarService } from "./calendar.service";
+import { CldrService } from "./cldr.service";
 import { CurrentCultureService } from "./current-culture.service";
 import { DayNameFormat, DurationFormatOptions, MonthNameFormat } from "./services-common";
 
-interface Dictionary<T> {
-    [key: string]: T|undefined;
-}
-
-interface NumberFormatInfo {
-    zeroChar: string;
-    plusSign: string;
-    minusSign: string;
-    timeSeparator: string;
-    decimalSeperator: string;
-    groupSeperator: string;
-    formatter: FormatterFunction<number>;
-}
-
-interface CalendarAccessor extends Globalize.Static {
-    calendarService: ICalendarService;
-}
-
-type FormatterFunction<TInput> = (val: TInput) => string;
-type FormatterFactory<TInput, TOptions>
-    = (locale: string, options: TOptions|undefined) => FormatterFunction<TInput>;
-type ParserFunction<TOutput> = (val: string) => TOutput;
-type ParserFactory<TOutput, TOptions>
-    = (options: TOptions | undefined) => ParserFunction<TOutput>;
 /**
  * Default globalization service used when none is provided via dependency injection
  */
 @Injectable()
 export class GlobalizationService {
-    private readonly globalizeInstances: Dictionary<Globalize.Static> = {};
     private readonly numberParsers: Dictionary<ParserFunction<number>> = {};
     private readonly dateParsers: Dictionary<ParserFunction<Date>> = {};
     private readonly numberFormatters: Dictionary<FormatterFunction<number>> = {};
     private readonly durationFormatters: Dictionary<FormatterFunction<number>> = {};
     private readonly currencyFormatters: Dictionary<Dictionary<FormatterFunction<number>>> = {};
     private readonly dateFormatters: Dictionary<FormatterFunction<Date>> = {};
-    private readonly numberFormatInfos: Dictionary<NumberFormatInfo> = {};
 
     // using any for globaize parameter in the constructor
     // because the angular compiler complains about GlobalizeStatic type
-    constructor(private readonly cultureService: CurrentCultureService) {
-        Globalize.load(require("cldr-data/supplemental/likelySubtags.json"));
-        Globalize.load(require("cldr-data/supplemental/numberingSystems.json"));
+    constructor(
+        private readonly cldrService: CldrService,
+        private readonly cultureService: CurrentCultureService) {
     }
 
     public formatDuration(
@@ -85,7 +63,7 @@ export class GlobalizationService {
         localeOrOptions?: string|Globalize.DateFormatterOptions|null|undefined,
         options?: Globalize.DateFormatterOptions): string {
         return this.format(this.dateFormatters,
-             (l, o) => this.getGlobalizeInstance(l).dateFormatter(o),
+             (l, o) => this.cldrService.getGlobalizeInstance(l).dateFormatter(o),
              val, localeOrOptions, options);
     }
 
@@ -112,7 +90,7 @@ export class GlobalizationService {
         localeOrOptions?: string | Globalize.NumberFormatterOptions | undefined,
         options?: Globalize.NumberFormatterOptions): string {
         return this.format(this.numberFormatters,
-             (l, o) => this.getGlobalizeInstance(l).numberFormatter(o),
+             (l, o) => this.cldrService.getGlobalizeInstance(l).numberFormatter(o),
               val, localeOrOptions, options);
     }
 
@@ -127,7 +105,7 @@ export class GlobalizationService {
             options?: Globalize.CurrencyFormatterOptions): string {
         const dictionary = this.currencyFormatters[currency] || (this.currencyFormatters[currency] = {});
         return this.format(dictionary,
-            (l, o) => this.getGlobalizeInstance(l).currencyFormatter(currency, o),
+            (l, o) => this.cldrService.getGlobalizeInstance(l).currencyFormatter(currency, o),
              val, localeOrOptions, options);
     }
 
@@ -149,7 +127,10 @@ export class GlobalizationService {
             type = locale;
             locale = "";
         }
-        return this.getCalendar(locale).getMonthNames(type)[month as number];
+        if (!locale) {
+            locale = this.cultureService.currentCulture;
+        }
+        return this.cldrService.getCalendar(locale).getMonthNames(type)[month as number];
     }
 
     public getDayName(
@@ -170,25 +151,10 @@ export class GlobalizationService {
             type = locale;
             locale = "";
         }
-        return this.getCalendar(locale).getDayNames(type)[day];
-    }
-
-    public getCalendar(locale?: string, calendarName?: string): ICalendarService {
         if (!locale) {
             locale = this.cultureService.currentCulture;
         }
-        if (calendarName) {
-            if (calendarName.toLowerCase() !== "gregorian") {
-                throw new Error(`Only gregorian calendar is supported`);
-            }
-        }
-        const globalizeInstance = this.getGlobalizeInstance(locale) as CalendarAccessor;
-        if (globalizeInstance.calendarService) {
-            return globalizeInstance.calendarService;
-        }
-        const calendar = new GregorianCalendarService(globalizeInstance.cldr);
-        globalizeInstance.calendarService = calendar;
-        return calendar;
+        return this.cldrService.getCalendar(locale).getDayNames(type)[day];
     }
 
     private resolveOptions<TOptions>(
@@ -208,10 +174,6 @@ export class GlobalizationService {
         options = options || undefined;
         const key = JSON.stringify({ l: locale, o: options});
         return [locale, options || undefined, key];
-    }
-
-    private test(): never {
-        throw new Error("a");
     }
 
     private format<TInput extends number | Date, TOptions>(
@@ -250,46 +212,11 @@ export class GlobalizationService {
         const [locale, o, key] = this.resolveOptions(localeOrOptions, options);
         let parser = dictionary[key];
         if (!parser) {
-            const instance = this.getGlobalizeInstance(locale);
+            const instance = this.cldrService.getGlobalizeInstance(locale);
             parser = parserFactory.apply(instance, [o]) as ParserFunction<TOutput>;
             dictionary[key] = parser;
         }
         return parser(val);
-    }
-
-    private getGlobalizeInstance(locale: string): Globalize.Static {
-        let instance = this.globalizeInstances[locale];
-        if (!instance) {
-            instance = new Globalize(locale);
-            this.globalizeInstances[locale] = instance;
-        }
-        return instance;
-    }
-
-    private getNumberFormatInfo(locale: string): NumberFormatInfo {
-        let info = this.numberFormatInfos[locale];
-        if (!info) {
-            const globalizeInstance = this.getGlobalizeInstance(locale);
-            const cldr = globalizeInstance.cldr;
-            const system = cldr.main(["numbers", "defaultNumberingSystem"]) as string;
-            const symbols = cldr.main(["numbers", "symbols-numberSystem-" + system]) as { [key: string]: string };
-            const formatter = globalizeInstance.numberFormatter({ style: "decimal" });
-            info = {
-                decimalSeperator: symbols.decimal,
-                formatter,
-                groupSeperator: symbols.group,
-                minusSign: symbols.minusSign,
-                plusSign: symbols.plusSign,
-                timeSeparator: ":",
-                zeroChar: formatter(0),
-            };
-            this.numberFormatInfos[locale] = info;
-        }
-        return info;
-    }
-
-    private assertNever(v: never): never {
-        throw new Error("We should have never got here.");
     }
 
     private durationFormatter(locale: string, options: DurationFormatOptions|undefined): FormatterFunction<number> {
@@ -307,12 +234,9 @@ export class GlobalizationService {
                 case "constant":
                     pattern = "[-]d:hh:mm:ss.fff";
                     break;
-                default:
-                    this.assertNever(style);
-                    break;
             }
         }
-        const info = this.getNumberFormatInfo(locale);
+        const info = this.cldrService.getNumberFormatInfo(locale);
         function countRepeat(s: string, index: number): number {
             let count = 0;
             for (let i = index; i < s.length; i++) {

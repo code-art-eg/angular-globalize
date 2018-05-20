@@ -1,4 +1,5 @@
 import { CurrentCultureService, GlobalizationService } from "../../src/module";
+import { CldrService } from "../../src/services/cldr.service";
 import "./load-globalize-data";
 
 import { expect } from "chai";
@@ -9,7 +10,7 @@ describe("Globalization number formatting", () => {
 
     const cultureService = new CurrentCultureService(["en-GB"]);
 
-    const service = new GlobalizationService(cultureService);
+    const service = new GlobalizationService(new CldrService(), cultureService);
     const currency = "USD";
 
     it("formats number null or undefined", () => {

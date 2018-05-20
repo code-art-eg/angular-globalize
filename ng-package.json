@@ -1,0 +1,12 @@
+{
+    "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
+    "workingDirectory": "./build",
+    "lib": {
+      "entryFile": "./src/module.ts",
+      "umdModuleIds": {
+          "globalize": "Globalize",
+          "rxjs": "Rx"
+      }
+    },
+    "dest": "./dist/angular-globalize"
+}

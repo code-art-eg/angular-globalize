@@ -15,16 +15,19 @@ function loadData() {
     Globalize.load(require("cldr-data/main/en-GB/ca-gregorian.json"));
     Globalize.load(require("cldr-data/main/en-GB/timeZoneNames.json"));
     Globalize.load(require("cldr-data/main/en-GB/currencies.json"));
+    Globalize.load(require("cldr-data/main/en-GB/posix.json"));
 
     Globalize.load(require("cldr-data/main/de/ca-gregorian.json"));
     Globalize.load(require("cldr-data/main/de/timeZoneNames.json"));
     Globalize.load(require("cldr-data/main/de/numbers.json"));
     Globalize.load(require("cldr-data/main/de/currencies.json"));
+    Globalize.load(require("cldr-data/main/de/posix.json"));
 
     Globalize.load(require("cldr-data/main/ar-EG/ca-gregorian.json"));
     Globalize.load(require("cldr-data/main/ar-EG/timeZoneNames.json"));
     Globalize.load(require("cldr-data/main/ar-EG/numbers.json"));
     Globalize.load(require("cldr-data/main/ar-EG/currencies.json"));
+    Globalize.load(require("cldr-data/main/ar-EG/posix.json"));
 }
 
 loadData();

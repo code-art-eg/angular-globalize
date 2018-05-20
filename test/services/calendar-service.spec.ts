@@ -3,12 +3,14 @@ import "../services/load-globalize-data";
 
 import { throws } from "assert";
 import { expect } from "chai";
+import { CldrService } from "../../src/services/cldr.service";
 
 describe("Calendar Service", () => {
     const cultureService = new CurrentCultureService(["en-GB"]);
 
-    const service = new GlobalizationService(cultureService);
-    const calendar = service.getCalendar();
+    const cldrService = new CldrService();
+    const service = new GlobalizationService(cldrService, cultureService);
+    const calendar = cldrService.getCalendar("en-GB", "Gregorian");
 
     const englishDayNames = {
         abbreviated: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
@@ -39,10 +41,8 @@ describe("Calendar Service", () => {
     };
 
     it("supports only gregorian calendar", () => {
-        throws(() => service.getCalendar(null, "hijri"));
-        expect(service.getCalendar()).not.null.and.not.undefined;
-        expect(service.getCalendar(null, "gregorian")).not.null.and.not.undefined;
-        expect(service.getCalendar("de", "Gregorian")).not.null.and.not.undefined;
+        throws(() => cldrService.getCalendar("de", "hijri"));
+        expect(cldrService.getCalendar("de", "Gregorian")).not.null.and.not.undefined;
     });
 
     it("returns 12 months", () => {
@@ -98,12 +98,12 @@ describe("Calendar Service", () => {
 
     function generateIt(languageName: string,
                         daysOrMonths: "months" | "days",
-                        lang: string | undefined,
+                        lang: string,
                         type: string,
                         obj: { [key: string]: string[] },
                         method: (...args) => any) {
         it(`returns ${languageName} ${type} ${daysOrMonths} names`, () => {
-            const cal = service.getCalendar(lang);
+            const cal = cldrService.getCalendar(lang);
             const names = method.apply(cal, [type]) as string[];
             const correctNames = obj[type];
             expect(Array.isArray(names)).true;
@@ -114,17 +114,17 @@ describe("Calendar Service", () => {
         });
     }
 
-    generateIt("english", "months", undefined, "abbreviated", englishMonthNames, calendar.getMonthNames);
-    generateIt("english", "months", undefined, "narrow", englishMonthNames, calendar.getMonthNames);
-    generateIt("english", "months", undefined, "wide", englishMonthNames, calendar.getMonthNames);
+    generateIt("english", "months", "en-GB", "abbreviated", englishMonthNames, calendar.getMonthNames);
+    generateIt("english", "months", "en-GB", "narrow", englishMonthNames, calendar.getMonthNames);
+    generateIt("english", "months", "en-GB", "wide", englishMonthNames, calendar.getMonthNames);
     generateIt("german", "months", "de", "abbreviated", germanMonthNames, calendar.getMonthNames);
     generateIt("german", "months", "de", "narrow", germanMonthNames, calendar.getMonthNames);
     generateIt("german", "months", "de", "wide", germanMonthNames, calendar.getMonthNames);
 
-    generateIt("english", "days", undefined, "abbreviated", englishDayNames, calendar.getDayNames);
-    generateIt("english", "days", undefined, "narrow", englishDayNames, calendar.getDayNames);
-    generateIt("english", "days", undefined, "wide", englishDayNames, calendar.getDayNames);
-    generateIt("english", "days", undefined, "short", englishDayNames, calendar.getDayNames);
+    generateIt("english", "days", "en-GB", "abbreviated", englishDayNames, calendar.getDayNames);
+    generateIt("english", "days", "en-GB", "narrow", englishDayNames, calendar.getDayNames);
+    generateIt("english", "days", "en-GB", "wide", englishDayNames, calendar.getDayNames);
+    generateIt("english", "days", "en-GB", "short", englishDayNames, calendar.getDayNames);
     generateIt("german", "days", "de", "abbreviated", germanDayNames, calendar.getDayNames);
     generateIt("german", "days", "de", "narrow", germanDayNames, calendar.getDayNames);
     generateIt("german", "days", "de", "wide", germanDayNames, calendar.getDayNames);

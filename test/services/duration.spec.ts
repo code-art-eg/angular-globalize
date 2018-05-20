@@ -1,4 +1,5 @@
 import { CurrentCultureService, GlobalizationService } from "../../src/module";
+import { CldrService } from "../../src/services/cldr.service";
 import "./load-globalize-data";
 
 import { expect } from "chai";
@@ -7,7 +8,7 @@ describe("Globalization duration formatting", () => {
 
     const cultureService = new CurrentCultureService(["en-GB"]);
 
-    const service = new GlobalizationService(cultureService);
+    const service = new GlobalizationService(new CldrService(), cultureService);
 
     it("formats duration null or undefined", () => {
         expect(service.formatDuration(null)).empty;

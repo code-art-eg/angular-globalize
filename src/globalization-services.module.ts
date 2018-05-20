@@ -10,8 +10,10 @@ import {
     CANG_DEFAULT_LOCALE_KEY, CANG_LOCALE_STORAGE_KEY, CANG_SUPPORTED_CULTURES, CANG_USE_SESSION_STORAGE,
 } from "./services/services-common";
 
+import { CldrService } from "./services/cldr.service";
 import { GlobalizationService } from "./services/globalize.service";
 import { NavigatorLanguageLocaleProvider } from "./services/navigator-language-provider";
+import { StringFormatterService } from "./services/string-formatter.service";
 import { TypeConverterService } from "./services/type-conversion.service";
 
 @NgModule({
@@ -19,6 +21,8 @@ import { TypeConverterService } from "./services/type-conversion.service";
         CurrentCultureService,
         GlobalizationService,
         TypeConverterService,
+        CldrService,
+        StringFormatterService,
         { provide: CANG_SUPPORTED_CULTURES, useValue: ["en"] },
         { provide: CANG_COOKIE_DURATION_DAYS, useValue: CANG_DEFAULT_COOKIE_DURATION_DAYS },
         { provide: CANG_COOKIE_NAME, useValue: CANG_DEFAULT_COOKIE_NAME },
