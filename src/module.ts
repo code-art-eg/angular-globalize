@@ -4,6 +4,8 @@ export * from "./services/globalize.service";
 export * from "./services/type-conversion.service";
 export * from "./services/current-culture.service";
 export * from "./services/string-formatter.service";
+export * from "./services/cldr.service";
+export * from "./services/calendar.service";
 
 export * from "./services/navigator-language-provider";
 export * from "./services/angular-default-provider";
