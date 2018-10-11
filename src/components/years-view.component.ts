@@ -1,8 +1,5 @@
 ﻿import { Component, EventEmitter, HostListener, Inject, Input, OnInit, Output } from "@angular/core";
-import {
-    CANG_CULTURE_SERVICE, CANG_GLOBALIZATION_SERVICE,
-    ICultureService, IGlobalizationService,
-} from "@code-art/angular-globalize";
+import { CurrentCultureService, GlobalizationService } from "@code-art/angular-globalize";
 import { formatYear, IMonthYearSelection, KEY_CODE, NextPrevAction, ViewType } from "../util";
 
 @Component({
@@ -28,8 +25,8 @@ export class YearsViewComponent implements OnInit {
     private _nextPrevText: string;
     private _numberOfYears: number;
 
-    constructor(@Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
-                @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService) {
+    constructor(private readonly cultureService: CurrentCultureService,
+                private readonly globalizationService: GlobalizationService) {
         this._year = undefined;
         this._locale = undefined;
         this.month = undefined;

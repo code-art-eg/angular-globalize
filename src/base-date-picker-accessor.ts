@@ -1,9 +1,3 @@
-import { ChangeDetectorRef, Inject, Input } from "@angular/core";
-import {
-    CANG_CULTURE_SERVICE, CANG_TYPE_CONVERTER_SERVICE,
-    ICultureService, ITypeConverterService,
-} from "@code-art/angular-globalize";
-
 import { BaseDateRangeAccessor } from "./base-date-range-accessor";
 import { IDatePicker } from "./interfaces";
 import { createDate, datesEqual, similarInLocal } from "./util";
@@ -17,12 +11,6 @@ export abstract class BaseDatePickerAccessor<T extends IDatePicker>
     private _todayHighlight = true;
     private _todayDate: Date | null = null;
     private _highlightDays: number = 0;
-
-    constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-                @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
-                @Inject(ChangeDetectorRef) changeDetector?: ChangeDetectorRef) {
-        super(cultureService, converterService, changeDetector);
-    }
 
     @Input() set homeButton(val: boolean) {
         if (this.parent) {

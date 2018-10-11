@@ -1,8 +1,5 @@
-import { ChangeDetectorRef, Inject, OnDestroy } from "@angular/core";
-import {
-    CANG_CULTURE_SERVICE, CANG_TYPE_CONVERTER_SERVICE, ICultureService,
-    ITypeConverterService,
-} from "@code-art/angular-globalize";
+import { OnDestroy } from "@angular/core";
+
 import { BaseDatePickerAccessor } from "../base-date-picker-accessor";
 import { IDatePicker } from "../interfaces";
 import { dateInRange, getMonthYear, IMonthYearSelection, similarInLocal, similarInUtc, ViewType } from "../util";
@@ -12,12 +9,6 @@ export abstract class BaseDatePickerComponent extends BaseDatePickerAccessor<IDa
     private _month: number | number = null;
     private _year: number | null = null;
     private _startEndToggle: boolean = false;
-
-    constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-                @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
-                @Inject(ChangeDetectorRef) changeDetector?: ChangeDetectorRef) {
-        super(cultureService, converterService, changeDetector);
-    }
 
     public onDaysViewDayClick(date: Date): void {
         if (this.disabled || !dateInRange(date, this.minDateInternal, this.maxDateInternal)) {

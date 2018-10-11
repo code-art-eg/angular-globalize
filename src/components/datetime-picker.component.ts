@@ -1,9 +1,6 @@
-﻿import { ChangeDetectorRef, Component, forwardRef, Inject, Input, OnDestroy } from "@angular/core";
+﻿import { ChangeDetectorRef, Component, forwardRef, Input, OnDestroy } from "@angular/core";
 import { NG_VALUE_ACCESSOR } from "@angular/forms";
-import {
-    CANG_CULTURE_SERVICE, CANG_TYPE_CONVERTER_SERVICE,
-    ICultureService, ITypeConverterService,
-} from "@code-art/angular-globalize";
+import { CurrentCultureService, TypeConverterService } from "@code-art/angular-globalize";
 import { BaseDatePickerAccessor } from "../base-date-picker-accessor";
 import { IBaseValueAccessor, IDateTimePicker } from "../interfaces";
 import { TimePickerOptions } from "../time-picker-options";
@@ -29,9 +26,9 @@ export class DateTimePickerComponent
 
     public time: boolean = false;
 
-    constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-                @Inject(CANG_TYPE_CONVERTER_SERVICE) converterService: ITypeConverterService,
-                @Inject(ChangeDetectorRef) changeDetector?: ChangeDetectorRef) {
+    constructor(cultureService: CurrentCultureService,
+                converterService: TypeConverterService,
+                changeDetector?: ChangeDetectorRef) {
         super(cultureService, converterService, changeDetector);
         this.rangeSelection = false;
     }

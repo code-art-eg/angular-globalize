@@ -1,7 +1,5 @@
 ﻿import { Component, EventEmitter, HostListener, Inject, Input, OnInit, Output } from "@angular/core";
-import {
-    CANG_CULTURE_SERVICE,
-    CANG_GLOBALIZATION_SERVICE, ICultureService, IGlobalizationService } from "@code-art/angular-globalize";
+import { CldrService, CurrentCultureService, GlobalizationService } from "@code-art/angular-globalize";
 import { createDate, formatYear, IMonthYearSelection, KEY_CODE, NextPrevAction, twelveArray } from "../util";
 
 @Component({
@@ -23,8 +21,9 @@ export class MonthsViewComponent implements OnInit {
     private _year: number;
     private _locale: string;
 
-    constructor(@Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService,
-                @Inject(CANG_GLOBALIZATION_SERVICE) private readonly globalizationService: IGlobalizationService) {
+    constructor(private readonly cultureService: CurrentCultureService,
+                private readonly cldrService: CldrService,
+                private readonly globalizationService: GlobalizationService) {
         this._year = undefined;
         this._locale = undefined;
         this.month = undefined;
@@ -120,7 +119,7 @@ export class MonthsViewComponent implements OnInit {
         }
         if (this.minDate) {
             const end = createDate(this.year, month,
-                this.globalizationService.getCalendar(this.locale).getDaysInMonth(this.year, month));
+                this.cldrService.getCalendar(this.locale).getDaysInMonth(this.year, month));
             if (end.valueOf() < this.minDate.valueOf()) {
                 return true;
             }

@@ -2,9 +2,7 @@ import {
     ChangeDetectorRef, ComponentFactory, ComponentFactoryResolver, ElementRef, HostListener, Inject, Injector,
     Input, OnDestroy, OnInit, ViewContainerRef,
 } from "@angular/core";
-import {
-    CANG_CULTURE_SERVICE, CANG_GLOBALIZATION_SERVICE, CANG_TYPE_CONVERTER_SERVICE, ICultureService,
-    IGlobalizationService, ITypeConverterService,
+import { CurrentCultureService, GlobalizationService, 
 } from "@code-art/angular-globalize";
 import { BaseDatePickerAccessor } from "../base-date-picker-accessor";
 import { BaseDatePickerComponent } from "../components/base-date-picker.component";

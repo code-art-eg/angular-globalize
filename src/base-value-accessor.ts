@@ -1,9 +1,7 @@
 import { ChangeDetectorRef, EventEmitter, Input, OnDestroy, Output } from "@angular/core";
-import { combineLatest } from "rxjs/observable/combineLatest";
-import { ReplaySubject } from "rxjs/ReplaySubject";
-import { Subscription } from "rxjs/Subscription";
+import { combineLatest, ReplaySubject, Subscription } from "rxjs";
 
-import { ICultureService } from "@code-art/angular-globalize";
+import { CurrentCultureService } from "@code-art/angular-globalize";
 import { IBaseValueAccessor, ICompositeObject } from "./interfaces";
 
 export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAccessor<T>, ICompositeObject<T> {
@@ -30,7 +28,7 @@ export abstract class BaseValueAccessor<T> implements OnDestroy, IBaseValueAcces
                 },
             });
 
-    constructor(readonly cultureService: ICultureService, readonly changeDetector: ChangeDetectorRef) {
+    constructor(readonly cultureService: CurrentCultureService, readonly changeDetector: ChangeDetectorRef) {
         this.effectiveLocale = this.cultureService.currentCulture;
         this.locale = null;
 

@@ -3,11 +3,10 @@
     forwardRef, Inject, OnDestroy, ViewChild,
 } from "@angular/core";
 import { NG_VALUE_ACCESSOR } from "@angular/forms";
-import {
-    CANG_CULTURE_SERVICE, CANG_GLOBALIZATION_SERVICE,
-    globalizeStatic, ICultureService, IGlobalizationService,
-} from "@code-art/angular-globalize";
-import { Subscription } from "rxjs/Subscription";
+import { CurrentCultureService, GlobalizationService } from "@code-art/angular-globalize";
+import * as Globalize from "globalize";
+import { Subscription } from "rxjs";
+
 import { BaseTimeValueAccessor } from "../base-time-value-accessor";
 import { IComponentFocus } from "../interfaces";
 import { formatTimeComponent, KEY_CODE } from "../util";
@@ -30,10 +29,10 @@ interface ITimeData {
 export class TimePickerComponent extends BaseTimeValueAccessor implements AfterViewInit, OnDestroy, IComponentFocus {
     private static _timeZoneData: { [key: string]: ITimeData } = {};
 
-    private static getTimeZoneData(gl: GlobalizeStatic, locale: string): ITimeData {
+    private static getTimeZoneData(locale: string): ITimeData {
         let val = TimePickerComponent._timeZoneData[locale];
         if (!val) {
-            const c = new gl(locale);
+            const c = new Globalize(locale);
             const timeFormatData = c.cldr.main(["dates/calendars/gregorian/timeFormats"]);
             const twelveHours = timeFormatData.short.indexOf("h") >= 0;
             let pm: string = null;
@@ -70,8 +69,8 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
     private readonly cultureSub: Subscription;
     private readonly valueSub: Subscription;
 
-    constructor(@Inject(CANG_CULTURE_SERVICE) cultureService: ICultureService,
-                @Inject(CANG_GLOBALIZATION_SERVICE) globalizeService: IGlobalizationService,
+    constructor(cultureService: CurrentCultureService,
+                globalizeService: GlobalizationService,
                 @Inject(ChangeDetectorRef) changeDetector: ChangeDetectorRef) {
         super(cultureService, globalizeService, changeDetector);
         this.cultureSub = cultureService.cultureObservable.subscribe(() => {
@@ -115,11 +114,11 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
     }
 
     get am(): string {
-        return TimePickerComponent.getTimeZoneData(globalizeStatic, this.effectiveLocale).am;
+        return TimePickerComponent.getTimeZoneData(this.effectiveLocale).am;
     }
 
     get pm(): string {
-        return TimePickerComponent.getTimeZoneData(globalizeStatic, this.effectiveLocale).pm;
+        return TimePickerComponent.getTimeZoneData(this.effectiveLocale).pm;
     }
 
     get amPmMaxLength(): number {
@@ -127,7 +126,7 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
     }
 
     get twelveHours(): boolean {
-        return TimePickerComponent.getTimeZoneData(globalizeStatic, this.effectiveLocale).twelveHours;
+        return TimePickerComponent.getTimeZoneData(this.effectiveLocale).twelveHours;
     }
 
     set minutesText(val: string) {

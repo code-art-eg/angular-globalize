@@ -1,5 +1,5 @@
 ﻿import { Component, EventEmitter, Inject, Input, Output } from "@angular/core";
-import { CANG_CULTURE_SERVICE, ICultureService } from "@code-art/angular-globalize";
+import { CurrentCultureService } from "@code-art/angular-globalize";
 import { NextPrevAction } from "../util";
 
 @Component({
@@ -14,7 +14,7 @@ export class NextPreviousComponent {
     @Input() public text: string;
     @Output() public readonly clicked: EventEmitter<NextPrevAction>;
 
-    constructor(@Inject(CANG_CULTURE_SERVICE) private readonly cultureService: ICultureService) {
+    constructor(private readonly cultureService: CurrentCultureService) {
         this.locale = null;
         this.clicked = new EventEmitter<NextPrevAction>();
         this.text = null;

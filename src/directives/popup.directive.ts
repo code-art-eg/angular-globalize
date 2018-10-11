@@ -3,11 +3,8 @@
     ElementRef, EventEmitter, Injector, OnDestroy, OnInit, ViewContainerRef,
 } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { ICultureService } from "@code-art/angular-globalize";
-import { Observable } from "rxjs/Observable";
-import { combineLatest } from "rxjs/observable/combineLatest";
-import { ReplaySubject } from "rxjs/ReplaySubject";
-import { Subscription } from "rxjs/Subscription";
+import { CurrentCultureService } from "@code-art/angular-globalize";
+import { combineLatest, Observable, ReplaySubject, Subscription } from "rxjs";
 import { PopupComponent } from "../components/popup.component";
 import { IBaseValueAccessor, IPopupComponent, IPopupDirective } from "../interfaces";
 
@@ -19,7 +16,7 @@ export abstract class PopupDirective<T> implements OnInit, OnDestroy, IPopupDire
     public locale: string;
     public effectiveLocale: string;
     public parseValue: (val: string) => any;
-    public cultureService: ICultureService;
+    public cultureService: CurrentCultureService;
 
     private componentRef: ComponentRef<IPopupComponent<T>>;
     private _el: ElementRef;
