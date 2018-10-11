@@ -8,7 +8,7 @@
     "test": "ng test angular-globalize",
     "testapp": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e --port 4201"
   },
   "private": true,
   "dependencies": {
