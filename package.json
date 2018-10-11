@@ -5,9 +5,11 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --project angular-datepicker",
+    "testapp": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "icons": "cd ./tools && ts-node build-icons.ts"
   },
   "private": true,
   "dependencies": {
@@ -32,7 +34,8 @@
     "@angular/language-service": "^6.1.0",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~8.9.4",
+    "@types/node": "^10.11.7",
+    "change-case": "^3.0.2",
     "codelyzer": "~4.3.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",

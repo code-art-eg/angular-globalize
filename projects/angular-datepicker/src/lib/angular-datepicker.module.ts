@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
-import { AngularDatepickerComponent } from './angular-datepicker.component';
+import { ICON_COMPONENTS } from './components/icons';
 
 @NgModule({
   imports: [
   ],
-  declarations: [AngularDatepickerComponent],
-  exports: [AngularDatepickerComponent]
+  declarations: [
+    ICON_COMPONENTS
+  ],
+  exports: [],
 })
 export class AngularDatepickerModule { }
