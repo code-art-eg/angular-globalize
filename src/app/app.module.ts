@@ -2,15 +2,32 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { LanguageSwitchComponent } from './components/language-switch/language-switch.component';
+import { AngularGlobalizeModule, CANG_SUPPORTED_CULTURES } from '@code-art/angular-globalize';
+import { loadGlobalizeData } from 'projects/angular-globalize/src/test/globalize-data-loader';
+
+import 'globalize/currency';
+import 'globalize/date';
+import 'globalize/number';
+import 'globalize/plural';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LanguageSwitchComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AngularGlobalizeModule.forRoot(),
+    AngularGlobalizeModule,
   ],
-  providers: [],
+  providers: [
+    { provide: CANG_SUPPORTED_CULTURES, useValue: ['en-GB', 'de', 'ar-EG'] },
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    loadGlobalizeData();
+  }
+}

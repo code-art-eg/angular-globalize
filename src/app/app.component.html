@@ -1,20 +1,171 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="container">
+    <h1 class="text-center">Hello Angular Globalize</h1>
+    <div glbDirection rtlCssClass="red" ltrCssClass="blue">
 
+        <div class="row">
+            <div class="col-sm-4">
+                <code>jsDate | gdate</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ jsDate | gdate }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>jsDate | gtime</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ jsDate | gtime }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>jsDate | gdatetime</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ jsDate | gdatetime }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>jsDate | gdate:'de'</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ jsDate | gdate:'de' }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>jsDate | gdatetime:'ar-EG':'full'</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ jsDate | gdatetime:'ar-EG':'full' }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>jsDate | gdatetime:'full'</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ jsDate | gdatetime:'full' }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>jsDate | gdatetime:'raw:yyyy-MM-dd'</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ jsDate | gdatetime:'raw:yyyy-MM-dd' }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>jsDate | gdatetime:'yQQQHm'</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ jsDate | gdatetime:'yQQQHm' }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>jsDate | gdatetime:'ar-EG':'yQQQHm'</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ jsDate | gdatetime:'ar-EG':'yQQQHm' }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>jsDate | gdatetime:{{ '{' }} datetime: 'medium', timeZone: 'America/New_York' {{ '}' }}</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ jsDate | gdatetime:{ datetime: 'medium', timeZone: 'America/New_York' } }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>currentTime | gdatetime:'full'</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ currentTime | gdatetime:'full' }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>1234567.98765 | gnumber</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ 1234567.98765 | gnumber }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>0.5| gnumber:'%'</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ 0.5| gnumber:'%' }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>1234567.98765 | gcurrency:'EUR'</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ 1234567.98765 | gcurrency:'EUR':'symbol' }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+      <div class="col-sm-4">
+          <code>1234567.98765 | gcurrency:'EGP':'ar-EG':{{ '{' }} style: 'name', maximumFractionDigits:3,
+              minimumFractionDigits:3 {{ '}' }}</code>
+      </div>
+      <div class="col-sm-8">
+          <span>{{ 1234567.98765 | gcurrency:'EGP':'ar-EG':{ style: 'name', maximumFractionDigits:3, minimumFractionDigits:3 } }}</span>
+      </div>
+  </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>0|gmonth:'ar-EG'</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ 0|gmonth:'ar-EG' }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>3 | gday:'de'</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ 3|gday:'de' }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <code>0 | gduration</code>
+            </div>
+            <div class="col-sm-8">
+                <span>{{ 3600000|gduration }}</span>
+            </div>
+        </div>
+
+
+    </div>
+    <app-language-switch></app-language-switch>
+</div>

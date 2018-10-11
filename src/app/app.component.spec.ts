@@ -1,31 +1,34 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { LanguageSwitchComponent } from './components/language-switch/language-switch.component';
+import { AngularGlobalizeModule, CANG_SUPPORTED_CULTURES } from '@code-art/angular-globalize';
 
 describe('AppComponent', () => {
+  let component: LanguageSwitchComponent;
+  let fixture: ComponentFixture<LanguageSwitchComponent>;
+  const cultures = ['en-GB', 'de', 'ar-EG'];
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
+      declarations: [ LanguageSwitchComponent, AppComponent ],
+      imports: [
+        AngularGlobalizeModule.forRoot(),
+        AngularGlobalizeModule,
       ],
-    }).compileComponents();
+      providers: [
+        { provide: CANG_SUPPORTED_CULTURES, useValue: ['en-GB', 'de', 'ar-EG'] },
+      ],
+    });
   }));
 
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LanguageSwitchComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'angular-globalize-app'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('angular-globalize-app');
-  });
-
-  it('should render title in a h1 tag', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to angular-globalize-app!');
   });
 });

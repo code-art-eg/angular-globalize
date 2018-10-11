@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Observable, timer } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'angular-globalize-app';
+  public jsDate: Date;
+    public currentTime: Observable<Date>;
+
+    constructor() {
+        this.jsDate = new Date();
+        this.currentTime = timer(0, 1000).pipe(map(() => new Date()));
+    }
 }

@@ -21,10 +21,10 @@
     ],
     "paths": {
       "@code-art/angular-globalize": [
-        "dist/code-art/angular-globalize"
+        "dist/angular-globalize"
       ],
       "@code-art/angular-globalize/*": [
-        "dist/code-art/angular-globalize/*"
+        "dist/angular-globalize/*"
       ],
       "globalize": [
         "node_modules/globalize/dist/globalize"
@@ -39,8 +39,5 @@
         "node_modules/cldrjs/dist/cldr/*"
       ]
     }
-  },
-  "exclude": [
-    "old/**/*.ts"
-  ]
+  }
 }
