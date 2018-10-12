@@ -1,0 +1,24 @@
+﻿@import 'common.less';
+
+.next-prev-container {
+  width: 100%;
+  table-layout: fixed;
+
+  td {
+    padding: 0 @dayViewDefaultPadding;
+    text-align: center;
+    cursor: pointer;
+    color: @buttonColor;
+
+    &:hover {
+      color: @buttonHoverColor;
+      background-color: @hoverColor;
+      .border-radius(@defaultRadius);
+    }
+    span {
+      &.reset-button {
+        color: @resetColor;
+      }
+    }
+  }
+}

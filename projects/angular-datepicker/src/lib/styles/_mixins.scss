@@ -1,0 +1,16 @@
+@mixin css3-prefix($property, $value) {
+    -webkit-#{$property}: #{$value};
+    -khtml-#{$property}: #{$value};
+    -moz-#{$property}: #{$value};
+    -ms-#{$property}: #{$value};
+    -o-#{$property}: #{$value};
+    #{$property}: #{$value};
+}
+
+@mixin background-clip($clip) {
+    @include css3-prefix("background-clip", $clip);
+}
+
+@mixin border-radius($radius: 5px) {
+    @include css3-prefix("border-radius", $radius);
+}

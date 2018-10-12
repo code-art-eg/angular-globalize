@@ -13,15 +13,18 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "types": [
+      "globalize"
+    ],
     "lib": [
       "es2017",
       "dom"
     ],
     "paths": {
-      "angular-datepicker": [
+      "@code-art/angular-datepicker": [
         "dist/angular-datepicker"
       ],
-      "angular-datepicker/*": [
+      "@code-art/angular-datepicker/*": [
         "dist/angular-datepicker/*"
       ]
     }
