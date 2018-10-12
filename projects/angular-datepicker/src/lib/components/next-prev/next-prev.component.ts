@@ -1,11 +1,11 @@
-﻿import { Component, EventEmitter, Inject, Input, Output } from "@angular/core";
-import { CurrentCultureService } from "@code-art/angular-globalize";
-import { NextPrevAction } from "../util";
+﻿import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CurrentCultureService } from '@code-art/angular-globalize';
+import { NextPrevAction } from '../../util';
 
 @Component({
-    selector: "ca-next-prev",
-    styleUrls: ["./next-prev.component.less"],
-    templateUrl: "./next-prev.component.html",
+    selector: 'cadp-next-prev',
+    styleUrls: ['./next-prev.component.scss'],
+    templateUrl: './next-prev.component.html',
 })
 export class NextPreviousComponent {
     @Input() public homeButton: boolean;

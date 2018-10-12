@@ -9,12 +9,14 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "target": "es5",
     "typeRoots": [
       "node_modules/@types"
     ],
     "types": [
-      "globalize"
+      "globalize", "jasmine"
     ],
     "lib": [
       "es2017",
@@ -26,6 +28,18 @@
       ],
       "@code-art/angular-datepicker/*": [
         "dist/angular-datepicker/*"
+      ],
+      "globalize": [
+        "node_modules/globalize/dist/globalize"
+      ],
+      "globalize/*": [
+        "node_modules/globalize/dist/globalize/*"
+      ],
+      "cldr": [
+        "node_modules/cldrjs/dist/cldr"
+      ],
+      "cldr/*": [
+        "node_modules/cldrjs/dist/cldr/*"
       ]
     }
   }

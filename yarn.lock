@@ -296,7 +296,7 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@code-art/angular-globalize@file:./../angular-globalize/dist/angular-globalize/":
+"@code-art/angular-globalize@file:./../angular-globalize/dist/angular-globalize":
   version "3.0.0"
   dependencies:
     tslib "^1.9.0"
@@ -354,7 +354,7 @@
   dependencies:
     "@types/cldrjs" "*"
 
-"@types/jasmine@*", "@types/jasmine@~2.8.8":
+"@types/jasmine@*", "@types/jasmine@^2.8.9":
   version "2.8.9"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.8.9.tgz#e028c891e8551fdf6de905d959581fc4fa0b5509"
   integrity sha512-8dPZwjosElZOGGYw1nwTvOEMof4gjwAWNFS93nBI091BoEfd5drnHOLRMiRF/LOPuMTn5LgEdv0bTUO8QFVuHQ==
@@ -3594,6 +3594,11 @@ https-proxy-agent@^2.2.1:
   dependencies:
     agent-base "^4.1.0"
     debug "^3.1.0"
+
+iana-tz-data@^2017.1.0:
+  version "2017.1.0"
+  resolved "https://registry.yarnpkg.com/iana-tz-data/-/iana-tz-data-2017.1.0.tgz#1eda4bfb9a09293499465066341743240e10d7ec"
+  integrity sha1-HtpL+5oJKTSZRlBmNBdDJA4Q1+w=
 
 iconv-lite@0.4.23:
   version "0.4.23"

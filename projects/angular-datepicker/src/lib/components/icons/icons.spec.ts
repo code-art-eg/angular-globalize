@@ -12,6 +12,7 @@ for (let i = 0; i < ICON_COMPONENTS.length; i++) {
             }).compileComponents();
             const fixture = TestBed.createComponent(type);
             const component = fixture.componentInstance;
+            fixture.detectChanges();
             expect(component).toBeTruthy();
         });
     });

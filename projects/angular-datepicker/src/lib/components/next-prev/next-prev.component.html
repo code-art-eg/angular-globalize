@@ -8,19 +8,19 @@
     </colgroup>
     <tr>
         <td class="prev" (click)="clicked.emit('prev')">
-            <icon-chevron-left *ngIf="!isRtl"></icon-chevron-left>
-            <icon-chevron-right *ngIf="isRtl"></icon-chevron-right>
+            <cadp-icon-chevron-left *ngIf="!isRtl"></cadp-icon-chevron-left>
+            <cadp-icon-chevron-right *ngIf="isRtl"></cadp-icon-chevron-right>
         </td>
         <td *ngIf="homeButton" (click)="clicked.emit('home')">
-            <icon-home></icon-home>
+            <cadp-icon-home></cadp-icon-home>
         </td>
         <td *ngIf="resetButton" (click)="clicked.emit('reset')">
-            <icon-times></icon-times>
+            <cadp-icon-times></cadp-icon-times>
         </td>
         <td class="next-prev-title" (click)="clicked.emit('text')" colspan="5">{{ text }}</td>
         <td class="next" (click)="clicked.emit('next')">
-            <icon-chevron-left *ngIf="isRtl"></icon-chevron-left>
-            <icon-chevron-right *ngIf="!isRtl"></icon-chevron-right>
+            <cadp-icon-chevron-left *ngIf="isRtl"></cadp-icon-chevron-left>
+            <cadp-icon-chevron-right *ngIf="!isRtl"></cadp-icon-chevron-right>
         </td>
     </tr>
 </table>

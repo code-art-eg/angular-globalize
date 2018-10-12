@@ -1,0 +1,9 @@
+@import "constants";
+@import "mixins";
+
+.common-container {
+    font-family: $fontFamily;
+    font-size: $fontSize;
+    color: $textColor;
+    background-color: $bgColor;
+}

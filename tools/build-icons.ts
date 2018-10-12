@@ -58,7 +58,8 @@ function getIconComponentName(name: string): string {
 }
 
 async function downloadIcon(name: string): Promise<void> {
-    const data = await getFile(name);
+    let data = await getFile(name);
+    data = '<span [class]="iconCssClassName">' + data + '</span>';
     await writeFile(`${downloadPath}/${getIconFileName(name)}.html`, data);
 }
 
@@ -91,14 +92,15 @@ export const ICON_COMPONENTS: Array<Type<any>> = [
 }
 
 async function writeComponentFile(name: string): Promise<void> {
-    const p = `import { Component } from '@angular/core';
+    const p = `import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'cadp-icon-${name}',
+    styleUrls: ['../../styles/icon-styles.scss'],
     templateUrl: './${getIconFileName(name)}.html',
 })
 export class ${getIconComponentName(name)} {
-
+    @Input() public iconCssClassName = 'icon-${name}';
 }
 `;
     await writeFile(`${downloadPath}/${getIconFileName(name)}.ts`, p);

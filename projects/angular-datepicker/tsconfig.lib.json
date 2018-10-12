@@ -11,6 +11,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "allowSyntheticDefaultImports": false,
+    "resolveJsonModule": false,
     "types": [],
     "lib": [
       "dom",
@@ -27,6 +29,7 @@
   },
   "exclude": [
     "src/test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "test/**/*.ts",
   ]
 }

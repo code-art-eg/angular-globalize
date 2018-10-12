@@ -1,0 +1,26 @@
+@import "constants";
+span {
+    svg {
+        max-height: $fontSize;
+        fill: $buttonColor;
+        &:hover {
+            fill: $buttonHoverColor;
+        }
+    }
+    &.icon-home {
+        svg {
+            fill: $homeColor;
+            &:hover {
+                fill: $homeColor;
+            }
+        }
+    }
+    &.icon-times {
+        svg {
+            fill: $resetColor;
+            &:hover {
+                fill: $resetColor;
+            }
+        }
+    }
+}
