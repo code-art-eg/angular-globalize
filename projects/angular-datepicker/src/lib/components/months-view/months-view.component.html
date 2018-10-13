@@ -1,0 +1,13 @@
+<div class="year-month-view-container" glbDirection [rtlCssClass]="'isrtl'">
+    <cadp-next-prev [locale]="locale"
+                  [homeButton]="homeButton"
+                  [resetButton]="resetButton"
+                  (clicked)="onNextPrevClicked($event)"
+                  [text]="nextPrevText"></cadp-next-prev>
+    <span *ngFor="let m of months" [ngClass]="{'selected': m === month, 
+          'focused': m === focusMonth, 
+          'disabled': isDisabled(m)
+          }" (click)="monthClick(m)">
+        {{ m | gmonth:locale }}
+    </span>
+</div>

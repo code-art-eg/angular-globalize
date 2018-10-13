@@ -1,0 +1,18 @@
+<table>
+    <tr *ngIf="!time">
+        <td>
+            <cadp-datepicker [(value)]="dateValue"></cadp-datepicker>
+        </td>
+    </tr>
+    <tr *ngIf="time">
+        <td class="viewbutton" (click)="time = false"><cadp-icon-calendar-alt></cadp-icon-calendar-alt></td>
+    </tr>
+    <tr *ngIf="time">
+        <td>
+            <cadp-timepicker [(value)]="timeValue"></cadp-timepicker>
+        </td>
+    </tr>
+    <tr *ngIf="!time">
+        <td class="viewbutton" (click)="time = true"><cadp-icon-clock></cadp-icon-clock></td>
+    </tr>
+</table>

@@ -1,0 +1,70 @@
+<div glbDirection class="date-picker-container">
+    <div class="picker">
+        <cadp-days-view [todayDate]="todayDateInternal"
+                      [selectionStart]="selectionStartInternal"
+                      [selectionEnd]="selectionEndInternal"
+                      (dateClicked)="onDaysViewDayClick($event)"
+                      (command)="onCommand($event)"
+                      [month]="month"
+                      [year]="year"
+                      [todayHighlight]="todayHighlight"
+                      [highlightDays]="highlightDays"
+                      [handleKeyboardEvents]="handleKeyboardEvents"
+                      [locale]="effectiveLocale"
+                      [homeButton]="homeButton"
+                      [resetButton]="resetButton"
+                      [minDate]="minDateInternal"
+                      [maxDate]="maxDateInternal"
+                      *ngIf="view === 'days'">
+        </cadp-days-view>
+        <cadp-months-view [month]="month"
+                        [locale]="effectiveLocale"
+                        [year]="year"
+                        (command)="onCommand($event)"
+                        [handleKeyboardEvents]="handleKeyboardEvents"
+                        [homeButton]="homeButton"
+                        [resetButton]="resetButton"
+                        [maxDate]="maxDateInternal"
+                        [minDate]="minDateInternal"
+                        *ngIf="view === 'months'">
+
+        </cadp-months-view>
+        <cadp-years-view [month]="month"
+                       [locale]="effectiveLocale"
+                       [year]="year"
+                       (command)="onCommand($event)"
+                       [numberOfYears]="1"
+                       [handleKeyboardEvents]="handleKeyboardEvents"
+                       [homeButton]="homeButton"
+                       [resetButton]="resetButton"
+                       [minYear]="minYear"
+                       [maxYear]="maxYear"
+                       *ngIf="view === 'years'">
+        </cadp-years-view>
+        <cadp-years-view [month]="month"
+                       [locale]="effectiveLocale"
+                       [year]="year"
+                       (command)="onCommand($event)"
+                       [numberOfYears]="10"
+                       [handleKeyboardEvents]="handleKeyboardEvents"
+                       [homeButton]="homeButton"
+                       [resetButton]="resetButton"
+                       [minYear]="minYear"
+                       [maxYear]="maxYear"
+                       *ngIf="view === 'decades'">
+        </cadp-years-view>
+        <cadp-years-view [month]="month"
+                       [locale]="effectiveLocale"
+                       [year]="year"
+                       (command)="onCommand($event)"
+                       [numberOfYears]="100"
+                       [handleKeyboardEvents]="handleKeyboardEvents"
+                       [homeButton]="homeButton"
+                       [resetButton]="resetButton"
+                       [minYear]="minYear"
+                       [maxYear]="maxYear"
+                       *ngIf="view === 'centuries'">
+        </cadp-years-view>
+    </div>
+    <div class="disabled-layer" *ngIf="disabled"></div>
+</div>

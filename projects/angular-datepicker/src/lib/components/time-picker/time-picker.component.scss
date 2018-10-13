@@ -1,0 +1,38 @@
+@import '../../styles/common';
+
+$padding: 2px;
+
+table {
+  @extend .common-container;
+  margin: 0 auto;
+
+  td {
+    text-align: center;
+    min-width: 30px;
+    height: 30px;
+    padding: 2px;
+
+    span {
+      border: 1px transparent solid;
+      width: 100%;
+      display: inline-block;
+      margin: 0;
+      padding: 8px 0;
+      outline: 0;
+      color: $buttonColor;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $hoverColor;
+        color: $buttonHoverColor;
+        @include border-radius($dayBorderRadius);
+      }
+    }
+
+    input {
+      width: $timePickerCellSize - 2 * $padding;
+      text-align: center;
+      @include border-radius($dayBorderRadius);
+    }
+  }
+}

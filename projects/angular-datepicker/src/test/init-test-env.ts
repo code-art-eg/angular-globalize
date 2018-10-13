@@ -1,5 +1,8 @@
 import { Type } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { TestBed } from '@angular/core/testing';
+
 import {
     CANG_SUPPORTED_CULTURES, CANG_LOCALE_PROVIDER,
     StorageLocaleProviderService, CANG_DEFAULT_LOCALE_KEY,
@@ -14,7 +17,7 @@ export async function initComponentTest(...args: Type<any>[]): Promise<any> {
     localStorage.clear();
     loadGlobalizeData();
     return TestBed.configureTestingModule({
-        imports: [AngularGlobalizeModule],
+        imports: [AngularGlobalizeModule, CommonModule, FormsModule],
         providers: [
             {
                 provide: CANG_SUPPORTED_CULTURES, useValue: cultures,

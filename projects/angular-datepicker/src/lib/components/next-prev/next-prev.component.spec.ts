@@ -1,9 +1,6 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { NextPreviousComponent } from './next-prev.component';
-import {
-    CANG_SUPPORTED_CULTURES, CANG_LOCALE_PROVIDER, StorageLocaleProviderService,
-    CANG_DEFAULT_LOCALE_KEY, CANG_LOCALE_STORAGE_KEY, CurrentCultureService
-} from '@code-art/angular-globalize';
+import { CurrentCultureService } from '@code-art/angular-globalize';
 import { initComponentTest } from 'projects/angular-datepicker/src/test/init-test-env';
 
 

@@ -1,0 +1,31 @@
+<div class="days-view" glbDirection [ltrCssClass]="'ltr'" [rtlCssClass]="'rtl'">
+    <table>
+        <colgroup>
+            <col *ngFor="let col of sevenArray"/>
+        </colgroup>
+        <thead>
+        <tr>
+            <th colspan="7">
+                <cadp-next-prev [locale]="locale"
+                              [text]="nextPrevText"
+                              [homeButton]="homeButton"
+                              [resetButton]="resetButton"
+                              (clicked)="onNextPrevClicked($event)"></cadp-next-prev>
+            </th>
+        </tr>
+        <tr>
+            <th *ngFor="let day of sevenArray">
+                {{ (weekStart + day) % 7 | gday:'short' }}
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let row of sixArray">
+            <td *ngFor="let day of allDays.slice(row * 7, (row + 1) * 7);"
+                [ngClass]="getClasses(day)" (click)="onClick(day)">
+                {{ day.getUTCDate() | gnumber }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

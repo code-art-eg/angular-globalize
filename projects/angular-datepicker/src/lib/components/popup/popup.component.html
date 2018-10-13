@@ -1,0 +1,5 @@
+<div class="picker-popup" *ngIf="isVisible" 
+    [ngClass]="{'orient-top': orientTop, 'orient-bottom': !orientTop, 'orient-left': !orientRight, 'orient-right': orientRight }"
+    [style.top]="top" [style.left]="left" [style.right]="right" [style.bottom]="bottom">
+    <cadp-popup-host></cadp-popup-host>
+</div>
