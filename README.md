@@ -1,27 +1,88 @@
-# AngularDatepickerApp
+# @code-art/angular-datepicker
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.4.
+## About the library
 
-## Development server
+The ```@code-art/angular-datepicker``` library is a javascript library that a datepicker for [Angular 6](https://angular.io). 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Consuming the library
 
-## Code scaffolding
+The library depends on [angular-globalize](https://github.com/sherif-elmetainy/angular-globalize) and [globalize](https://github.com/globalizejs/globalize) for localization and date formatting functionality. Please refer to the documentation of those packages for usage.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+To install the library in your Angular application you need to run the following commands:
 
-## Build
+```bash
+$ npm install @code-art/angular-datepicker @code-art/angular-globalize globalize cldr cldr-data --save
+$ npm install @types/globalize --save-dev
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+After getting the library from npm you can use it in your Angular `AppModule`:
 
-## Running unit tests
+```typescript
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, Inject } from '@angular/core';
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+import { AppComponent } from './app.component';
 
-## Running end-to-end tests
+// Minimum imports classes library
+import { AngularDatepickerModule } from '@code-art/angular-datepicker';
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-## Further help
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+    // Specify the library's modules as imports
+    AngularDatepickerModule
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { 
+    constructor() {
+        
+    }
+}
+```
+You need to load the CLDR data for the locales you want to use for DatePicker. Please refer to [angular-globalize](https://github.com/sherif-elmetainy/angular-globalize) documentation for example. Once the library is imported, you can use its components in your Angular application:
+
+```html
+<!-- You can now use the library component in app.component.html -->
+<h1>
+  {{title}}
+</h1>
+
+<!-- Time Picker standalone component !-->
+<cadp-timepicker [(ngModel)]="date"></cadp-timepicker>
+
+<!-- Time Picker attached as a popup to a text input !-->
+<input class='form-control' cadpTimePicker [(ngModel)]="time" />
+
+<!-- Date range picker standalone component !-->
+<cadp-daterangepicker  [(ngModel)]="range"></cadp-daterangepicker>
+
+<!-- Date range Picker attached to a popup to a text input !-->
+<input class='form-control' cadpDateRangePicker [(ngModel)]="range" />
+
+<!-- Date/Time Picker standalone component !-->
+<cadp-datetimepicker [(ngModel)]="datetime"></cadp-datetimepicker>
+
+<!-- Date/Time Picker attached to a popup to a text input !-->
+<input class='form-control' cadpDateTimePicker [(ngModel)]="datetime" />
+
+<!-- Date Picker standalone component !-->
+<cadp-datepicker [(ngModel)]="datetime"></cadp-datepicker>
+
+<!-- Date/Time Picker attached to a popup to a text input !-->
+<input class='form-control' cadpDatePicker [(ngModel)]="date" />
+``` 
+
+
+## TODO
+
+The library needs better documentation, more samples and a demo site. 
+
+## License
+
+MIT © Sherif Elmetainy \(Code Art\)
