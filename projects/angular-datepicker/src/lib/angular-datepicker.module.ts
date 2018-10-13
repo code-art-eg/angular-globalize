@@ -3,7 +3,7 @@ import { AngularGlobalizeModule } from '@code-art/angular-globalize';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { ICON_COMPONENTS } from './components/icons';
+import { ICON_COMPONENTS } from './components/icons/index';
 import { NextPreviousComponent } from './components/next-prev/next-prev.component';
 import { MonthsViewComponent } from './components/months-view/months-view.component';
 import { YearsViewComponent } from './components/years-view/years-view.component';

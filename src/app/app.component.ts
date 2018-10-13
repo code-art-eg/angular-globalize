@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'angular-datepicker-app';
+  public valdr: any;
+  public valpr: any;
+  public vald: any;
+  public valp: any;
+  public valt: number;
+  public valts: number;
 }

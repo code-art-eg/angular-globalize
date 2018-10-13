@@ -1,20 +1,121 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="container">
+  <div class="row">
+      <div class="col-sm-6 col-12">
+          <h4>Time Picker Component</h4>
+          <cadp-timepicker [(ngModel)]="valt"></cadp-timepicker>
+          <div>
+              Value: {{ valt | json }}
+              <br/>
+          </div>
+      </div>
 
+      <div class="col-sm-6 col-12">
+          <h4>Time Picker Component (Arabic)</h4>
+          <cadp-timepicker [(ngModel)]="valt" [locale]="'ar-EG'"></cadp-timepicker>
+          <div>
+              Value: {{ valt | json }}
+              <br/>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-sm-6 col-12">
+          <h4>Time Picker Directive</h4>
+          <input class='form-control' cadpTimePicker [(ngModel)]="valt" title="time"/>
+          <div>
+              Value: {{ valt | json }}
+              <br/>
+          </div>
+      </div>
+      <div class="col-sm-6 col-12">
+          <h4>Time Directive with second</h4>
+          <input class='form-control' cadpTimePicker [(ngModel)]="valts" [showSeconds]="true"
+                 [format]="'medium'" title="time"/>
+          <div>
+              Value: {{ valts | json }}
+              <br/>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-sm-6 col-12">
+          <h4>Date Range Component</h4>
+          <cadp-daterangepicker [highlightDays]="65" [(ngModel)]="valdr"></cadp-daterangepicker>
+          <div>
+              Value: {{ valdr | json }}
+              <br/>
+          </div>
+      </div>
+
+      <div class="col-sm-6 col-12">
+          <h4>Date Component</h4>
+          <cadp-datepicker [highlightDays]="65" [(ngModel)]="vald"></cadp-datepicker>
+          <div>
+              Value: {{ vald | json }}
+              <br/>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-sm-6 col-12">
+          <h4>Date Range Directive</h4>
+          <input class='form-control' cadpDateRangePicker [(ngModel)]="valpr"
+                 title="date range"/>
+          <div>
+              Value: {{ valpr | json }}
+              <br/>
+          </div>
+      </div>
+      <div class="col-sm-6 col-12">
+          <h4>Date Directive</h4>
+          <input class='form-control' cadpDatePicker [(ngModel)]="valp" title="date"/>
+          <div>
+              Value: {{ valp | json }}
+              <br/>
+          </div>
+      </div>
+
+  </div>
+  <div class="row">
+      <div class="col-sm-6 col-12">
+          <h4>Date Time Component</h4>
+          <cadp-datetimepicker [highlightDays]="65" [(ngModel)]="vald"></cadp-datetimepicker>
+          <div>
+              Value: {{ vald | json }}
+              <br/>
+          </div>
+      </div>
+
+      <div class="col-sm-6 col-12">
+          <h4>Date Time Component</h4>
+          <cadp-datetimepicker [highlightDays]="65" [(ngModel)]="vald"></cadp-datetimepicker>
+          <div>
+              Value: {{ vald | json }}
+              <br/>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-sm-6 col-12">
+          <h4>Date time Directive</h4>
+          <input class='form-control' cadpDateTimePicker [(ngModel)]="vald" title="datetime"/>
+          <div>
+              Value: {{ vald | json }}
+              <br/>
+          </div>
+      </div>
+      <div class="col-sm-6 col-12">
+          <h4>Date time Directive</h4>
+          <input class='form-control' cadpDateTimePicker [(ngModel)]="vald" title="datetime"/>
+          <div>
+              Value: {{ vald | json }}
+              <br/>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-12 ">
+          <app-language-switch></app-language-switch>
+      </div>
+  </div>
+</div>

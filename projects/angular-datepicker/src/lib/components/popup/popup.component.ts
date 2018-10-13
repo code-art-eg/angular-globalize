@@ -6,7 +6,7 @@ import { PopupHostDirective } from '../../directives/popup-host.directive';
 import { IBaseValueAccessor, IComponentFocus, IPopupComponent, IPopupDirective } from '../../interfaces';
 
 @Component({
-    styleUrls: ['./popup.component.less'],
+    styleUrls: ['./popup.component.scss'],
     templateUrl: './popup.component.html',
 })
 export class PopupComponent implements IPopupComponent<any> {

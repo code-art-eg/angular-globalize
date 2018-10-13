@@ -2,6 +2,12 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/angular-datepicker",
   "lib": {
-    "entryFile": "src/public_api.ts"
+    "entryFile": "src/public_api.ts",
+    "umdModuleIds": {
+      "globalize": "globalize",
+      "@code-art/angular-globalize": "codeArt.angularGlobalize"
+    },
+    "amdId": "@code-art/angular-datepicker",
+    "umdId": "codeArt.angularDatepicker"
   }
 }
