@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4201 --open",
-    "build": "ng build angular-globalize && cd dist/angular-globalize && tar -czf ../angular-globalize.tgz *",
+    "build": "ng build angular-globalize && cp-cli README.md dist/angular-globalize/README.md && cp-cli LICENSE dist/angular-globalize/LICENSE && cd dist/angular-globalize && tar -czf ../angular-globalize.tgz *",
     "test": "ng test angular-globalize",
     "testapp": "ng test",
     "lint": "ng lint",
