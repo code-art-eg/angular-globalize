@@ -24,10 +24,7 @@
     ],
     "paths": {
       "@code-art/angular-datepicker": [
-        "dist/angular-datepicker"
-      ],
-      "@code-art/angular-datepicker/*": [
-        "dist/angular-datepicker/*"
+        "projects/angular-datepicker/src/public_api"
       ],
       "globalize": [
         "node_modules/globalize/dist/globalize"
