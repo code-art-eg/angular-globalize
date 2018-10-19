@@ -18,6 +18,11 @@ import { DatePickerDirective } from './directives/date-picker.directive';
 import { DateRangePickerDirective } from './directives/date-range-picker.directive';
 import { DateTimePickerDirective } from './directives/datetime-picker.directive';
 import { TimePickerDirective } from './directives/time-picker.directive';
+import { PopupDirective } from './directives/popup.directive';
+import { applyMixins } from './util';
+import { TimePickerOptions } from './time-picker-options';
+import { BaseTimeValueAccessor } from './base-time-value-accessor';
+import { BaseDatePickerDirective } from './directives/base-date-picker-directive';
 
 
 @NgModule({
@@ -59,4 +64,12 @@ import { TimePickerDirective } from './directives/time-picker.directive';
     TimePickerComponent,
   ]
 })
-export class AngularDatepickerModule { }
+export class AngularDatepickerModule {
+  constructor() {
+    applyMixins(TimePickerDirective, PopupDirective);
+    applyMixins(DateTimePickerComponent, TimePickerOptions);
+    applyMixins(BaseTimeValueAccessor, TimePickerOptions);
+    applyMixins(BaseDatePickerDirective, PopupDirective);
+    applyMixins(DateTimePickerDirective, PopupDirective, TimePickerOptions);
+  }
+}

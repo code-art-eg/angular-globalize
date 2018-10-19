@@ -8,8 +8,6 @@ import { DateFormatterOptions } from 'globalize';
 import { BaseTimeValueAccessor } from '../base-time-value-accessor';
 import { TimePickerComponent } from '../components/time-picker/time-picker.component';
 import { IPopupDirective, ITimePicker } from '../interfaces';
-import { applyMixins } from '../util';
-import { PopupDirective } from './popup.directive';
 import { CurrentCultureService, GlobalizationService } from '@code-art/angular-globalize';
 
 @Directive({
@@ -91,5 +89,3 @@ export class TimePickerDirective extends BaseTimeValueAccessor
         // Do nothing
     }
 }
-
-applyMixins(TimePickerDirective, PopupDirective);

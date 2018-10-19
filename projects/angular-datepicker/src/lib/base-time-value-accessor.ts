@@ -5,7 +5,6 @@ import { CurrentCultureService, GlobalizationService } from '@code-art/angular-g
 import { BaseValueAccessor } from './base-value-accessor';
 import { ITimePicker } from './interfaces';
 import { TimePickerOptions } from './time-picker-options';
-import { applyMixins } from './util';
 
 export abstract class BaseTimeValueAccessor extends BaseValueAccessor<ITimePicker> implements ITimePicker {
     private static readonly maximumValue = 24 * 3600 * 1000 - 1;
@@ -82,5 +81,3 @@ export abstract class BaseTimeValueAccessor extends BaseValueAccessor<ITimePicke
         return null;
     }
 }
-
-applyMixins(BaseTimeValueAccessor, TimePickerOptions);

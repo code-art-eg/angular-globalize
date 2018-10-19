@@ -8,9 +8,6 @@ import { DateFormatterOptions } from 'globalize';
 import { BaseDatePickerAccessor } from '../base-date-picker-accessor';
 import { DateTimePickerComponent } from '../components/datetime-picker/datetime-picker.component';
 import { IBaseValueAccessor, IDateTimePicker, IPopupDirective } from '../interfaces';
-import { TimePickerOptions } from '../time-picker-options';
-import { applyMixins } from '../util';
-import { PopupDirective } from './popup.directive';
 import { CurrentCultureService, GlobalizationService, TypeConverterService } from '@code-art/angular-globalize';
 
 @Directive({
@@ -96,5 +93,3 @@ export class DateTimePickerDirective extends BaseDatePickerAccessor<IDateTimePic
         return this.globalizationService.formatDate(val, locale, options);
     }
 }
-
-applyMixins(DateTimePickerDirective, PopupDirective, TimePickerOptions);

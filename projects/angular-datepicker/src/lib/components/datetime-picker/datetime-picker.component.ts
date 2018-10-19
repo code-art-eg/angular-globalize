@@ -5,7 +5,7 @@ import { CurrentCultureService, TypeConverterService } from '@code-art/angular-g
 import { BaseDatePickerAccessor } from '../../base-date-picker-accessor';
 import { IBaseValueAccessor, IDateTimePicker } from '../../interfaces';
 import { TimePickerOptions } from '../../time-picker-options';
-import { applyMixins, createDate, similarInLocal } from '../../util';
+import { createDate, similarInLocal } from '../../util';
 
 @Component({
     providers: [{
@@ -87,4 +87,4 @@ export class DateTimePickerComponent
     }
 }
 
-applyMixins(DateTimePickerComponent, TimePickerOptions);
+

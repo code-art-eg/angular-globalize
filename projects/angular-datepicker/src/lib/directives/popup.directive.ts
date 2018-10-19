@@ -1,6 +1,6 @@
 import {
     ComponentFactory, ComponentFactoryResolver, ComponentRef,
-    ElementRef, EventEmitter, Injector, OnDestroy, OnInit, ViewContainerRef,
+    ElementRef, EventEmitter, Injector, OnDestroy, OnInit, ViewContainerRef, Injectable,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CurrentCultureService } from '@code-art/angular-globalize';
@@ -57,8 +57,8 @@ export abstract class PopupDirective<T> implements OnInit, OnDestroy, IPopupDire
     public abstract formatValue(val: any, locale: string, format: string): string;
 
     public initPopupDirective(resolver: ComponentFactoryResolver,
-                              viewContainerRef: ViewContainerRef,
-                              el: ElementRef, injector: Injector): void {
+        viewContainerRef: ViewContainerRef,
+        el: ElementRef, injector: Injector): void {
         this._viewContainerRef = viewContainerRef;
         this._orientRight = null;
         this._orientTop = null;
@@ -78,24 +78,13 @@ export abstract class PopupDirective<T> implements OnInit, OnDestroy, IPopupDire
     }
 
     public ngOnInit(): void {
+        this.destroyInternal();
         this.selectAccessor();
         this.createComponent();
     }
 
     public ngOnDestroy(): void {
-        if (this.componentRef) {
-            this.componentRef.destroy();
-            this.componentRef = null;
-        }
-        if (this._valueChangeSubscription) {
-            this._valueChangeSubscription.unsubscribe();
-            this._valueChangeSubscription = null;
-        }
-        if (this._controlValueAccessor) {
-            this._controlValueAccessor.registerOnChange(null);
-            this._controlValueAccessor.registerOnTouched(null);
-            this._controlValueAccessor = null;
-        }
+        this.destroyInternal();
     }
 
     public createComponent(): void {
@@ -160,13 +149,29 @@ export abstract class PopupDirective<T> implements OnInit, OnDestroy, IPopupDire
         return this._format;
     }
 
+    private destroyInternal(): void {
+        if (this.componentRef) {
+            this.componentRef.destroy();
+            this.componentRef = null;
+        }
+        if (this._valueChangeSubscription) {
+            this._valueChangeSubscription.unsubscribe();
+            this._valueChangeSubscription = null;
+        }
+        if (this._controlValueAccessor) {
+            this._controlValueAccessor.registerOnChange(null);
+            this._controlValueAccessor.registerOnTouched(null);
+            this._controlValueAccessor = null;
+        }
+    }
+
     private selectAccessor(): void {
         let accessors = this._injector.get<ControlValueAccessor | ControlValueAccessor[]>(NG_VALUE_ACCESSOR);
         if (accessors) {
             accessors = Array.isArray(accessors) ? accessors : [accessors];
             for (let i = 0; i < accessors.length; i++) {
                 if (accessors[i] !== this) {
-                    if (this._controlValueAccessor) {
+                    if (this._controlValueAccessor && accessors[i] !== this._controlValueAccessor) {
                         throw new Error(`More than one control value accessor is provider.`);
                     }
                     this._controlValueAccessor = accessors[i];
@@ -196,17 +201,19 @@ export abstract class PopupDirective<T> implements OnInit, OnDestroy, IPopupDire
         });
         this._valueChangeSubscription = combineLatest(this.cultureService.cultureObservable,
             this.valueChange.asObservable(), this._formatObservable).subscribe((v) => {
-                const [l, val, f] = v;
-                if (typeof val === 'string') {
-                    this._controlValueAccessor.writeValue(val);
-                } else {
-                    const locale = this.locale || l;
-                    const coercedValue = this.coerceValue(this._controlValue);
-                    if (!this.compareValues(coercedValue, val)) {
-                        this._controlValueAccessor.writeValue(this.formatValue(val, locale, f));
+                if (this._controlValueAccessor) {
+                    const [l, val, f] = v;
+                    if (typeof val === 'string') {
+                        this._controlValueAccessor.writeValue(val);
+                    } else {
+                        const locale = this.locale || l;
+                        const coercedValue = this.coerceValue(this._controlValue);
+                        if (!this.compareValues(coercedValue, val)) {
+                            this._controlValueAccessor.writeValue(this.formatValue(val, locale, f));
+                        }
                     }
                 }
-        }) as any as Subscription;
+            });
         this._controlValueAccessor.registerOnTouched(() => {
             this.raiseOnTouch();
         });

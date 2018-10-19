@@ -8,8 +8,7 @@ import { DateFormatterOptions } from 'globalize';
 import { BaseDatePickerAccessor } from '../base-date-picker-accessor';
 import { BaseDatePickerComponent } from '../components/base-date-picker-component';
 import { IDatePicker, IPopupDirective } from '../interfaces';
-import { applyMixins, isPlainObject } from '../util';
-import { PopupDirective } from './popup.directive';
+import { isPlainObject } from '../util';
 
 @Injectable()
 export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor<IDatePicker>
@@ -124,5 +123,3 @@ export abstract class BaseDatePickerDirective extends BaseDatePickerAccessor<IDa
         return this.globalizationService.formatDate(val, locale, options);
     }
 }
-
-applyMixins(BaseDatePickerDirective, PopupDirective);
