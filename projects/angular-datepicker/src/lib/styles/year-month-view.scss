@@ -1,8 +1,10 @@
 @import './common';
 
 .year-month-view-container {
-  width: $defaultCellSize * 7;
+  min-width: $defaultCellSize * 7;
+  max-width: $defaultCellSize * 7 * 1.3;
   display: block;
+  
   overflow: auto;
 
   span {
