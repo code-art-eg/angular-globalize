@@ -34,10 +34,8 @@ To be able to load [globalize](https://github.com/globalizejs) modules in your T
     "types": [
         "globalize",
         "node",
-        ... 
     ]
     "paths": {
-      ... 
       "globalize": [
         "node_modules/globalize/dist/globalize"
       ],
