@@ -1,8 +1,8 @@
 {
   "name": "@code-art/angular-datepicker",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "private": false,
-  "description": "A date and time picker for Angular 6",
+  "description": "A date and time picker for Angular 6/7/8",
   "author": "Sherif Elmetainy (Code Art)",
   "license": "MIT",
   "bugs": {
@@ -21,10 +21,10 @@
   ],
   "homepage": "https://github.com/sherif-elmetainy/angular-datepicker#readme",
   "peerDependencies": {
-    "@angular/common": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
-    "@angular/forms": "^6.0.0-rc.0 || ^6.0.0 || ^7.0.0",
-    "@code-art/angular-globalize": "^3.1.0",
+    "@angular/common": "^6.0.0 || ^7.0.0 || ^8.0.0",
+    "@angular/core": "^6.0.0 || ^7.0.0 || ^8.0.0",
+    "@angular/forms": "^6.0.0 || ^7.0.0 || ^8.0.0",
+    "@code-art/angular-globalize": "^3.2.0",
     "cldr-data": ">=32.0.0",
     "globalize": "^1.4.0",
     "rxjs": "^6.1.0"

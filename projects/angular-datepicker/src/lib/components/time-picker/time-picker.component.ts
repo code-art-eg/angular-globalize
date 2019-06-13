@@ -234,11 +234,11 @@ export class TimePickerComponent extends BaseTimeValueAccessor implements AfterV
     }
     private static _timeZoneData: { [key: string]: ITimeData } = {};
 
-    @ViewChild('hoursInput') public hoursElement: ElementRef;
-    @ViewChild('minutesInput') public minutesElement: ElementRef;
-    @ViewChild('secondsInput') public secondsElement: ElementRef;
-    @ViewChild('amPmInput1') public amPmElement1: ElementRef;
-    @ViewChild('amPmInput2') public amPmElement2: ElementRef;
+    @ViewChild('hoursInput', { static: false }) public hoursElement: ElementRef;
+    @ViewChild('minutesInput', { static: false }) public minutesElement: ElementRef;
+    @ViewChild('secondsInput', { static: false }) public secondsElement: ElementRef;
+    @ViewChild('amPmInput1', { static: false }) public amPmElement1: ElementRef;
+    @ViewChild('amPmInput2', { static: false }) public amPmElement2: ElementRef;
     public focus = false;
 
     private _minutes: number;

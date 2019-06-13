@@ -12,7 +12,7 @@ import { IBaseValueAccessor, IComponentFocus, IPopupComponent, IPopupDirective }
 export class PopupComponent implements IPopupComponent<any> {
     public hostedElement: ElementRef;
     public popupDirective: IPopupDirective<any>;
-    @ViewChild('inputhost') public inputHost: ElementRef;
+    @ViewChild('inputhost', { static: false }) public inputHost: ElementRef;
 
     private _mouseIn = false;
     private componentRef: ComponentRef<IBaseValueAccessor<any>>;
@@ -25,7 +25,7 @@ export class PopupComponent implements IPopupComponent<any> {
         this._mouseOutTimeOut = null;
     }
 
-    @ViewChild(PopupHostDirective) set componenthost(val: PopupHostDirective) {
+    @ViewChild(PopupHostDirective, { static: false }) set componenthost(val: PopupHostDirective) {
         if (val !== this._componenthost) {
             if (this.componentRef) {
                 this.componentRef.destroy();
