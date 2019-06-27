@@ -1,6 +1,6 @@
 {
   "name": "@code-art/angular-globalize",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "private": false,
   "description": "Angular 8 pipes for localizing numbers and dates using Globalize.",
   "repository": {
@@ -22,6 +22,6 @@
     "@angular/core": "^8.0.0",
     "cldr-data": ">=32.0.0",
     "globalize": "^1.4.0",
-    "rxjs": "~6.4.0"
+    "rxjs": "^6.4.0"
   }
 }
