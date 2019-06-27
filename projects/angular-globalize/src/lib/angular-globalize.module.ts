@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders, LOCALE_ID } from '@angular/core';
 
 import { GlobalizeCurrencyPipe } from './pipes/currency/globalize-currency.pipe';
 import { GlobalizeDayPipe } from './pipes/day/globalize-day.pipe';
@@ -53,9 +53,7 @@ export class AngularGlobalizeModule {
         { provide: CANG_COOKIE_PATH, useValue: '/' },
         { provide: CANG_LOCALE_STORAGE_KEY, useValue: CANG_DEFAULT_LOCALE_KEY },
         { provide: CANG_USE_SESSION_STORAGE, useValue: false },
-
         { provide: CANG_LOCALE_PROVIDER, useClass: NavigatorLanguageLocaleProviderService, multi: true },
-        { provide: CANG_LOCALE_PROVIDER, useClass: AngularDefaultLocaleProviderService, multi: true },
       ],
     };
   }
