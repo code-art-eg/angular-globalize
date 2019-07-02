@@ -141,7 +141,7 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
                 return [input, 'input', null];
             }
             if (!this._latest || this._latestSource !== input) {
-                this._latest =  combineLatest(this.cultureService.cultureObservable, input);
+                this._latest =  combineLatest([this.cultureService.cultureObservable, input]);
                 this._latestSource = input;
             }
             return [this._latest, 'both', null];
