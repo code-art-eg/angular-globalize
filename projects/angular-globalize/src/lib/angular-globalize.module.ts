@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders, LOCALE_ID } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { GlobalizeCurrencyPipe } from './pipes/currency/globalize-currency.pipe';
 import { GlobalizeDayPipe } from './pipes/day/globalize-day.pipe';
@@ -14,7 +14,6 @@ import { CANG_SUPPORTED_CULTURES, CANG_COOKIE_DURATION_DAYS,
   CANG_COOKIE_PATH, CANG_LOCALE_STORAGE_KEY, CANG_DEFAULT_LOCALE_KEY,
   CANG_USE_SESSION_STORAGE, CANG_LOCALE_PROVIDER } from './constants';
 import { NavigatorLanguageLocaleProviderService } from './services/locale-provider/navigator-language-locale-provider.service';
-import { AngularDefaultLocaleProviderService } from './services/locale-provider/angular-default-locale-provider.service';
 
 @NgModule({
   imports: [
