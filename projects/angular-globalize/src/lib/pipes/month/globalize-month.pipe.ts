@@ -1,10 +1,11 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe } from '@angular/core';
 import { BaseGlobalizePipe } from '../base-globalize-pipe';
 import { MonthNameFormat } from '../../models';
 
 
+// tslint:disable-next-line: use-pipe-transform-interface
 @Pipe({ name: 'gmonth', pure: false })
-export class GlobalizeMonthPipe extends BaseGlobalizePipe<number, MonthNameFormat> implements PipeTransform {
+export class GlobalizeMonthPipe extends BaseGlobalizePipe<number, MonthNameFormat> {
 
     protected inputsEqual(v1: number, v2: number): boolean {
         return v1 === v2;

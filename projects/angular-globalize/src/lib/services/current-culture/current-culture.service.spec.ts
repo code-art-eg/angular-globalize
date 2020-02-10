@@ -31,18 +31,18 @@ describe('CurrentCultureService', () => {
   });
 
   it('should be created', () => {
-    const service: CurrentCultureService = TestBed.get(CurrentCultureService);
+    const service: CurrentCultureService = TestBed.inject(CurrentCultureService);
     expect(service).toBeTruthy();
     expect(service.currentCulture).toBe(cultures[0]);
   });
 
   it('should set default culture', () => {
-    const service: CurrentCultureService = TestBed.get(CurrentCultureService);
+    const service: CurrentCultureService = TestBed.inject(CurrentCultureService);
     expect(service.currentCulture).toBe(cultures[0]);
   });
 
   it('returns right to left', () => {
-    const service: CurrentCultureService = TestBed.get(CurrentCultureService);
+    const service: CurrentCultureService = TestBed.inject(CurrentCultureService);
     expect(service.isRightToLeft()).toBe(false);
     service.currentCulture = 'de';
     expect(service.isRightToLeft()).toBe(false);
@@ -58,9 +58,9 @@ describe('CurrentCultureService', () => {
   });
 
   it('uses provider culture', () => {
-    const service: CurrentCultureService = TestBed.get(CurrentCultureService);
+    const service: CurrentCultureService = TestBed.inject(CurrentCultureService);
     expect(service.currentCulture).toBe(cultures[0]);
-    const provider: ILocaleProvider = TestBed.get(StorageLocaleProviderService);
+    const provider: ILocaleProvider = TestBed.inject(StorageLocaleProviderService);
     provider.locale = cultures[1];
     service.currentCulture = '';
     expect(service.currentCulture).toBe(cultures[1]);
@@ -69,32 +69,32 @@ describe('CurrentCultureService', () => {
   });
 
   it('uses culture parent', () => {
-    const service: CurrentCultureService = TestBed.get(CurrentCultureService);
+    const service: CurrentCultureService = TestBed.inject(CurrentCultureService);
     service.currentCulture = 'de-AT';
     expect(service.currentCulture).toBe(cultures[0]);
   });
 
   it('uses culture child', () => {
-    const service: CurrentCultureService = TestBed.get(CurrentCultureService);
+    const service: CurrentCultureService = TestBed.inject(CurrentCultureService);
     service.currentCulture = 'ar';
     expect(service.currentCulture).toBe(cultures[1]);
   });
 
   it('uses culture with same parent', () => {
-    const service: CurrentCultureService = TestBed.get(CurrentCultureService);
+    const service: CurrentCultureService = TestBed.inject(CurrentCultureService);
     service.currentCulture = 'ar-SA';
     expect(service.currentCulture).toBe(cultures[1]);
   });
 
   it('does not accept unsupported culture', () => {
-    const service: CurrentCultureService = TestBed.get(CurrentCultureService);
+    const service: CurrentCultureService = TestBed.inject(CurrentCultureService);
     service.currentCulture = 'es';
     expect(service.currentCulture).toBe(cultures[0]);
   });
 
   it('observable should replay first value', () => {
     const res: string[] = [];
-    const service: CurrentCultureService = TestBed.get(CurrentCultureService);
+    const service: CurrentCultureService = TestBed.inject(CurrentCultureService);
     const sub = service.cultureObservable.subscribe((v) => res.push(v));
     expect(res.length).toBe(1);
     expect(res[0]).toBe(cultures[0]);
@@ -103,7 +103,7 @@ describe('CurrentCultureService', () => {
 
   it('emits only on change', () => {
     const res: string[] = [];
-    const service: CurrentCultureService = TestBed.get(CurrentCultureService);
+    const service: CurrentCultureService = TestBed.inject(CurrentCultureService);
     const sub = service.cultureObservable.subscribe((v) => res.push(v));
     service.currentCulture = 'de';
     service.currentCulture = 'ar';

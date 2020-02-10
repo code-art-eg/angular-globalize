@@ -15,17 +15,17 @@ describe('StorageLocaleProviderService', () => {
   });
 
   it('should be created', () => {
-    const service: StorageLocaleProviderService = TestBed.get(StorageLocaleProviderService);
+    const service: StorageLocaleProviderService = TestBed.inject(StorageLocaleProviderService);
     expect(service).toBeTruthy();
   });
 
   it('can be written to', () => {
-    const service: StorageLocaleProviderService = TestBed.get(StorageLocaleProviderService);
+    const service: StorageLocaleProviderService = TestBed.inject(StorageLocaleProviderService);
     expect(service.canWrite).toBe(true);
   });
 
   it('can set and get a value', () => {
-    const service: StorageLocaleProviderService = TestBed.get(StorageLocaleProviderService);
+    const service: StorageLocaleProviderService = TestBed.inject(StorageLocaleProviderService);
     service.locale = 'en';
     expect(service.locale).toBe('en');
   });

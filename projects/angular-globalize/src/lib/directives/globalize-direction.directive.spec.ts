@@ -48,7 +48,7 @@ describe('GlobalizeDirectionDirective', () => {
     expect(divNative.dir).toBe('ltr');
     expect(divNative.className).toBe('l');
 
-    const cultureService: CurrentCultureService = TestBed.get(CurrentCultureService);
+    const cultureService: CurrentCultureService = TestBed.inject(CurrentCultureService);
     cultureService.currentCulture = 'ar';
     expect(divNative.dir).toBe('rtl');
     expect(divNative.className).toBe('r');

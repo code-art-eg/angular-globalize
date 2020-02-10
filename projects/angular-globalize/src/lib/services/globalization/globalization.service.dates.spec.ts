@@ -24,7 +24,7 @@ describe('GlobalizationService:Dates', () => {
     });
 
     it('formats date null or undefined', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
 
         expect(service.formatDate(null)).toBe('');
         expect(service.formatDate(undefined)).toBe('');
@@ -36,7 +36,7 @@ describe('GlobalizationService:Dates', () => {
     });
 
     it('formats date using current culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const date = new Date(2018, 1, 18, 19, 45, 57);
 
         expect(service.formatDate(date)).toBe('18/02/2018');
@@ -45,7 +45,7 @@ describe('GlobalizationService:Dates', () => {
     });
 
     it('formats date using provided culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const date = new Date(2018, 1, 18, 19, 45, 57);
 
         expect(service.formatDate(date, 'de')).toBe('18.2.2018');
@@ -54,7 +54,7 @@ describe('GlobalizationService:Dates', () => {
     });
 
     it('formats date using null culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const date = new Date(2018, 1, 18, 19, 45, 57);
 
         expect(service.formatDate(date, null)).toBe('18/02/2018');
@@ -63,7 +63,7 @@ describe('GlobalizationService:Dates', () => {
     });
 
     it('formats date using null options', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const date = new Date(2018, 1, 18, 19, 45, 57);
 
         expect(service.formatDate(date, undefined, null)).toBe('18/02/2018');
@@ -72,7 +72,7 @@ describe('GlobalizationService:Dates', () => {
     });
 
     it('parses date null or undefined', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         expect(service.parseDate(null)).toBe(null);
         expect(service.parseDate(undefined)).toBe(null);
         expect(service.parseDate(null, { date: 'short' })).toBe(null);
@@ -83,7 +83,7 @@ describe('GlobalizationService:Dates', () => {
     });
 
     it('parses date using current culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const date = new Date(2018, 1, 18, 0, 0, 0);
 
         expect(service.parseDate(service.formatDate(date))).toEqual(date);
@@ -92,7 +92,7 @@ describe('GlobalizationService:Dates', () => {
     });
 
     it('parses date using provided culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const date = new Date(2018, 1, 18, 0, 0, 0);
 
         expect(service.parseDate(service.formatDate(date, 'de'), 'de')).toEqual(date);
@@ -103,7 +103,7 @@ describe('GlobalizationService:Dates', () => {
     });
 
     it('parses time only date using current culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const date = new Date();
         date.setMilliseconds(0);
         expect(service.parseDate(service.formatDate(date, { time: 'long' }), { time: 'long' })).toEqual(date);

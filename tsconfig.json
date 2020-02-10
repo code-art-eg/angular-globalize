@@ -3,28 +3,31 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noFallthroughCasesInSwitch": true,
+    "strictNullChecks": true,
     "sourceMap": true,
     "declaration": false,
-    "module": "es2015",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es5",
     "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
-      "es2017",
+      "es2018",
       "dom"
     ],
     "paths": {
       "@code-art/angular-globalize": [
-        "dist/angular-globalize"
-      ],
-      "@code-art/angular-globalize/*": [
-        "dist/angular-globalize/*"
+        "projects/angular-globalize/src/public_api",
       ],
       "globalize": [
         "node_modules/globalize/dist/globalize"
@@ -39,5 +42,9 @@
         "node_modules/cldrjs/dist/cldr/*"
       ]
     }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
   }
 }

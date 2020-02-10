@@ -26,7 +26,7 @@ describe('GlobalizationService:Numbers', () => {
     });
 
     it('formats number null or undefined', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         expect(service.formatNumber(null)).toBe('');
         expect(service.formatNumber(undefined)).toBe('');
         expect(service.formatNumber(null, { style: 'decimal' })).toBe('');
@@ -37,7 +37,7 @@ describe('GlobalizationService:Numbers', () => {
     });
 
     it('formats number using current culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const num = 12345.67;
 
         expect(service.formatNumber(num)).toBe('12,345.67');
@@ -46,7 +46,7 @@ describe('GlobalizationService:Numbers', () => {
     });
 
     it('formats number using provided culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const num = 12345.67;
 
         expect(service.formatNumber(num, 'de')).toBe('12.345,67');
@@ -55,7 +55,7 @@ describe('GlobalizationService:Numbers', () => {
     });
 
     it('formats number using null culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const num = 12345.67;
 
         expect(service.formatNumber(num, null)).toBe('12,345.67');
@@ -64,7 +64,7 @@ describe('GlobalizationService:Numbers', () => {
     });
 
     it('formats number using null options', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const num = 12345.67;
 
         expect(service.formatNumber(num, undefined, null)).toBe('12,345.67');
@@ -73,7 +73,7 @@ describe('GlobalizationService:Numbers', () => {
     });
 
     it('parses number null or undefined', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         expect(service.parseNumber(null)).toBe(null);
         expect(service.parseNumber(undefined)).toBe(null);
         expect(service.parseNumber(null, { style: 'decimal' })).toBe(null);
@@ -84,7 +84,7 @@ describe('GlobalizationService:Numbers', () => {
     });
 
     it('parses number using current culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const num = 12345.67;
 
         expect(service.parseNumber(service.formatNumber(num))).toBe(num);
@@ -92,7 +92,7 @@ describe('GlobalizationService:Numbers', () => {
     });
 
     it('parses number using provided culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const num = 12345.67;
 
         expect(service.parseNumber(service.formatNumber(num, 'de'), 'de')).toBe(num);
@@ -101,7 +101,7 @@ describe('GlobalizationService:Numbers', () => {
     });
 
     it('formats currency null or undefined', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         expect(service.formatCurrency(null, currency)).toBe('');
         expect(service.formatCurrency(undefined, currency)).toBe('');
         expect(service.formatCurrency(null, currency, { style: 'symbol' })).toBe('');
@@ -112,7 +112,7 @@ describe('GlobalizationService:Numbers', () => {
     });
 
     it('formats currency using current culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const num = 12345.67;
         const cldr = new Cldr('en-GB');
         const symbol = cldr.main(['numbers/currencies', currency, 'symbol']);
@@ -124,7 +124,7 @@ describe('GlobalizationService:Numbers', () => {
     });
 
     it('formats currency using provided culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const num = 12345.67;
         const cldr = new Cldr('de');
         const symbol = cldr.main(['numbers/currencies', currency, 'symbol']);
@@ -138,7 +138,7 @@ describe('GlobalizationService:Numbers', () => {
     });
 
     it('formats currency using null culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const num = 12345.67;
         const cldr = new Cldr('en-GB');
         const symbol = cldr.main(['numbers/currencies', currency, 'symbol']);
@@ -150,7 +150,7 @@ describe('GlobalizationService:Numbers', () => {
     });
 
     it('formats currency using null options', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const num = 12345.67;
         const cldr = new Cldr('en-GB');
         const symbol = cldr.main(['numbers/currencies', currency, 'symbol']);

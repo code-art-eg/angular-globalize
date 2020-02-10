@@ -1,10 +1,11 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe } from '@angular/core';
 import { DateFormatterOptions } from 'globalize';
 
 import { BaseDatePipe } from '../base-date-pipe';
 
+// tslint:disable-next-line: use-pipe-transform-interface
 @Pipe({ name: 'gtime', pure: false })
-export class GlobalizeTimePipe extends BaseDatePipe implements PipeTransform {
+export class GlobalizeTimePipe extends BaseDatePipe {
 
     protected stringToOptions(optionsString: string): DateFormatterOptions {
         switch (optionsString) {

@@ -6,6 +6,7 @@ import { throws } from 'assert';
 import { CldrService } from './cldr.service';
 import { GlobalizationService } from './globalization.service';
 import { loadGlobalizeData } from '../../../test/globalize-data-loader';
+import { ICalendarService, ICalendarServiceImpl } from '../../models';
 
 describe('CalendarService', () => {
     const cultures = ['en-GB', 'ar-EG', 'de'];
@@ -54,13 +55,13 @@ describe('CalendarService', () => {
     };
 
     it('supports only gregorian calendar', () => {
-        const cldrService: CldrService = TestBed.get(CldrService);
+        const cldrService: CldrService = TestBed.inject(CldrService);
         throws(() => cldrService.getCalendar('de', 'hijri'));
         expect(cldrService.getCalendar('de', 'Gregorian')).toBeTruthy();
     });
 
     it('returns 12 months', () => {
-        const cldrService: CldrService = TestBed.get(CldrService);
+        const cldrService: CldrService = TestBed.inject(CldrService);
         const calendar = cldrService.getCalendar('en-GB', 'Gregorian');
         for (let year = 1800; year <= 2200; year++) {
             expect(calendar.getMonthsInYear(year)).toBe(12);
@@ -68,7 +69,7 @@ describe('CalendarService', () => {
     });
 
     it('handles leap years', () => {
-        const cldrService: CldrService = TestBed.get(CldrService);
+        const cldrService: CldrService = TestBed.inject(CldrService);
         const calendar = cldrService.getCalendar('en-GB', 'Gregorian');
 
         expect(calendar.getDaysInMonth(1800, 1)).toBe(28, 'Year 1800');
@@ -80,7 +81,7 @@ describe('CalendarService', () => {
     });
 
     it('returns correct number of days', () => {
-        const cldrService: CldrService = TestBed.get(CldrService);
+        const cldrService: CldrService = TestBed.inject(CldrService);
         const calendar = cldrService.getCalendar('en-GB', 'Gregorian');
 
         expect(calendar.getDaysInMonth(2018, 0)).toBe(31);
@@ -98,7 +99,7 @@ describe('CalendarService', () => {
     });
 
     it('should fail on incorrect month', () => {
-        const cldrService: CldrService = TestBed.get(CldrService);
+        const cldrService: CldrService = TestBed.inject(CldrService);
         const calendar = cldrService.getCalendar('en-GB', 'Gregorian');
 
         throws(() => calendar.getDaysInMonth(2000, -1));
@@ -106,7 +107,7 @@ describe('CalendarService', () => {
     });
 
     it('returns month name', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
 
         for (let i = 0; i < 12; i++) {
             expect(service.getMonthName(i)).toBe(englishMonthNames.wide[i]);
@@ -116,7 +117,7 @@ describe('CalendarService', () => {
     });
 
     it('returns day name', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         for (let i = 0; i < 12; i++) {
             expect(service.getDayName(i)).toBe(englishDayNames.wide[i]);
             expect(service.getDayName(i, 'de')).toBe(germanDayNames.wide[i]);
@@ -129,12 +130,12 @@ describe('CalendarService', () => {
                         lang: string,
                         type: string,
                         obj: { [key: string]: string[] },
-                        methodName: string) {
+                        methodName: keyof ICalendarServiceImpl) {
         it(`returns ${languageName} ${type} ${daysOrMonths} names`, () => {
-            const cldrService: CldrService = TestBed.get(CldrService);
+            const cldrService: CldrService = TestBed.inject(CldrService);
 
             const cal = cldrService.getCalendar(lang);
-            const method: Function = cal[methodName];
+            const method = cal[methodName];
             const names = method.apply(cal, [type]) as string[];
             const correctNames = obj[type];
             expect(Array.isArray(names)).toBe(true);

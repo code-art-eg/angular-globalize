@@ -8,7 +8,8 @@ import { CANG_SUPPORTED_CULTURES, CurrentCultureService } from '@code-art/angula
 })
 export class LanguageSwitchComponent {
 
-  constructor(@Inject(CANG_SUPPORTED_CULTURES) readonly supportedCultures: string[],
+  constructor(
+    @Inject(CANG_SUPPORTED_CULTURES) readonly supportedCultures: string[],
     readonly cultureService: CurrentCultureService,
   ) {
 

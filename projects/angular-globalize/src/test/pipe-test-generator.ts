@@ -15,15 +15,17 @@ type PipeConstructor = new (
   cd: ChangeDetectorRef,
 ) => PipeTransform;
 
-function pipeIt(expection: string,
+function pipeIt(
+  expection: string,
   pipeFactory: (ref: ChangeDetectorRef) => PipeTransform,
   expectedMarkCount: number,
-  formatMethodName: string,
+  formatMethodName: keyof GlobalizationService,
   globalizeArgs: any[] | null | undefined,
-  callback: () => void,
+  callback: (() => void) | null,
   value: any,
   moreArgs: any[],
-  ...args: any[]) {
+  ...args: any[]
+) {
   it(expection, () => {
     const mock = new ChangeDetectorMock();
     const pipe = pipeFactory(mock);
@@ -42,8 +44,8 @@ function pipeIt(expection: string,
     }
     let expectedValue: string | null | undefined;
     if (globalizeArgs && Array.isArray(globalizeArgs)) {
-      const globalizeService: GlobalizationService = TestBed.get(GlobalizationService);
-      const formatMethod: (...args) => string = globalizeService[formatMethodName];
+      const globalizeService: GlobalizationService = TestBed.inject(GlobalizationService);
+      const formatMethod: (...args: any[]) => string|null|undefined = globalizeService[formatMethodName];
       expectedValue = formatMethod.apply(globalizeService, globalizeArgs);
     } else if (globalizeArgs === null) {
       expectedValue = null;
@@ -55,10 +57,11 @@ function pipeIt(expection: string,
   });
 }
 
-export function generatePipeTests(pipeConstructor: PipeConstructor,
+export function generatePipeTests(
+  pipeConstructor: PipeConstructor,
   lang: string,
   testVal: any,
-  formatMethodName: string,
+  formatMethodName: keyof GlobalizationService,
   style: string,
   defaultOptions: any,
   styleOptions: any,
@@ -84,8 +87,8 @@ export function generatePipeTests(pipeConstructor: PipeConstructor,
     });
 
     const pipeFactory = (mock: ChangeDetectorRef) => {
-      const globalizeService: GlobalizationService = TestBed.get(GlobalizationService);
-      const cultureService: CurrentCultureService = TestBed.get(CurrentCultureService);
+      const globalizeService: GlobalizationService = TestBed.inject(GlobalizationService);
+      const cultureService: CurrentCultureService = TestBed.inject(CurrentCultureService);
       return new pipeConstructor(globalizeService, cultureService, mock);
     };
 

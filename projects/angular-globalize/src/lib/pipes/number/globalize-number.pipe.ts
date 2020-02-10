@@ -1,10 +1,11 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe } from '@angular/core';
 import { NumberFormatterOptions } from 'globalize';
 
 import { BaseNumericPipe } from '../base-numeric-pipe';
 
+// tslint:disable-next-line: use-pipe-transform-interface
 @Pipe({ name: 'gnumber', pure: false })
-export class GlobalizeNumberPipe extends BaseNumericPipe<NumberFormatterOptions> implements PipeTransform {
+export class GlobalizeNumberPipe extends BaseNumericPipe<NumberFormatterOptions> {
 
     protected stringToOptions(optionsString: string): NumberFormatterOptions {
         switch (optionsString) {

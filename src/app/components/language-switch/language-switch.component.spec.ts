@@ -1,7 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LanguageSwitchComponent } from './language-switch.component';
-import { AngularGlobalizeModule, CANG_SUPPORTED_CULTURES, CurrentCultureService } from '@code-art/angular-globalize';
+import {
+  AngularGlobalizeModule,
+  CANG_SUPPORTED_CULTURES,
+  CurrentCultureService
+} from '@code-art/angular-globalize';
 import { By } from '@angular/platform-browser';
 
 describe('LanguageSwitchComponent', () => {
@@ -11,7 +15,7 @@ describe('LanguageSwitchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LanguageSwitchComponent ],
+      declarations: [LanguageSwitchComponent],
       imports: [
         AngularGlobalizeModule.forRoot(),
         AngularGlobalizeModule,
@@ -20,11 +24,11 @@ describe('LanguageSwitchComponent', () => {
         { provide: CANG_SUPPORTED_CULTURES, useValue: cultures },
       ],
     })
-    .compileComponents().then(() => {
-      fixture = TestBed.createComponent(LanguageSwitchComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    });
+      .compileComponents().then(() => {
+        fixture = TestBed.createComponent(LanguageSwitchComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+      });
   }));
 
   it('should create', () => {
@@ -33,7 +37,7 @@ describe('LanguageSwitchComponent', () => {
 
   it('should create a button for each culture', async () => {
     const nodes = fixture.debugElement.queryAll(By.css('button'));
-    const cultureService: CurrentCultureService = TestBed.get(CurrentCultureService);
+    const cultureService: CurrentCultureService = TestBed.inject(CurrentCultureService);
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
       const button = node.nativeElement as HTMLButtonElement;

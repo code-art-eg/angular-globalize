@@ -1,10 +1,11 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe } from '@angular/core';
 
 import { BaseNumericPipe } from '../base-numeric-pipe';
 import { DurationFormatOptions } from '../../models';
 
+// tslint:disable-next-line: use-pipe-transform-interface
 @Pipe({ name: 'gduration', pure: false })
-export class GlobalizeDurationPipe extends BaseNumericPipe<DurationFormatOptions> implements PipeTransform {
+export class GlobalizeDurationPipe extends BaseNumericPipe<DurationFormatOptions> {
 
     protected stringToOptions(optionsString: string): DurationFormatOptions {
         switch (optionsString) {

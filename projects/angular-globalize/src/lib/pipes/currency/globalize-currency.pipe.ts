@@ -1,29 +1,35 @@
-import { Pipe, PipeTransform, WrappedValue } from '@angular/core';
+import { Pipe, WrappedValue } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { BaseNumericPipe } from '../base-numeric-pipe';
 import { CurrencyFormatterOptions } from 'globalize';
 
+// tslint:disable-next-line: use-pipe-transform-interface
 @Pipe({ name: 'gcurrency', pure: false })
-export class GlobalizeCurrencyPipe extends BaseNumericPipe<CurrencyFormatterOptions> implements PipeTransform {
+export class GlobalizeCurrencyPipe extends BaseNumericPipe<CurrencyFormatterOptions> {
   private _currency!: string;
-  public transform(input: null,
+  public transform(
+    input: null,
     currency: string,
     localeOrOptionsOrFormat?: CurrencyFormatterOptions | string | undefined,
     optionsOrFormat?: CurrencyFormatterOptions | string | undefined): null;
-  public transform(input: undefined,
+  public transform(
+    input: undefined,
     currency: string,
     localeOrOptionsOrFormat?: CurrencyFormatterOptions | string | undefined,
     optionsOrFormat?: CurrencyFormatterOptions | string | undefined): undefined;
-  public transform(input: number,
+  public transform(
+    input: number,
     currency: string,
     localeOrOptionsOrFormat?: CurrencyFormatterOptions | string | undefined,
     optionsOrFormat?: CurrencyFormatterOptions | string | undefined): string;
-  public transform(input: Observable<number>,
+  public transform(
+    input: Observable<number|null|undefined>,
     currency: string,
     localeOrOptionsOrFormat?: CurrencyFormatterOptions | string | undefined,
-    optionsOrFormat?: CurrencyFormatterOptions | string): string;
-  public transform(input: number | Observable<number> | null | undefined,
+    optionsOrFormat?: CurrencyFormatterOptions | string): WrappedValue;
+  public transform(
+    input: number | Observable<number|null|undefined> | null | undefined,
     currency: string,
     localeOrOptionsOrFormat?: CurrencyFormatterOptions | string | undefined,
     optionsOrFormat?: CurrencyFormatterOptions | string | undefined)

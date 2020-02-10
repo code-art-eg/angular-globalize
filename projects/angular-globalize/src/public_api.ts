@@ -18,3 +18,16 @@ export * from './lib/services/locale-provider/angular-default-locale-provider.se
 export * from './lib/services/locale-provider/navigator-language-locale-provider.service';
 export * from './lib/services/locale-provider/cookie-locale-provider.service';
 export * from './lib/services/locale-provider/storage-locale-provider.service';
+
+export * from './lib/directives/globalize-direction.directive';
+export * from './lib/pipes/base-date-pipe';
+export * from './lib/pipes/base-globalize-pipe';
+export * from './lib/pipes/base-numeric-pipe';
+export * from './lib/pipes/currency/globalize-currency.pipe';
+export * from './lib/pipes/date/globalize-date.pipe';
+export * from './lib/pipes/datetime/globalize-datetime.pipe';
+export * from './lib/pipes/day/globalize-day.pipe';
+export * from './lib/pipes/duration/globalize-duration.pipe';
+export * from './lib/pipes/month/globalize-month.pipe';
+export * from './lib/pipes/number/globalize-number.pipe';
+export * from './lib/pipes/time/globalize-time.pipe';

@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { LanguageSwitchComponent } from './components/language-switch/language-switch.component';
 import { AngularGlobalizeModule, CANG_SUPPORTED_CULTURES } from '@code-art/angular-globalize';
-import { loadGlobalizeData } from 'projects/angular-globalize/src/test/globalize-data-loader';
+import { loadGlobalizeData } from '../../projects/angular-globalize/src/test/globalize-data-loader';
 
 import 'globalize/currency';
 import 'globalize/date';

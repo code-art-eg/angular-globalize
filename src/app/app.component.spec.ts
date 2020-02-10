@@ -6,7 +6,6 @@ import { AngularGlobalizeModule, CANG_SUPPORTED_CULTURES } from '@code-art/angul
 describe('AppComponent', () => {
   let component: LanguageSwitchComponent;
   let fixture: ComponentFixture<LanguageSwitchComponent>;
-  const cultures = ['en-GB', 'de', 'ar-EG'];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

@@ -12,17 +12,17 @@ describe('AngularDefaultLocaleProviderService', () => {
     }));
 
     it('should be created', () => {
-        const service: AngularDefaultLocaleProviderService = TestBed.get(AngularDefaultLocaleProviderService);
+        const service: AngularDefaultLocaleProviderService = TestBed.inject(AngularDefaultLocaleProviderService);
         expect(service).toBeTruthy();
     });
 
     it('can not be written to', () => {
-        const service: AngularDefaultLocaleProviderService = TestBed.get(AngularDefaultLocaleProviderService);
+        const service: AngularDefaultLocaleProviderService = TestBed.inject(AngularDefaultLocaleProviderService);
         expect(service.canWrite).toBe(false);
     });
 
     it('can get a value', () => {
-        const service: AngularDefaultLocaleProviderService = TestBed.get(AngularDefaultLocaleProviderService);
+        const service: AngularDefaultLocaleProviderService = TestBed.inject(AngularDefaultLocaleProviderService);
         expect(service.locale).toBe(testVal);
     });
 });

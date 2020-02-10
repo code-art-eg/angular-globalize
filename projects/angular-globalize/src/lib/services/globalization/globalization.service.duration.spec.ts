@@ -25,7 +25,7 @@ describe('GlobalizationService:Duration', () => {
     });
 
     it('formats duration null or undefined', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         expect(service.formatDuration(null)).toBe('');
         expect(service.formatDuration(undefined)).toBe('');
         expect(service.formatDuration(null, { style: 'constant' })).toBe('');
@@ -36,7 +36,7 @@ describe('GlobalizationService:Duration', () => {
     });
 
     it('formats duration using current culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const date1 = new Date(2000, 0, 1, 0, 0, 0, 0);
         const date2 = new Date(2000, 0, 2, 8, 40, 50, 60);
         const num = date2.valueOf() - date1.valueOf();
@@ -47,7 +47,7 @@ describe('GlobalizationService:Duration', () => {
     });
 
     it('formats negative duration using current culture', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const date1 = new Date(2000, 0, 1, 0, 0, 0, 0);
         const date2 = new Date(2000, 0, 2, 8, 40, 50, 60);
         const num = date1.valueOf() - date2.valueOf();
@@ -58,7 +58,7 @@ describe('GlobalizationService:Duration', () => {
     });
 
     it('formats negative duration with pattern', () => {
-        const service: GlobalizationService = TestBed.get(GlobalizationService);
+        const service: GlobalizationService = TestBed.inject(GlobalizationService);
         const date1 = new Date(2000, 0, 1, 0, 0, 0, 0);
         const date2 = new Date(2000, 0, 2, 8, 40, 50, 60);
         const num = date1.valueOf() - date2.valueOf();

@@ -100,8 +100,7 @@ export class TypeConverterService {
     }
 
     private parseDate(val: string, locale?: string): Date {
-        for (let i = 0; i < TypeConverterService.optionsOrder.length; i++) {
-            const options = TypeConverterService.optionsOrder[i];
+        for (const options of TypeConverterService.optionsOrder) {
             const d = this.parseDateWithOptions(val, locale, options);
             if (d) {
                 return d;
