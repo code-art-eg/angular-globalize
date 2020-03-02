@@ -42,7 +42,7 @@ import { NavigatorLanguageLocaleProviderService } from './services/locale-provid
   ],
 })
 export class AngularGlobalizeModule {
-  public static forRoot(): ModuleWithProviders {
+  public static forRoot(): ModuleWithProviders<AngularGlobalizeModule> {
     return {
       ngModule: AngularGlobalizeModule,
       providers: [
