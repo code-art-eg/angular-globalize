@@ -1,11 +1,11 @@
 {
   "name": "@code-art/angular-globalize",
-  "version": "8.0.1",
+  "version": "9.0.0",
   "private": false,
-  "description": "Angular 8 pipes for localizing numbers and dates using Globalize.",
+  "description": "Angular 9 pipes for localizing numbers and dates using Globalize.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sherif-elmetainy/angular-globalize.git"
+    "url": "git+https://github.com/code-art-eg/angular-globalize.git"
   },
   "keywords": [
     "angular",
@@ -14,14 +14,14 @@
   "author": "Sherif Elmetainy",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sherif-elmetainy/angular-globalize/issues"
+    "url": "https://github.com/code-art-eg/angular-globalize/issues"
   },
-  "homepage": "https://github.com/sherif-elmetainy/angular-globalize#readme",
+  "homepage": "https://github.com/code-art-eg/angular-globalize#readme",
   "peerDependencies": {
-    "@angular/common": "^8.0.0",
-    "@angular/core": "^8.0.0",
-    "cldr-data": ">=32.0.0",
-    "globalize": "^1.4.0",
+    "@angular/common": ">=9.0.4 && < 10",
+    "@angular/core": ">=9.0.4 && < 10",
+    "cldr-data": ">=36.0.0",
+    "globalize": "^1.4.2",
     "rxjs": "^6.4.0"
   }
 }

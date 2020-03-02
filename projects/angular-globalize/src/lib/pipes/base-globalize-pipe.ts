@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, OnDestroy, PipeTransform, WrappedValue, Pipe, Injectable } from '@angular/core';
+import { ChangeDetectorRef, OnDestroy, PipeTransform, WrappedValue, Injectable } from '@angular/core';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 
 import { CurrentCultureService } from '../services/current-culture/current-culture.service';
@@ -9,22 +9,7 @@ function isValidCulture(locale: string): boolean {
 }
 
 @Injectable()
-export class BasePipe implements PipeTransform {
-
-  constructor(
-    protected readonly globalizeService: GlobalizationService,
-    protected readonly cultureService: CurrentCultureService,
-    protected changeDetector: ChangeDetectorRef,
-  ) {
-  }
-
-  transform(value: any, ...args: any[]) {
-    throw new Error('Method not implemented.');
-  }
-}
-
-@Injectable()
-export abstract class BaseGlobalizePipe<TInput, TOptions> extends BasePipe implements OnDestroy, PipeTransform {
+export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, PipeTransform {
   private _subscription: Subscription | null = null;
   private _latestValue: string | null | undefined;
   private _latestReturnedValue: string | null | undefined;
@@ -37,7 +22,12 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> extends BasePipe imple
   private _latestSource: Observable<TInput | null | undefined> | null = null;
   private _latest: Observable<[string, TInput | null | undefined]> | null = null;
 
-
+  constructor(
+    protected readonly globalizeService: GlobalizationService,
+    protected readonly cultureService: CurrentCultureService,
+    protected changeDetector: ChangeDetectorRef,
+  ) {
+  }
 
   public ngOnDestroy(): void {
     this.dispose();

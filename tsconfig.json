@@ -27,7 +27,7 @@
     ],
     "paths": {
       "@code-art/angular-globalize": [
-        "projects/angular-globalize/src/public_api",
+        "dist/angular-globalize",
       ],
       "globalize": [
         "node_modules/globalize/dist/globalize"
