@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsAngularGlobalizeNgAdd",
+  "title": "Angular Globalize ng-add Schema",
+  "type": "object",
+  "properties": {
+    "date": {
+      "description": "Include date cldr data.",
+      "x-prompt": "Would you like to include date cldr data?",
+      "default": true,
+      "type": "boolean"
+    },
+    "currency": {
+      "description": "Include currency cldr data.",
+      "x-prompt": "Would you like to include currency cldr data?",
+      "default": true,
+      "type": "boolean"
+    },
+    "plural": {
+      "description": "Include plural cldr data .",
+      "x-prompt": "Would you like to include plural cldr data for formatting currency with name or code?",
+      "default": true,
+      "type": "boolean"
+    },
+    "updateTsConfig": {
+      "description": "Whether to update project's ts config.",
+      "x-prompt": "Would you like to Update tsconfig.json to allow importing CLDR Data?",
+      "default": true,
+      "type": "boolean"
+    },
+    "supportedLanguages": {
+      "description": "Comma separated list of supported languages (first language is the default).",
+      "x-prompt": "Comma separated list of supported languages.",
+      "default": "en",
+      "type": "string"
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      }
+    }
+   }
+}

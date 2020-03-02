@@ -1,0 +1,33 @@
+import { NgModule } from '@angular/core';
+
+import Globalize from 'globalize';
+import numbers from 'cldr-data/main/<%= culture %>/numbers.json';
+<% if (date) { %>
+import calendar from 'cldr-data/main/<%= culture %>/ca-gregorian.json';
+import timeZones from 'cldr-data/main/<%= culture %>/timeZoneNames.json';<% } else { %>
+// uncomment the following 2 lines line to include dates data
+// import calendar from 'cldr-data/main/<%= culture %>/ca-gregorian.json';
+// import timeZones from 'cldr-data/main/<%= culture %>/timeZoneNames.json';<% } %>
+<% if (currency) { %>
+import currency from 'cldr-data/main/<%= culture %>/currencies.json';<% } else { %>
+// uncomment the following line to include currency data
+// import currency from 'cldr-data/main/<%= culture %>/currencies.json';<% } %>
+
+@NgModule()
+export class <%= classify(name) %>Module {
+  constructor() {
+    Globalize.load(numbers);
+<% if (currency) { %>
+    Globalize.load(currency);<% } else { %>
+    // uncomment the following line to include currency data
+    // Globalize.load(currency);
+<% } %>
+<% if (date) { %>
+    Globalize.load(calendar);
+    Globalize.load(timeZones);<% } else { %>
+    // uncomment the following 2 lines line to include dates data
+    // Globalize.load(calendar);
+    // Globalize.load(timeZones);
+<% } %>
+  }
+}

@@ -2,12 +2,13 @@
   "name": "@code-art/angular-globalize",
   "version": "9.0.0",
   "private": false,
+  "schematics": "./schematics/collection.json",
   "description": "Angular 9 pipes for localizing numbers and dates using Globalize.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/code-art-eg/angular-globalize.git"
   },
-  "keywords": [
+   "keywords": [
     "angular",
     "globalize"
   ],
