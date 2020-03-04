@@ -19,6 +19,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true,
     "target": "es6",
   },
   "include": [

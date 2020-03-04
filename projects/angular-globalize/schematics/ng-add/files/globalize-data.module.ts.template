@@ -36,6 +36,9 @@ import weekData from 'cldr-data/supplemental/weekData.json';
 // import weekData from 'cldr-data/supplemental/weekData.json';
 <% } %>
 
+/*
+ * Module to add support for globalize
+ */
 @NgModule()
 export class GlobalizeDataModule {
   constructor() {

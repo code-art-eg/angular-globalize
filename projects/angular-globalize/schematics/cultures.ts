@@ -1,4 +1,4 @@
-export const LANGUAGE_NAMES = [
+export const CULTURE_NAMES = [
   'af',
   'af-NA',
   'am',

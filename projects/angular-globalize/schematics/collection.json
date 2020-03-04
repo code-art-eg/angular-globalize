@@ -5,6 +5,11 @@
       "description": "Add my library to the project.",
       "factory": "./ng-add/index#ngAdd",
       "schema": "./ng-add/schema.json"
+    },
+    "culture": {
+      "description": "Add support for a culture in a project.",
+      "factory": "./culture-add/index#cultureAdd",
+      "schema": "./culture-add/schema.json"
     }
   }
 }

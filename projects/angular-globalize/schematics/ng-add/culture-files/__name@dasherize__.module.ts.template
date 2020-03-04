@@ -13,6 +13,9 @@ import currency from 'cldr-data/main/<%= culture %>/currencies.json';<% } else {
 // uncomment the following line to include currency data
 // import currency from 'cldr-data/main/<%= culture %>/currencies.json';<% } %>
 
+/*
+ * Module to add support for the <%= culture %> culture
+ */
 @NgModule()
 export class <%= classify(name) %>Module {
   constructor() {

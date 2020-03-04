@@ -18,11 +18,10 @@ import { buildRelativePath } from '@schematics/angular/utility/find-module';
 import { applyLintFix } from '@schematics/angular/utility/lint-fix';
 import {
   addImportToModule,
-  addSymbolToNgModuleMetadata,
   getMetadataField,
   getDecoratorMetadata,
 } from '@schematics/angular/utility/ast-utils';
-import { InsertChange, ReplaceChange, Change, Host } from '@schematics/angular/utility/change';
+import { InsertChange, ReplaceChange, Change } from '@schematics/angular/utility/change';
 import { strings, normalize, experimental } from '@angular-devkit/core';
 import { findModuleFromOptions } from '@schematics/angular/utility/find-module';
 
@@ -44,33 +43,33 @@ interface IReplaceChange {
   newText: string;
 }
 
-import { AddLanguageOptions, DataModuleOptions, ProjectOptions } from './models';
-import { LANGUAGE_NAMES } from './languages';
+import { AddCultureOptions, DataModuleOptions, ProjectOptions } from './models';
+import { CULTURE_NAMES } from './cultures';
 
 type UpdateJsonFn<T> = (obj: T) => T | void;
 interface TsConfigPartialType {
   compilerOptions: ts.CompilerOptions;
 }
 
-function updateJsonFile<T>(host: Tree, path: string, callback: UpdateJsonFn<T>): Tree {
-  const source = host.read(path);
+function updateJsonFile<T>(tree: Tree, path: string, callback: UpdateJsonFn<T>): Tree {
+  const source = tree.read(path);
   if (source) {
     const sourceText = source.toString('utf-8');
     const json = parseJson(sourceText, JsonParseMode.Loose);
     callback(json as {} as T);
-    host.overwrite(path, JSON.stringify(json, null, 2));
+    tree.overwrite(path, JSON.stringify(json, null, 2));
   }
 
-  return host;
+  return tree;
 }
 
 function updateTsConfigPaths(packageName: string, ...paths: string[]) {
-  return (host: Tree) => {
-    if (!host.exists('tsconfig.json')) {
-      return host;
+  return (tree: Tree) => {
+    if (!tree.exists('tsconfig.json')) {
+      return tree;
     }
 
-    return updateJsonFile(host, 'tsconfig.json', (tsconfig: TsConfigPartialType) => {
+    return updateJsonFile(tree, 'tsconfig.json', (tsconfig: TsConfigPartialType) => {
       if (!tsconfig.compilerOptions.paths) {
         tsconfig.compilerOptions.paths = {};
       }
@@ -79,7 +78,7 @@ function updateTsConfigPaths(packageName: string, ...paths: string[]) {
       }
       const ar = tsconfig.compilerOptions.paths[packageName];
       for (const path of paths) {
-        if (ar.indexOf(path) > -1) {
+        if (ar.indexOf(path) === -1) {
           ar.push(path);
         }
       }
@@ -88,12 +87,12 @@ function updateTsConfigPaths(packageName: string, ...paths: string[]) {
 }
 
 function updateTsConfigOptions(partialOptions: Partial<ts.CompilerOptions>) {
-  return (host: Tree) => {
-    if (!host.exists('tsconfig.json')) {
-      return host;
+  return (tree: Tree) => {
+    if (!tree.exists('tsconfig.json')) {
+      return tree;
     }
 
-    return updateJsonFile(host, 'tsconfig.json', (tsconfig: TsConfigPartialType) => {
+    return updateJsonFile(tree, 'tsconfig.json', (tsconfig: TsConfigPartialType) => {
       for (const key in partialOptions) {
         if (partialOptions.hasOwnProperty(key)) {
           tsconfig.compilerOptions[key] = partialOptions[key];
@@ -103,8 +102,8 @@ function updateTsConfigOptions(partialOptions: Partial<ts.CompilerOptions>) {
   };
 }
 
-function readIntoSourceFile(host: Tree, modulePath: string): ts.SourceFile {
-  const text = host.read(modulePath);
+function readIntoSourceFile(tree: Tree, modulePath: string): ts.SourceFile {
+  const text = tree.read(modulePath);
   if (text === null) {
     throw new SchematicsException(`File ${modulePath} does not exist.`);
   }
@@ -114,71 +113,42 @@ function readIntoSourceFile(host: Tree, modulePath: string): ts.SourceFile {
 }
 
 function addAngularGlobalizeModule(options: ImportModuleOptions): Rule {
-  return (host: Tree) => {
+  return (tree: Tree) => {
     if (!options.module) {
-      return host;
+      return tree;
     }
 
     const modulePath = options.module;
-    const source = readIntoSourceFile(host, modulePath);
+    const source = readIntoSourceFile(tree, modulePath);
 
     const packagePath = `@code-art/angular-globalize`;
 
     const changes = addImportToModule(source, modulePath, 'AngularGlobalizeModule', packagePath);
 
-    const importRecoder = host.beginUpdate(modulePath);
+    const importRecoder = tree.beginUpdate(modulePath);
     for (const change of changes) {
       if (change instanceof InsertChange) {
         importRecoder.insertLeft(change.pos, change.toAdd);
       }
     }
-    host.commitUpdate(importRecoder);
+    tree.commitUpdate(importRecoder);
 
-    return host;
-  };
-}
-
-function treeToHost(host: Tree): Host {
-  return {
-    write: (p, content) => new Promise<void>((resolve, reject) => {
-      try {
-        if (host.exists(p)) {
-          host.overwrite(p, content);
-        } else {
-          host.create(p, content);
-        }
-        resolve();
-      } catch (e) {
-        reject(e);
-      }
-    }),
-    read: (p) => new Promise<string>((resolve, reject) => {
-      try {
-        if (host.exists(p)) {
-          // tslint:disable-next-line: no-non-null-assertion
-          resolve(host.read(p)!.toString('utf8'));
-        } else {
-          resolve('');
-        }
-      } catch (e) {
-        reject(e);
-      }
-    }),
+    return tree;
   };
 }
 
 function addAngularGlobalizeForRoot(options: ImportModuleOptions, cultureName: string): Rule {
-  return (host: Tree) => {
+  return (tree: Tree) => {
     if (!options.module) {
-      return host;
+      return tree;
     }
 
     const modulePath = options.module;
-    const source = readIntoSourceFile(host, modulePath);
+    const source = readIntoSourceFile(tree, modulePath);
 
     const changes = updateAngularglobalizeForRoot(source, modulePath, cultureName);
 
-    const importRecoder = host.beginUpdate(modulePath);
+    const importRecoder = tree.beginUpdate(modulePath);
     for (const change of changes) {
       if (change instanceof InsertChange) {
         importRecoder.insertLeft(change.pos, change.toAdd);
@@ -188,20 +158,20 @@ function addAngularGlobalizeForRoot(options: ImportModuleOptions, cultureName: s
         importRecoder.insertLeft(c.pos, c.newText);
       }
     }
-    host.commitUpdate(importRecoder);
+    tree.commitUpdate(importRecoder);
 
-    return host;
+    return tree;
   };
 }
 
 function addImportToNgModule(options: ImportModuleOptions): Rule {
-  return (host: Tree) => {
+  return (tree: Tree) => {
     if (!options.module) {
-      return host;
+      return tree;
     }
 
     const modulePath = options.module;
-    const source = readIntoSourceFile(host, modulePath);
+    const source = readIntoSourceFile(tree, modulePath);
 
     const newModulePath = `/${options.path}/`
       + options.filename;
@@ -210,29 +180,29 @@ function addImportToNgModule(options: ImportModuleOptions): Rule {
     const classifiedName = options.moduleName as string;
     const changes = addImportToModule(source, modulePath, classifiedName, relativePath);
 
-    const importRecoder = host.beginUpdate(modulePath);
+    const importRecoder = tree.beginUpdate(modulePath);
     for (const change of changes) {
       if (change instanceof InsertChange) {
         importRecoder.insertLeft(change.pos, change.toAdd);
       }
     }
-    host.commitUpdate(importRecoder);
+    tree.commitUpdate(importRecoder);
 
-    return host;
+    return tree;
   };
 }
 
 function deleteFile(path: string): Rule {
-  return (host: Tree) => {
-    if (host.exists(path)) {
-      host.delete(path);
+  return (tree: Tree) => {
+    if (tree.exists(path)) {
+      tree.delete(path);
     }
-    return host;
+    return tree;
   };
 }
 
-function getWorkspaceInfo(host: Tree, options: ProjectOptions): WorkspaceInfo {
-  const workspaceConfig = host.read('/angular.json');
+function getWorkspaceInfo(tree: Tree, options: ProjectOptions): WorkspaceInfo {
+  const workspaceConfig = tree.read('/angular.json');
   if (!workspaceConfig) {
     throw new SchematicsException('Could not find Angular workspace configuration');
   }
@@ -249,7 +219,7 @@ function getWorkspaceInfo(host: Tree, options: ProjectOptions): WorkspaceInfo {
   const project = workspace.projects[projectName];
   const projectType = project.projectType === 'application' ? 'app' : 'lib';
   const path = `${project.sourceRoot}/${projectType}`;
-  const module = findModuleFromOptions(host, {
+  const module = findModuleFromOptions(tree, {
     path,
     name: ''
   });
@@ -259,14 +229,14 @@ function getWorkspaceInfo(host: Tree, options: ProjectOptions): WorkspaceInfo {
   };
 }
 
-function validateLanguageName(culture: string): void {
-  if (LANGUAGE_NAMES.indexOf(culture) === -1) {
-    throw new SchematicsException(`Invalid language name "${culture}".
-Please note that language name is case sensitive and must be a name of a folder in node_modules/cldr-data/main.`);
+function validateCultureName(culture: string): void {
+  if (CULTURE_NAMES.indexOf(culture) === -1) {
+    throw new SchematicsException(`Invalid culture name "${culture}".
+Please note that culture name is case sensitive and must be a name of a folder in node_modules/cldr-data/main.`);
   }
 }
 
-export function updateAngularglobalizeForRoot(
+function updateAngularglobalizeForRoot(
   source: ts.SourceFile,
   ngModulePath: string,
   cultureName: string,
@@ -396,14 +366,14 @@ export function updateAngularglobalizeForRoot(
 }
 
 export function addAngularGlobalize(options: DataModuleOptions): Rule {
-  return (host: Tree) => {
-    const info = getWorkspaceInfo(host, options);
+  return (tree: Tree) => {
+    const info = getWorkspaceInfo(tree, options);
 
-    if (!options.supportedLanguages) {
-      options.supportedLanguages = 'en';
+    if (!options.supportedCultures) {
+      options.supportedCultures = 'en';
     }
 
-    let split = options.supportedLanguages.split(',').map((c) => c.trim()).filter((c) => c.length > 0);
+    let split = options.supportedCultures.split(',').map((c) => c.trim()).filter((c) => c.length > 0);
     if (split.length === 0) {
       split = ['en'];
     }
@@ -422,7 +392,7 @@ export function addAngularGlobalize(options: DataModuleOptions): Rule {
       }),
       deleteFile(`${newModulePath}/globalize-data.module.ts`),
       mergeWith(templateSource),
-      chain(split.map((c) => addLanguageModule({
+      chain(split.map((c) => addCultureModule({
         culture: c,
         currency: !!options.currency,
         date: !!options.date,
@@ -452,11 +422,20 @@ export function addAngularGlobalize(options: DataModuleOptions): Rule {
   };
 }
 
-export function addLanguageModule(options: AddLanguageOptions): Rule {
+export function addCultureModule(options: AddCultureOptions): Rule {
+  return (tree: Tree) => {
+    const info = getWorkspaceInfo(tree, options);
+    options.module = info.module;
+    options.path = info.path;
+    return addCultureModuleInternal(options);
+  };
+}
+
+function addCultureModuleInternal(options: AddCultureOptions): Rule {
   return () => {
-    validateLanguageName(options.culture);
+    validateCultureName(options.culture);
     const newModulePath = `${options.path}/globalize-data`;
-    const templateSource = apply(url('../ng-add/language-files'), [
+    const templateSource = apply(url('../ng-add/culture-files'), [
       applyTemplates({
         currency: !!options.currency,
         date: !!options.date,

@@ -28,9 +28,9 @@
       "default": true,
       "type": "boolean"
     },
-    "supportedLanguages": {
-      "description": "Comma separated list of supported languages (first language is the default).",
-      "x-prompt": "Comma separated list of supported languages.",
+    "supportedCultures": {
+      "description": "Comma separated list of supported cultures.",
+      "x-prompt": "Comma separated list of supported cultures.",
       "default": "en",
       "type": "string"
     },

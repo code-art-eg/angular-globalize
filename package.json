@@ -17,7 +17,7 @@
     "copy:license": "cpy LICENSE ./dist/angular-globalize",
     "copy:all": "yarn copy:schemas && yarn copy:files && yarn copy:collection && yarn copy:readme && yarn copy:license",
     "postbuild": "yarn build:schemas && yarn copy:all",
-    "languages": "cd ./tools && ts-node generate-language-names.ts"
+    "cultures": "cd ./tools && ts-node generate-culture-names.ts"
   },
   "private": true,
   "dependencies": {

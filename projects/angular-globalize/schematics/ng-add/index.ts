@@ -35,8 +35,8 @@ function addDependencies(host: Tree): Tree {
 }
 
 export function ngAdd(options: DataModuleOptions): Rule {
-  return (host: Tree, context: SchematicContext) => {
-    addDependencies(host);
+  return (tree: Tree, context: SchematicContext) => {
+    addDependencies(tree);
     // Add a task to run the package manager. This is necessary because we updated the
     // workspace "package.json" file and we want lock files to reflect the new version range.
     context.addTask(new NodePackageInstallTask());

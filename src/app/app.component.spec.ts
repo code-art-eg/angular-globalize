@@ -1,15 +1,15 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { LanguageSwitchComponent } from './components/language-switch/language-switch.component';
+import { CultureSwitchComponent } from './components/culture-switch/culture-switch.component';
 import { AngularGlobalizeModule, CANG_SUPPORTED_CULTURES } from '@code-art/angular-globalize';
 
 describe('AppComponent', () => {
-  let component: LanguageSwitchComponent;
-  let fixture: ComponentFixture<LanguageSwitchComponent>;
+  let component: CultureSwitchComponent;
+  let fixture: ComponentFixture<CultureSwitchComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LanguageSwitchComponent, AppComponent ],
+      declarations: [ CultureSwitchComponent, AppComponent ],
       imports: [
         AngularGlobalizeModule.forRoot(),
         AngularGlobalizeModule,
@@ -21,7 +21,7 @@ describe('AppComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LanguageSwitchComponent);
+    fixture = TestBed.createComponent(CultureSwitchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

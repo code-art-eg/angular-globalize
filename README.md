@@ -44,7 +44,7 @@ Currency  Format with name (Arabic Egypt): {{ 1234567.98765 | gcurrency:'EGP':'a
 
 ## Getting/Setting Current Culture
 
-By default the library will use the value provided by [LOCALE_ID](https://angular.io/api/core/LOCALE_ID) in Angular. If not available, it will use the browser language. However, the current language will always be one of the supported languages. If the The LOCALE_ID or browser language are not in the supported languages, the first language will be used as the default. To change current culture you can is the ```CurrentCultureService``` service which can be injected in your component or service.
+By default the library will use the value provided by [LOCALE_ID](https://angular.io/api/core/LOCALE_ID) in Angular. If not available, it will use the browser culture. However, the current culture will always be one of the supported cultures. If the The LOCALE_ID or browser culture are not in the supported cultures, the first culture will be used as the default. To change current culture you can is the ```CurrentCultureService``` service which can be injected in your component or service.
 
 Example: 
 
@@ -54,19 +54,19 @@ import { Component } from '@angular/core';
 import { CurrentCultureService } from '@code-art/angular-globalize';
 
 @Component({
-    selector: 'app-change-language',
+    selector: 'app-change-culture',
     template: `
-        <button (click)="changeLanguage('en-GB')">English (United Kingdom)</button>
-        <button (click)="changeLanguage('ar-EG')">Arabic (Egypt)</button>
-        <button (click)="changeLanguage('de')">German (Germany)</button>
+        <button (click)="changeCulture('en-GB')">English (United Kingdom)</button>
+        <button (click)="changeCulture('ar-EG')">Arabic (Egypt)</button>
+        <button (click)="changeCulture('de')">German (Germany)</button>
     `
 })
-export class ChangeLanguageComponent {
+export class ChangeCultureComponent {
     constructor(public readonly cultureService: CurrentCultureService) {
     }
     
-    public changeLanguage(language: string): void {
-        this.cultureService.currentCulture = language;
+    public changeCulture(culture: string): void {
+        this.cultureService.currentCulture = culture;
     }
 }
 ```
@@ -82,14 +82,12 @@ Example:
 ```typescript 
 @NgModule({
     bootstrap: [AppComponent],
-    declarations: [AppComponent, LanguageSwitchComponent],
+    declarations: [AppComponent, ChangeCultureComponent],
     imports: [BrowserModule,
-         AngularGlobalizeModule.forRoot(), // Import this only in root app module
+         AngularGlobalizeModule.forRoot(['en-GB', 'de', 'ar-EG']), // Import this only in root app module
          AngularGlobalizeModule, // import this in every module where the pipes and directives are needed.
         ],
     providers: [
-        // Provide a string array of languages your application support
-        { provide: CANG_SUPPORTED_CULTURES, useValue: ['en-GB', 'de', 'ar-EG'] },
         { provide: CANG_LOCALE_PROVIDER, useClass: CookieLocaleProviderService, multi: true },
     ]
 })

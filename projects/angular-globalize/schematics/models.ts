@@ -5,7 +5,7 @@ export interface ProjectOptions {
   path?: string;
 }
 
-export interface AddLanguageOptions extends ProjectOptions {
+export interface AddCultureOptions extends ProjectOptions {
   culture: string;
   currency: boolean;
   date: boolean;
@@ -16,5 +16,5 @@ export interface DataModuleOptions extends ProjectOptions {
   currency?: boolean;
   plural?: boolean;
   updateTsConfig?: boolean;
-  supportedLanguages?: string;
+  supportedCultures?: string;
 }

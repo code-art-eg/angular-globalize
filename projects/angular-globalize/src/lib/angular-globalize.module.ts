@@ -42,11 +42,11 @@ import { NavigatorLanguageLocaleProviderService } from './services/locale-provid
   ],
 })
 export class AngularGlobalizeModule {
-  public static forRoot(languages: string[] = ['en']): ModuleWithProviders<AngularGlobalizeModule> {
+  public static forRoot(cultures: string[] = ['en']): ModuleWithProviders<AngularGlobalizeModule> {
     return {
       ngModule: AngularGlobalizeModule,
       providers: [
-        { provide: CANG_SUPPORTED_CULTURES, useValue: languages },
+        { provide: CANG_SUPPORTED_CULTURES, useValue: cultures },
         { provide: CANG_COOKIE_DURATION_DAYS, useValue: CANG_DEFAULT_COOKIE_DURATION_DAYS },
         { provide: CANG_COOKIE_NAME, useValue: CANG_DEFAULT_COOKIE_NAME },
         { provide: CANG_COOKIE_PATH, useValue: '/' },

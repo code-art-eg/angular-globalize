@@ -125,13 +125,13 @@ describe('CalendarService', () => {
         }
     });
 
-    function generateIt(languageName: string,
+    function generateIt(cultureName: string,
                         daysOrMonths: 'months' | 'days',
                         lang: string,
                         type: string,
                         obj: { [key: string]: string[] },
                         methodName: keyof ICalendarServiceImpl) {
-        it(`returns ${languageName} ${type} ${daysOrMonths} names`, () => {
+        it(`returns ${cultureName} ${type} ${daysOrMonths} names`, () => {
             const cldrService: CldrService = TestBed.inject(CldrService);
 
             const cal = cldrService.getCalendar(lang);

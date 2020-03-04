@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsAngularGlobalizeCultureAdd",
+  "title": "Angular Globalize culture add Schema",
+  "type": "object",
+  "properties": {
+    "date": {
+      "description": "Include date cldr data.",
+      "x-prompt": "Would you like to include date cldr data?",
+      "default": true,
+      "type": "boolean"
+    },
+    "currency": {
+      "description": "Include currency cldr data.",
+      "x-prompt": "Would you like to include currency cldr data?",
+      "default": true,
+      "type": "boolean"
+    },
+    "culture": {
+      "description": "The culture to add.",
+      "x-prompt": "The culture to add (for example en-GB or ar-EG).",
+      "type": "string"
+    },
+    "project": {
+      "type": "string",
+      "description": "The name of the project.",
+      "$default": {
+        "$source": "projectName"
+      }
+    }
+   },
+   "required": ["culture"]
+}
