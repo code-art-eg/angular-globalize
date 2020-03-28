@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as Globalize from 'globalize';
+import { dateParser, numberParser } from 'globalize';
+import type { DateFormatterOptions, NumberParserOptions, NumberFormatterOptions, CurrencyFormatterOptions } from 'globalize';
 
 import {
   Dictionary, FormatterFactory, FormatterFunction,
@@ -50,94 +51,94 @@ export class GlobalizationService {
 
   public parseDate(
     val: null | undefined,
-    options?: Globalize.DateFormatterOptions): null;
+    options?: DateFormatterOptions): null;
   public parseDate(
     val: string,
-    options?: Globalize.DateFormatterOptions): Date | null;
+    options?: DateFormatterOptions): Date | null;
   public parseDate(
     val: null | undefined,
     locale?: string,
-    options?: Globalize.DateFormatterOptions): null;
+    options?: DateFormatterOptions): null;
   public parseDate(
     val: string,
     locale?: string,
-    options?: Globalize.DateFormatterOptions): Date | null;
+    options?: DateFormatterOptions): Date | null;
   public parseDate(
     val: string | null | undefined,
-    localeOrOptions?: string | Globalize.DateFormatterOptions,
-    options?: Globalize.DateFormatterOptions): Date | null | undefined {
+    localeOrOptions?: string | DateFormatterOptions,
+    options?: DateFormatterOptions): Date | null | undefined {
     return this.parse(
       this.dateParsers,
-      Globalize.dateParser,
+      dateParser,
       val,
       localeOrOptions, options);
   }
 
   public formatDate(
-    val: null | undefined, options?: Globalize.DateFormatterOptions | null): '';
+    val: null | undefined, options?: DateFormatterOptions | null): '';
   public formatDate(
-    val: Date, options?: Globalize.DateFormatterOptions | null): string;
+    val: Date, options?: DateFormatterOptions | null): string;
   public formatDate(
-    val: null | undefined, locale?: string | null, options?: Globalize.DateFormatterOptions | null): '';
+    val: null | undefined, locale?: string | null, options?: DateFormatterOptions | null): '';
   public formatDate(
-    val: Date, locale?: string | null, options?: Globalize.DateFormatterOptions | null): string;
+    val: Date, locale?: string | null, options?: DateFormatterOptions | null): string;
   public formatDate(
     val: Date | null | undefined,
-    localeOrOptions?: string | Globalize.DateFormatterOptions | null | undefined,
-    options?: Globalize.DateFormatterOptions | null): string {
+    localeOrOptions?: string | DateFormatterOptions | null | undefined,
+    options?: DateFormatterOptions | null): string {
     return this.format(this.dateFormatters,
       (l, o) => this.cldrService.getGlobalizeInstance(l).dateFormatter(o),
       val, localeOrOptions, options);
   }
 
   public parseNumber(
-    val: null | undefined, options?: Globalize.NumberParserOptions | null): null;
+    val: null | undefined, options?: NumberParserOptions | null): null;
   public parseNumber(
-    val: string, options?: Globalize.NumberParserOptions | null): number | null;
+    val: string, options?: NumberParserOptions | null): number | null;
   public parseNumber(
-    val: null | undefined, locale?: string, options?: Globalize.NumberParserOptions | null): null;
+    val: null | undefined, locale?: string, options?: NumberParserOptions | null): null;
   public parseNumber(
-    val: string, locale?: string, options?: Globalize.NumberParserOptions | null): number | null;
+    val: string, locale?: string, options?: NumberParserOptions | null): number | null;
   public parseNumber(
     val: string | null | undefined,
-    localeOrOptions?: string | Globalize.NumberParserOptions | undefined | null,
-    options?: Globalize.NumberParserOptions | null): number | null {
+    localeOrOptions?: string | NumberParserOptions | undefined | null,
+    options?: NumberParserOptions | null): number | null {
     return this.parse(this.numberParsers,
-      Globalize.numberParser,
+      numberParser,
       val,
       localeOrOptions, options);
   }
 
   public formatNumber(
-    val: null | undefined, options?: Globalize.NumberFormatterOptions | null): '';
+    val: null | undefined, options?: NumberFormatterOptions | null): '';
   public formatNumber(
-    val: number, options?: Globalize.NumberFormatterOptions | null): string;
+    val: number, options?: NumberFormatterOptions | null): string;
   public formatNumber(
-    val: null | undefined, locale?: string | null, options?: Globalize.NumberFormatterOptions | null): '';
+    val: null | undefined, locale?: string | null, options?: NumberFormatterOptions | null): '';
   public formatNumber(
-    val: number, locale?: string | null, options?: Globalize.NumberFormatterOptions | null): string;
+    val: number, locale?: string | null, options?: NumberFormatterOptions | null): string;
   public formatNumber(
     val: number | null | undefined,
-    localeOrOptions?: string | Globalize.NumberFormatterOptions | undefined | null,
-    options?: Globalize.NumberFormatterOptions | null): string {
+    localeOrOptions?: string | NumberFormatterOptions | undefined | null,
+    options?: NumberFormatterOptions | null): string {
     return this.format(this.numberFormatters,
       (l, o) => this.cldrService.getGlobalizeInstance(l).numberFormatter(o),
       val, localeOrOptions, options);
   }
 
   public formatCurrency(
-    val: null | undefined, currency: string, options?: Globalize.CurrencyFormatterOptions | null): '';
+    val: null | undefined, currency: string, options?: CurrencyFormatterOptions | null): '';
   public formatCurrency(
-    val: number, currency: string, options?: Globalize.CurrencyFormatterOptions | null): string;
+    val: number, currency: string, options?: CurrencyFormatterOptions | null): string;
   public formatCurrency<T extends number | null | undefined>(
-    val: null | undefined, currency: string, locale?: string | null, options?: Globalize.CurrencyFormatterOptions | null): '';
+    val: null | undefined, currency: string, locale?: string | null, options?: CurrencyFormatterOptions | null): '';
   public formatCurrency<T extends number | null | undefined>(
-    val: number, currency: string, locale?: string | null, options?: Globalize.CurrencyFormatterOptions | null): string;
+    val: number, currency: string, locale?: string | null, options?: CurrencyFormatterOptions | null): string;
   public formatCurrency(
     val: number | null | undefined,
     currency: string,
-    localeOrOptions: string | Globalize.CurrencyFormatterOptions | undefined | null,
-    options?: Globalize.CurrencyFormatterOptions | null): string {
+    localeOrOptions: string | CurrencyFormatterOptions | undefined | null,
+    options?: CurrencyFormatterOptions | null): string {
     const dictionary = this.currencyFormatters[currency] || (this.currencyFormatters[currency] = {});
     return this.format(dictionary,
       (l, o) => this.cldrService.getGlobalizeInstance(l).currencyFormatter(currency, o),

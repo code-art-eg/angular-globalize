@@ -1,5 +1,5 @@
 import { Pipe } from '@angular/core';
-import { DateFormatterOptions } from 'globalize';
+import type { DateFormatterOptions } from 'globalize';
 
 import { BaseDatePipe } from '../base-date-pipe';
 

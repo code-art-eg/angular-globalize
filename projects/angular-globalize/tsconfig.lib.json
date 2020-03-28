@@ -6,7 +6,7 @@
     "declaration": true,
     "inlineSources": true,
     "resolveJsonModule": false,
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "types": [],
     "lib": [
       "dom",

@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { DateFormatterOptions } from 'globalize';
+import type { DateFormatterOptions } from 'globalize';
 
 import { BaseGlobalizePipe } from './base-globalize-pipe';
 

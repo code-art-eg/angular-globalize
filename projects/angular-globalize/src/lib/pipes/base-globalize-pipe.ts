@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, OnDestroy, PipeTransform, WrappedValue, Injectable } from '@angular/core';
+import { ChangeDetectorRef, WrappedValue, Injectable } from '@angular/core';
+import type { OnDestroy, PipeTransform } from '@angular/core';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 
 import { CurrentCultureService } from '../services/current-culture/current-culture.service';

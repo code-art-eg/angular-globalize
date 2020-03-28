@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import * as Globalize from 'globalize';
 import { Dictionary, NumberFormatInfo, ICalendarService } from '../../models';
 import { GregorianCalendarService } from './calendar.service';
+import Globalize from 'globalize';
 
 export interface CalendarAccessor extends Globalize {
     calendarService: ICalendarService;

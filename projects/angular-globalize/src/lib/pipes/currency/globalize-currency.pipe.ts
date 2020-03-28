@@ -2,7 +2,7 @@ import { Pipe, WrappedValue } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { BaseNumericPipe } from '../base-numeric-pipe';
-import { CurrencyFormatterOptions } from 'globalize';
+import type { CurrencyFormatterOptions } from 'globalize';
 
 // tslint:disable-next-line: use-pipe-transform-interface
 @Pipe({ name: 'gcurrency', pure: false })

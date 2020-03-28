@@ -1,4 +1,5 @@
-import { Directive, ElementRef, Renderer2, OnDestroy, Input } from '@angular/core';
+import { Directive, ElementRef, Renderer2, Input } from '@angular/core';
+import type { OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { CurrentCultureService } from '../services/current-culture/current-culture.service';

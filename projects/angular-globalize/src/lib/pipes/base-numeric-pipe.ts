@@ -1,6 +1,6 @@
-import { Injectable, Pipe } from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import { CommonNumberFormatterOptions } from 'globalize';
+import type { CommonNumberFormatterOptions } from 'globalize';
 
 import { BaseGlobalizePipe } from './base-globalize-pipe';
 

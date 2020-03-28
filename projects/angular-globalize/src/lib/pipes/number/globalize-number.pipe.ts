@@ -1,5 +1,5 @@
 import { Pipe } from '@angular/core';
-import { NumberFormatterOptions } from 'globalize';
+import type { NumberFormatterOptions } from 'globalize';
 
 import { BaseNumericPipe } from '../base-numeric-pipe';
 
