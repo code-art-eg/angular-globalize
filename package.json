@@ -48,7 +48,7 @@
     "@types/karma-jasmine": "^0.0.31",
     "@types/node": "^12.11.1",
     "bootstrap": "^4.4.1",
-    "codelyzer": "^5.1.2",
+    "codelyzer": "~5.2.2",
     "cpy-cli": "^3.1.0",
     "iana-tz-data": "^2019.1.0",
     "jasmine-core": "~3.5.0",
@@ -57,14 +57,14 @@
     "karma": "~4.3.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage-istanbul-reporter": "~2.1.0",
-    "karma-jasmine": "~2.0.1",
+    "karma-jasmine": "~3.0.1",
     "karma-jasmine-html-reporter": "^1.4.2",
     "ng-packagr": "^9.0.0",
     "popper.js": "1.16.0",
     "protractor": "~5.4.3",
     "ts-node": "~8.3.0",
-    "tsickle": "~0.38.0",
-    "tslint": "~5.18.0",
-    "typescript": "~3.7.5"
+    "tsickle": "~0.38.1",
+    "tslint": "~6.1.0",
+    "typescript": "~3.8.3"
   }
 }
