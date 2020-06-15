@@ -109,6 +109,7 @@ describe('TypeConverterService', () => {
 
     it('fails to converts object to boolean ', () => {
         const typeConverter: TypeConverterService = TestBed.inject(TypeConverterService);
+        expect(typeConverter).toBeTruthy();
         throws(() => typeConverter.convertToBoolean(new Date()));
     });
 
@@ -170,6 +171,7 @@ describe('TypeConverterService', () => {
 
     it('fails to converts object to number ', () => {
         const typeConverter: TypeConverterService = TestBed.inject(TypeConverterService);
+        expect(typeConverter).toBeTruthy();
         throws(() => typeConverter.convertToBoolean({}));
     });
 
@@ -208,6 +210,7 @@ describe('TypeConverterService', () => {
 
     it('fails to convert object to date', () => {
         const typeConverter: TypeConverterService = TestBed.inject(TypeConverterService);
+        expect(typeConverter).toBeTruthy();
         throws(() => typeConverter.convertToDate({}));
     });
 });

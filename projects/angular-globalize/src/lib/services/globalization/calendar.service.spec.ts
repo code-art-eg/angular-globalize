@@ -101,7 +101,7 @@ describe('CalendarService', () => {
     it('should fail on incorrect month', () => {
         const cldrService: CldrService = TestBed.inject(CldrService);
         const calendar = cldrService.getCalendar('en-GB', 'Gregorian');
-
+        expect(cldrService).toBeTruthy();
         throws(() => calendar.getDaysInMonth(2000, -1));
         throws(() => calendar.getDaysInMonth(2000, 12));
     });
