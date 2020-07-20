@@ -18,7 +18,7 @@
     "copy:all": "yarn copy:schemas && yarn copy:files && yarn copy:collection && yarn copy:readme && yarn copy:license",
     "postbuild": "yarn build:schemas && yarn copy:all",
     "cultures": "cd ./tools && ts-node generate-culture-names.ts",
-    "pub": "cd dist/angular-globalize && yarn publish"
+    "pub": "cd dist/angular-globalize && yarn publish --registry https://npm.pkg.github.com"
   },
   "private": true,
   "dependencies": {
