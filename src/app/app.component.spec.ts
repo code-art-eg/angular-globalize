@@ -1,7 +1,7 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { CultureSwitchComponent } from './components/culture-switch/culture-switch.component';
-import { AngularGlobalizeModule, CANG_SUPPORTED_CULTURES } from '@code-art/angular-globalize';
+import { AngularGlobalizeModule, CANG_SUPPORTED_CULTURES } from '@code-art-eg/angular-globalize';
 
 describe('AppComponent', () => {
   let component: CultureSwitchComponent;

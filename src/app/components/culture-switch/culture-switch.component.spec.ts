@@ -5,7 +5,7 @@ import {
   AngularGlobalizeModule,
   CANG_SUPPORTED_CULTURES,
   CurrentCultureService
-} from '@code-art/angular-globalize';
+} from '@code-art-eg/angular-globalize';
 import { By } from '@angular/platform-browser';
 
 describe('CultureSwitchComponent', () => {

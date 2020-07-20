@@ -26,7 +26,7 @@
       "dom"
     ],
     "paths": {
-      "@code-art/angular-globalize": [
+      "@code-art-eg/angular-globalize": [
         "dist/angular-globalize",
       ],
       "globalize": [

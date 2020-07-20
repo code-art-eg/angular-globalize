@@ -1,8 +1,8 @@
-# @code-art/angular-globalize
+# @code-art-eg/angular-globalize
 
 ## About the library
 
-The ```@code-art/angular-globalize``` library is a javascript library that provides pipes for date, number and currency formatting for [Angular 9](https://angular.io).
+The ```@code-art-eg/angular-globalize``` library is a javascript library that provides pipes for date, number and currency formatting for [Angular 9](https://angular.io).
 It also provides services for parsing and formatting dates and numbers as well as setting the current culture. It depends on and leverages the [globalize](https://github.com/globalizejs) javascript library for performing this.
 
 ## Consuming the library
@@ -12,7 +12,7 @@ It also provides services for parsing and formatting dates and numbers as well a
 To install the library in your Angular application you need to run the following commands:
 
 ```bash
-$ ng add @code-art/angular-globalize
+$ ng add @code-art-eg/angular-globalize
 ```
 **Note:** *Since version 3.x of this library was rewritten, Versions 1.x and 2.x of the library available on npmjs are not compatible with this version.*
 
@@ -51,7 +51,7 @@ Example:
 ```typescript
 import { Component } from '@angular/core';
 
-import { CurrentCultureService } from '@code-art/angular-globalize';
+import { CurrentCultureService } from '@code-art-eg/angular-globalize';
 
 @Component({
     selector: 'app-change-culture',

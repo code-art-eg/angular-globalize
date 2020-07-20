@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { CANG_SUPPORTED_CULTURES, CurrentCultureService } from '@code-art/angular-globalize';
+import { CANG_SUPPORTED_CULTURES, CurrentCultureService } from '@code-art-eg/angular-globalize';
 
 @Component({
   selector: 'app-culture-switch',

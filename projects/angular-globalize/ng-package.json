@@ -6,7 +6,7 @@
     "umdModuleIds": {
       "globalize": "globalize"
     },
-    "amdId": "@code-art/angular-globalize",
+    "amdId": "@code-art-eg/angular-globalize",
     "umdId": "codeArt.angularGlobalize"
   }
 }

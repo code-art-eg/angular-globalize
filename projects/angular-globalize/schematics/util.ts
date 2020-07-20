@@ -121,7 +121,7 @@ function addAngularGlobalizeModule(options: ImportModuleOptions): Rule {
     const modulePath = options.module;
     const source = readIntoSourceFile(tree, modulePath);
 
-    const packagePath = `@code-art/angular-globalize`;
+    const packagePath = `@code-art-eg/angular-globalize`;
 
     const changes = addImportToModule(source, modulePath, 'AngularGlobalizeModule', packagePath);
 
