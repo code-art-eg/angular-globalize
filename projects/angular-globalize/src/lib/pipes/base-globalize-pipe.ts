@@ -43,13 +43,17 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
     localeOrOptionsOrFormat?: TOptions | string | null,
     optionsOrFormat?: TOptions | string | null): undefined;
   public transform(
-    input: TInput,
+    input: TInput|null|undefined,
     localeOrOptionsOrFormat?: TOptions | string | null,
-    optionsOrFormat?: TOptions | string | null): string;
+    optionsOrFormat?: TOptions | string | null): string | null | undefined;
   public transform(
     input: Observable<TInput | null | undefined>,
     localeOrOptionsOrFormat?: TOptions | string | null,
     optionsOrFormat?: TOptions | string | null): WrappedValue;
+  public transform(
+      input: TInput | Observable<TInput | null | undefined> | null | undefined,
+      localeOrOptionsOrFormat?: TOptions | string | null,
+      optionsOrFormat?: TOptions | string | null): string | null | undefined | WrappedValue;
   public transform(
     input: TInput | Observable<TInput | null | undefined> | null | undefined,
     localeOrOptionsOrFormat?: TOptions | string | null,

@@ -9,6 +9,28 @@ import {
 import { CldrService } from './cldr.service';
 import { CurrentCultureService } from '../current-culture/current-culture.service';
 
+const timeSpanRx = /^(?:(\d+)\.)?(\d{1,2}):(\d{1,2}):(\d{1,2})(?:\.(\d{1,7}))?$/;
+
+export function parseDuration(duration: string | null | undefined): number | null {
+  if (!duration) {
+    return null;
+  }
+  const m = timeSpanRx.exec(duration);
+  if (m) {
+    let val = parseInt(m[2], 10) * 3600_000
+      + parseInt(m[3], 10) * 60_000
+      + parseInt(m[4], 10) * 1000;
+    if (m[5]) {
+      val += parseInt(m[5], 10) / Math.pow(10, m[5].length) * 1000;
+    }
+    if (m[1]) {
+      val += parseInt(m[1], 10) * 3600_00 * 24;
+    }
+    return val;
+  }
+  return null;
+}
+
 /**
  * Default globalization service used when none is provided via dependency injection
  */
@@ -36,7 +58,7 @@ export class GlobalizationService {
     options?: DurationFormatOptions | null)
     : '';
   public formatDuration(
-    val: number,
+    val: number | null | undefined,
     localeOrOptions?: string | DurationFormatOptions | null,
     options?: DurationFormatOptions | null)
     : string;
@@ -53,14 +75,14 @@ export class GlobalizationService {
     val: null | undefined,
     options?: DateFormatterOptions): null;
   public parseDate(
-    val: string,
+    val: string | null | undefined,
     options?: DateFormatterOptions): Date | null;
   public parseDate(
     val: null | undefined,
     locale?: string,
     options?: DateFormatterOptions): null;
   public parseDate(
-    val: string,
+    val: string | null | undefined,
     locale?: string,
     options?: DateFormatterOptions): Date | null;
   public parseDate(
@@ -77,11 +99,11 @@ export class GlobalizationService {
   public formatDate(
     val: null | undefined, options?: DateFormatterOptions | null): '';
   public formatDate(
-    val: Date, options?: DateFormatterOptions | null): string;
+    val: Date | null | undefined, options?: DateFormatterOptions | null): string;
   public formatDate(
     val: null | undefined, locale?: string | null, options?: DateFormatterOptions | null): '';
   public formatDate(
-    val: Date, locale?: string | null, options?: DateFormatterOptions | null): string;
+    val: Date | null | undefined, locale?: string | null, options?: DateFormatterOptions | null): string;
   public formatDate(
     val: Date | null | undefined,
     localeOrOptions?: string | DateFormatterOptions | null | undefined,
@@ -94,11 +116,11 @@ export class GlobalizationService {
   public parseNumber(
     val: null | undefined, options?: NumberParserOptions | null): null;
   public parseNumber(
-    val: string, options?: NumberParserOptions | null): number | null;
+    val: string | null | undefined, options?: NumberParserOptions | null): number | null;
   public parseNumber(
     val: null | undefined, locale?: string, options?: NumberParserOptions | null): null;
   public parseNumber(
-    val: string, locale?: string, options?: NumberParserOptions | null): number | null;
+    val: string | null | undefined, locale?: string, options?: NumberParserOptions | null): number | null;
   public parseNumber(
     val: string | null | undefined,
     localeOrOptions?: string | NumberParserOptions | undefined | null,
@@ -112,11 +134,11 @@ export class GlobalizationService {
   public formatNumber(
     val: null | undefined, options?: NumberFormatterOptions | null): '';
   public formatNumber(
-    val: number, options?: NumberFormatterOptions | null): string;
+    val: number | null | undefined, options?: NumberFormatterOptions | null): string;
   public formatNumber(
     val: null | undefined, locale?: string | null, options?: NumberFormatterOptions | null): '';
   public formatNumber(
-    val: number, locale?: string | null, options?: NumberFormatterOptions | null): string;
+    val: number | null | undefined, locale?: string | null, options?: NumberFormatterOptions | null): string;
   public formatNumber(
     val: number | null | undefined,
     localeOrOptions?: string | NumberFormatterOptions | undefined | null,
@@ -129,11 +151,11 @@ export class GlobalizationService {
   public formatCurrency(
     val: null | undefined, currency: string, options?: CurrencyFormatterOptions | null): '';
   public formatCurrency(
-    val: number, currency: string, options?: CurrencyFormatterOptions | null): string;
+    val: number | null | undefined, currency: string, options?: CurrencyFormatterOptions | null): string;
   public formatCurrency<T extends number | null | undefined>(
     val: null | undefined, currency: string, locale?: string | null, options?: CurrencyFormatterOptions | null): '';
   public formatCurrency<T extends number | null | undefined>(
-    val: number, currency: string, locale?: string | null, options?: CurrencyFormatterOptions | null): string;
+    val: number | null | undefined, currency: string, locale?: string | null, options?: CurrencyFormatterOptions | null): string;
   public formatCurrency(
     val: number | null | undefined,
     currency: string,
@@ -148,7 +170,7 @@ export class GlobalizationService {
   public getMonthName(
     month: null | undefined, locale?: string, type?: MonthNameFormat): '';
   public getMonthName(
-    month: number, locale?: string, type?: MonthNameFormat): string;
+    month: number | null | undefined, locale?: string, type?: MonthNameFormat): string;
   public getMonthName(
     month: number | null | undefined,
     locale?: string,
@@ -172,7 +194,7 @@ export class GlobalizationService {
   public getDayName(
     day: null | undefined, locale?: string, type?: DayNameFormat): '';
   public getDayName(
-    day: number, locale?: string, type?: DayNameFormat): string;
+    day: number | null | undefined, locale?: string, type?: DayNameFormat): string;
   public getDayName(
     day: number | null | undefined,
     locale?: string,
@@ -269,6 +291,9 @@ export class GlobalizationService {
           break;
         case 'constant':
           pattern = '[-]d:hh:mm:ss.fff';
+          break;
+        case 'racing':
+          pattern = '[-][d:][h:]mm:ss.fff';
           break;
       }
     }

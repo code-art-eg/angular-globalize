@@ -17,7 +17,13 @@ export interface ICalendarService extends ICalendarServiceImpl {
 }
 
 export interface DurationFormatOptions {
-    style?: 'constant' | 'short' | 'long';
+    /**
+     * constant = [-]d:hh:mm:ss.fff
+     * short = [-][d:]h:mm[:ss[.FFF]]
+     * long = [-][d:]hh:mm:ss[.fff]
+     * racing = [-][d:][h:]mm:ss.fff
+     */
+    style?: 'constant' | 'short' | 'long' | 'racing';
     pattern?: string;
 }
 
