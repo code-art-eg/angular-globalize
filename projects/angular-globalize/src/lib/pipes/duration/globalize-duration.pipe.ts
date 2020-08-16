@@ -12,6 +12,7 @@ export class GlobalizeDurationPipe extends BaseNumericPipe<DurationFormatOptions
             case 'constant':
             case 'short':
             case 'long':
+            case 'racing':
                 return {
                     style: optionsString,
                 };
