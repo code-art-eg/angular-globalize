@@ -27,7 +27,7 @@ export class CookieLocaleProviderService implements ILocaleProvider {
         if (days) {
             const date = new Date();
             date.setTime(date.getTime() + (days * 24 * 3600 * 1000));
-            expires = `; expires=${date.toUTCString()}`;
+            expires = `; expires=${date.toUTCString()}; samesite=lax`;
         } else {
             expires = '';
         }

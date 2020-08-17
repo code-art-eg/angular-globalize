@@ -1,15 +1,20 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppComponent } from './app.component';
-import { LanguageSwitchComponent } from './components/language-switch/language-switch.component';
-import { AngularGlobalizeModule, CANG_SUPPORTED_CULTURES } from '@code-art/angular-globalize';
-import { loadGlobalizeData } from 'projects/angular-globalize/src/test/globalize-data-loader';
-
+import { BrowserModule } from '@angular/platform-browser';
+import {
+  AngularGlobalizeModule,
+  CANG_LOCALE_PROVIDER,
+  CANG_SUPPORTED_CULTURES,
+  CookieLocaleProviderService,
+  CANG_COOKIE_NAME
+  } from '@code-art/angular-globalize';
 import 'globalize/currency';
 import 'globalize/date';
 import 'globalize/number';
 import 'globalize/plural';
+import { loadGlobalizeData } from 'projects/angular-globalize/src/test/globalize-data-loader';
+import { AppComponent } from './app.component';
+import { LanguageSwitchComponent } from './components/language-switch/language-switch.component';
+
 
 @NgModule({
   declarations: [
@@ -23,6 +28,8 @@ import 'globalize/plural';
   ],
   providers: [
     { provide: CANG_SUPPORTED_CULTURES, useValue: ['en-GB', 'de', 'ar-EG'] },
+    { provide: CANG_COOKIE_NAME, useValue: 'lang' },
+    { provide: CANG_LOCALE_PROVIDER, useClass: CookieLocaleProviderService, multi: true },
   ],
   bootstrap: [AppComponent]
 })
