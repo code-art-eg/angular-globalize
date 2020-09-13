@@ -1,4 +1,4 @@
-import { Pipe, WrappedValue } from '@angular/core';
+import { Pipe } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { BaseNumericPipe } from '../base-numeric-pipe';
@@ -27,13 +27,13 @@ export class GlobalizeCurrencyPipe extends BaseNumericPipe<CurrencyFormatterOpti
     input: Observable<number|null|undefined>,
     currency: string,
     localeOrOptionsOrFormat?: CurrencyFormatterOptions | string | undefined,
-    optionsOrFormat?: CurrencyFormatterOptions | string): WrappedValue;
+    optionsOrFormat?: CurrencyFormatterOptions | string): string | null | undefined;
   public transform(
     input: number | Observable<number|null|undefined> | null | undefined,
     currency: string,
     localeOrOptionsOrFormat?: CurrencyFormatterOptions | string | undefined,
     optionsOrFormat?: CurrencyFormatterOptions | string | undefined)
-    : string | null | undefined | WrappedValue {
+    : string | null | undefined {
     this._currency = currency;
     return this.doTransform(input, localeOrOptionsOrFormat, optionsOrFormat);
   }

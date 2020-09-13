@@ -1,4 +1,4 @@
-import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { CultureSwitchComponent } from './components/culture-switch/culture-switch.component';
 import { AngularGlobalizeModule, CANG_SUPPORTED_CULTURES } from '@code-art-eg/angular-globalize';
@@ -7,7 +7,7 @@ describe('AppComponent', () => {
   let component: CultureSwitchComponent;
   let fixture: ComponentFixture<CultureSwitchComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CultureSwitchComponent, AppComponent ],
       imports: [

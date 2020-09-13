@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, WrappedValue, Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
 import type { OnDestroy, PipeTransform } from '@angular/core';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 
@@ -43,21 +43,13 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
     localeOrOptionsOrFormat?: TOptions | string | null,
     optionsOrFormat?: TOptions | string | null): undefined;
   public transform(
-    input: TInput|null|undefined,
-    localeOrOptionsOrFormat?: TOptions | string | null,
-    optionsOrFormat?: TOptions | string | null): string | null | undefined;
-  public transform(
-    input: Observable<TInput | null | undefined>,
-    localeOrOptionsOrFormat?: TOptions | string | null,
-    optionsOrFormat?: TOptions | string | null): WrappedValue;
-  public transform(
       input: TInput | Observable<TInput | null | undefined> | null | undefined,
       localeOrOptionsOrFormat?: TOptions | string | null,
-      optionsOrFormat?: TOptions | string | null): string | null | undefined | WrappedValue;
+      optionsOrFormat?: TOptions | string | null): string | null | undefined ;
   public transform(
     input: TInput | Observable<TInput | null | undefined> | null | undefined,
     localeOrOptionsOrFormat?: TOptions | string | null,
-    optionsOrFormat?: TOptions | string | null): string | null | undefined | WrappedValue {
+    optionsOrFormat?: TOptions | string | null): string | null | undefined {
     return this.doTransform(input, localeOrOptionsOrFormat, optionsOrFormat);
   }
 
@@ -74,7 +66,7 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
   protected doTransform(
     input: TInput | Observable<TInput | null | undefined> | null | undefined,
     localeOrOptionsOrFormat?: TOptions | string | null,
-    optionsOrFormat?: TOptions | string | null): string | null | undefined | WrappedValue {
+    optionsOrFormat?: TOptions | string | null): string | null | undefined {
     const [locale, options] = this.resolveParameters(localeOrOptionsOrFormat, optionsOrFormat);
     const [obj, objType, newInput] = this.resolveObject(input, locale, options);
     return this.transformInternal(obj, objType, newInput, locale, options);
@@ -116,7 +108,7 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
     objType: 'culture' | 'input' | 'both' | null,
     input: TInput | undefined | null,
     locale: string,
-    options: TOptions | undefined): string | null | undefined | WrappedValue {
+    options: TOptions | undefined): string | null | undefined {
     if (!this._obj) {
       if (obj) {
         this.subscribe(obj, objType, input, locale, options);
@@ -138,7 +130,7 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
       return this._latestReturnedValue;
     }
     this._latestReturnedValue = this._latestValue;
-    return WrappedValue.wrap(this._latestValue);
+    return this._latestValue;
   }
 
   private resolveObject(

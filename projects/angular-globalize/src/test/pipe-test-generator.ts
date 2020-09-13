@@ -1,4 +1,4 @@
-import { PipeTransform, ChangeDetectorRef, WrappedValue } from '@angular/core';
+import { PipeTransform, ChangeDetectorRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { ChangeDetectorMock } from './change-detector-mock';
@@ -39,9 +39,6 @@ function pipeIt(
       callback();
     }
     sub.unsubscribe();
-    if (WrappedValue.isWrapped(result)) {
-      result = WrappedValue.unwrap(result);
-    }
     let expectedValue: string | null | undefined;
     if (globalizeArgs && Array.isArray(globalizeArgs)) {
       const globalizeService: GlobalizationService = TestBed.inject(GlobalizationService);

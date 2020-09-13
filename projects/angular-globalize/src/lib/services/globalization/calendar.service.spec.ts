@@ -8,7 +8,8 @@ import { GlobalizationService } from './globalization.service';
 import { loadGlobalizeData } from '../../../test/globalize-data-loader';
 import { ICalendarServiceImpl } from '../../models';
 
-type CalendarImplArg<T extends keyof ICalendarServiceImpl> = ICalendarServiceImpl[T] extends (arg: infer R) => ReadonlyArray<string> ? R : never;
+type CalendarImplArg<T extends keyof ICalendarServiceImpl>
+    = ICalendarServiceImpl[T] extends (arg: infer R) => ReadonlyArray<string> ? R : never;
 
 describe('CalendarService', () => {
     const cultures = ['en-GB', 'ar-EG', 'de'];
@@ -128,12 +129,14 @@ describe('CalendarService', () => {
     });
 
 
-    function generateIt<T extends keyof ICalendarServiceImpl>(cultureName: string,
-                        daysOrMonths: 'months' | 'days',
-                        lang: string,
-                        type: CalendarImplArg<T>,
-                        obj: { [key: string]: string[] },
-                        methodName: T) {
+    function generateIt<T extends keyof ICalendarServiceImpl>(
+        cultureName: string,
+        daysOrMonths: 'months' | 'days',
+        lang: string,
+        type: CalendarImplArg<T>,
+        obj: { [key: string]: string[] },
+        methodName: T,
+        ) {
         it(`returns ${cultureName} ${type} ${daysOrMonths} names`, () => {
             const cldrService: CldrService = TestBed.inject(CldrService);
 

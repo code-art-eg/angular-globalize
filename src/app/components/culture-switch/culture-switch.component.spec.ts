@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CultureSwitchComponent } from './culture-switch.component';
 import {
@@ -13,7 +13,7 @@ describe('CultureSwitchComponent', () => {
   let fixture: ComponentFixture<CultureSwitchComponent>;
   const cultures = ['en-GB', 'de', 'ar-EG'];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CultureSwitchComponent],
       imports: [
