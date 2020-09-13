@@ -5,8 +5,6 @@ export type DayNameFormat = 'abbreviated' | 'short' | 'narrow' | 'wide';
 export interface ICalendarServiceImpl {
   getMonthNames(type?: MonthNameFormat): ReadonlyArray<string>;
   getDayNames(type?: DayNameFormat): ReadonlyArray<string>;
-  getMonthsInYear(year: number): number;
-  getDaysInMonth(year: number, month: number): number;
 }
 
 export interface ICalendarService extends ICalendarServiceImpl {

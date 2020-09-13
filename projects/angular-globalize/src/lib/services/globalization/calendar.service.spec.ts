@@ -6,7 +6,9 @@ import { throws } from 'assert';
 import { CldrService } from './cldr.service';
 import { GlobalizationService } from './globalization.service';
 import { loadGlobalizeData } from '../../../test/globalize-data-loader';
-import { ICalendarService, ICalendarServiceImpl } from '../../models';
+import { ICalendarServiceImpl } from '../../models';
+
+type CalendarImplArg<T extends keyof ICalendarServiceImpl> = ICalendarServiceImpl[T] extends (arg: infer R) => ReadonlyArray<string> ? R : never;
 
 describe('CalendarService', () => {
     const cultures = ['en-GB', 'ar-EG', 'de'];
@@ -125,19 +127,20 @@ describe('CalendarService', () => {
         }
     });
 
-    function generateIt(cultureName: string,
+
+    function generateIt<T extends keyof ICalendarServiceImpl>(cultureName: string,
                         daysOrMonths: 'months' | 'days',
                         lang: string,
-                        type: string,
+                        type: CalendarImplArg<T>,
                         obj: { [key: string]: string[] },
-                        methodName: keyof ICalendarServiceImpl) {
+                        methodName: T) {
         it(`returns ${cultureName} ${type} ${daysOrMonths} names`, () => {
             const cldrService: CldrService = TestBed.inject(CldrService);
 
             const cal = cldrService.getCalendar(lang);
-            const method = cal[methodName];
+            const method = cal[methodName] as (a: CalendarImplArg<T>) => ReadonlyArray<string>;
             const names = method.apply(cal, [type]) as string[];
-            const correctNames = obj[type];
+            const correctNames = obj[type as string];
             expect(Array.isArray(names)).toBe(true);
             expect(names.length).toBe(correctNames.length);
             for (let i = 0; i < names.length; i++) {

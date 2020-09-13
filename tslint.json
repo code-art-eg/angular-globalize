@@ -1,5 +1,8 @@
 {
   "extends": "tslint:recommended",
+  "rulesDirectory": [
+    "codelyzer"
+  ],
   "rules": {
     "align": {
       "options": [
@@ -51,7 +54,10 @@
       ]
     },
     "variable-name": [
-      true, "ban-keywords", "check-format", "allow-leading-underscore"
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
     ],
     "deprecation": {
       "severity": "warning"
@@ -133,8 +139,8 @@
     "template-banana-in-box": true,
     "template-no-negated-async": true,
     "use-lifecycle-interface": true,
-    "use-pipe-transform-interface": true
-  ,    "whitespace": {
+    "use-pipe-transform-interface": true,
+    "whitespace": {
       "options": [
         "check-branch",
         "check-decl",
@@ -144,8 +150,5 @@
         "check-typecast"
       ]
     }
-},
-  "rulesDirectory": [
-    "codelyzer"
-  ]
+  }
 }

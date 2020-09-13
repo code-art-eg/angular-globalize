@@ -259,7 +259,7 @@ export class GlobalizationService {
     dictionary: Dictionary<ParserFunction<TOutput>>,
     parserFactory: ParserFactory<TOutput, TOptions>,
     val: string | null | undefined,
-    localeOrOptions: string | TOptions | undefined,
+    localeOrOptions: string | TOptions | undefined | null,
     options: TOptions | null | undefined): TOutput | null {
     if (val === null) {
       return null;
