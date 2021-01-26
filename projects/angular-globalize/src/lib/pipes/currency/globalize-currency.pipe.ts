@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { BaseNumericPipe } from '../base-numeric-pipe';
 import type { CurrencyFormatterOptions } from 'globalize';
 
-// tslint:disable-next-line: use-pipe-transform-interface
 @Pipe({ name: 'gcurrency', pure: false })
+// eslint-disable-next-line @angular-eslint/use-pipe-transform-interface
 export class GlobalizeCurrencyPipe extends BaseNumericPipe<CurrencyFormatterOptions> {
   private _currency!: string;
   public transform(
@@ -32,8 +32,7 @@ export class GlobalizeCurrencyPipe extends BaseNumericPipe<CurrencyFormatterOpti
     input: number | Observable<number|null|undefined> | null | undefined,
     currency: string,
     localeOrOptionsOrFormat?: CurrencyFormatterOptions | string | undefined,
-    optionsOrFormat?: CurrencyFormatterOptions | string | undefined)
-    : string | null | undefined {
+    optionsOrFormat?: CurrencyFormatterOptions | string | undefined): string | null | undefined {
     this._currency = currency;
     return this.doTransform(input, localeOrOptionsOrFormat, optionsOrFormat);
   }

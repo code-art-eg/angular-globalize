@@ -18,7 +18,13 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/angular-globalize-app",
-            "allowedCommonJsDependencies": ["globalize/currency", "globalize/date", "globalize/plural", "globalize/number", "globalize"],
+            "allowedCommonJsDependencies": [
+              "globalize/currency",
+              "globalize/date",
+              "globalize/plural",
+              "globalize/number",
+              "globalize"
+            ],
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -98,15 +104,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         },
@@ -151,14 +153,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/angular-globalize/tsconfig.lib.json",
-              "projects/angular-globalize/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "projects/angular-globalize/**/*.ts",
+              "projects/angular-globalize/**/*.html"
             ]
           }
         }

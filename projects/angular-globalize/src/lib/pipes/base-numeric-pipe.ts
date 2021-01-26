@@ -4,7 +4,7 @@ import type { CommonNumberFormatterOptions } from 'globalize';
 
 import { BaseGlobalizePipe } from './base-globalize-pipe';
 
-// tslint:disable-next-line: use-pipe-transform-interface
+// eslint-disable-next-line @angular-eslint/use-pipe-transform-interface
 @Injectable()
 export abstract class BaseNumericPipe<TOptions> extends BaseGlobalizePipe<number, TOptions> {
     protected static commonOptionsEqual(o1: CommonNumberFormatterOptions, o2: CommonNumberFormatterOptions): boolean {

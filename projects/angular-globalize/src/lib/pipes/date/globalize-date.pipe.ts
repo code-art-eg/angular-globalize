@@ -3,8 +3,8 @@ import type { DateFormatterOptions } from 'globalize';
 
 import { BaseDatePipe } from '../base-date-pipe';
 
-// tslint:disable-next-line: use-pipe-transform-interface
 @Pipe({ name: 'gdate', pure: false })
+// eslint-disable-next-line @angular-eslint/use-pipe-transform-interface
 export class GlobalizeDatePipe extends BaseDatePipe {
 
     protected stringToOptions(optionsString: string): DateFormatterOptions {

@@ -3,8 +3,8 @@ import { BaseGlobalizePipe } from '../base-globalize-pipe';
 import { MonthNameFormat } from '../../models';
 
 
-// tslint:disable-next-line: use-pipe-transform-interface
 @Pipe({ name: 'gmonth', pure: false })
+// eslint-disable-next-line @angular-eslint/use-pipe-transform-interface
 export class GlobalizeMonthPipe extends BaseGlobalizePipe<number, MonthNameFormat> {
 
     protected inputsEqual(v1: number, v2: number): boolean {

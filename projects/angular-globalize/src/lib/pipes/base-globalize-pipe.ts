@@ -53,16 +53,6 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
     return this.doTransform(input, localeOrOptionsOrFormat, optionsOrFormat);
   }
 
-  protected abstract inputsEqual(v1: TInput, v2: TInput): boolean;
-
-  protected abstract optionsEqual(o1: TOptions, o2: TOptions): boolean;
-
-  protected abstract getDefaultOptions(): TOptions;
-
-  protected abstract stringToOptions(optionsString: string): TOptions;
-
-  protected abstract convertValue(input: TInput, locale: string | undefined, options: TOptions): string;
-
   protected doTransform(
     input: TInput | Observable<TInput | null | undefined> | null | undefined,
     localeOrOptionsOrFormat?: TOptions | string | null,
@@ -71,6 +61,10 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
     const [obj, objType, newInput] = this.resolveObject(input, locale, options);
     return this.transformInternal(obj, objType, newInput, locale, options);
   }
+
+
+
+
 
   private inputsEqualInternal(v1: TInput | null | undefined, v2: TInput | null | undefined): boolean {
     if (v1 === null) {
@@ -251,4 +245,14 @@ export abstract class BaseGlobalizePipe<TInput, TOptions> implements OnDestroy, 
       this.changeDetector.markForCheck();
     }
   }
+
+  protected abstract inputsEqual(v1: TInput, v2: TInput): boolean;
+
+  protected abstract optionsEqual(o1: TOptions, o2: TOptions): boolean;
+
+  protected abstract getDefaultOptions(): TOptions;
+
+  protected abstract stringToOptions(optionsString: string): TOptions;
+
+  protected abstract convertValue(input: TInput, locale: string | undefined, options: TOptions): string;
 }

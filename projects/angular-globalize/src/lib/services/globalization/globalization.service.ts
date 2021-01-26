@@ -55,18 +55,15 @@ export class GlobalizationService {
   public formatDuration(
     val: null | undefined,
     localeOrOptions?: string | DurationFormatOptions | null,
-    options?: DurationFormatOptions | null)
-    : '';
+    options?: DurationFormatOptions | null): '';
   public formatDuration(
     val: number | null | undefined,
     localeOrOptions?: string | DurationFormatOptions | null,
-    options?: DurationFormatOptions | null)
-    : string;
+    options?: DurationFormatOptions | null): string;
   public formatDuration(
     val: number | null | undefined,
     localeOrOptions?: string | DurationFormatOptions | null,
-    options?: DurationFormatOptions | null)
-    : string {
+    options?: DurationFormatOptions | null): string {
     return this.format(this.durationFormatters,
       (l, o) => this.durationFormatter(l, o || undefined), val, localeOrOptions, options);
   }
@@ -217,8 +214,7 @@ export class GlobalizationService {
 
   private resolveOptions<TOptions>(
     localeOrOptions: string | TOptions | null | undefined,
-    options: TOptions | null | undefined)
-    : [string, TOptions | undefined, string] {
+    options: TOptions | null | undefined): [string, TOptions | undefined, string] {
     let locale: string;
     if (typeof localeOrOptions === 'string' || options) {
       if (localeOrOptions && typeof (localeOrOptions) !== 'string') {

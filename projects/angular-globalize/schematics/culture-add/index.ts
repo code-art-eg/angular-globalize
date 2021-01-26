@@ -7,7 +7,5 @@ import {
 } from '@angular-devkit/schematics';
 
 export function cultureAdd(options: AddCultureOptions): Rule {
-  return (_tree: Tree, _context: SchematicContext) => {
-    return addCultureModule(options);
-  };
+  return (_tree: Tree, _context: SchematicContext) => addCultureModule(options);
 }

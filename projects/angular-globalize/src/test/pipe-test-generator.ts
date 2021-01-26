@@ -42,7 +42,7 @@ function pipeIt(
     let expectedValue: string | null | undefined;
     if (globalizeArgs && Array.isArray(globalizeArgs)) {
       const globalizeService: GlobalizationService = TestBed.inject(GlobalizationService);
-      const formatMethod: (...args: any[]) => string|null|undefined = globalizeService[formatMethodName];
+      const formatMethod: (...argslist: any[]) => string|null|undefined = globalizeService[formatMethodName];
       expectedValue = formatMethod.apply(globalizeService, globalizeArgs);
     } else if (globalizeArgs === null) {
       expectedValue = null;

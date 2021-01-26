@@ -9,6 +9,15 @@ import { ILocaleProvider } from '../../models';
 })
 export class CurrentCultureService {
 
+  private static readonly rtlLangs = ['ar', 'dv', 'fa', 'he',
+    'ku', 'nqo', 'pa', 'prs', 'ps', 'sd', 'syr', 'tzm', 'ug', 'ur', 'yi'];
+
+  public readonly cultureObservable: Observable<string>;
+
+  private readonly _cultureSubject: ReplaySubject<string>;
+  private _culture!: string;
+  private readonly _supportedCultures: string[];
+
   constructor(
     @Inject(CANG_SUPPORTED_CULTURES) supportedCultures: string[],
     @Optional() @Inject(CANG_LOCALE_PROVIDER) private readonly localeProviders?: ILocaleProvider[],
@@ -60,14 +69,7 @@ export class CurrentCultureService {
       this.setProviderCulture(val);
     }
   }
-  private static readonly rtlLangs = ['ar', 'dv', 'fa', 'he',
-    'ku', 'nqo', 'pa', 'prs', 'ps', 'sd', 'syr', 'tzm', 'ug', 'ur', 'yi'];
 
-  public readonly cultureObservable: Observable<string>;
-
-  private readonly _cultureSubject: ReplaySubject<string>;
-  private _culture!: string;
-  private readonly _supportedCultures: string[];
 
   private static normalizeName(c: string | null | undefined): string {
     if (!c) {

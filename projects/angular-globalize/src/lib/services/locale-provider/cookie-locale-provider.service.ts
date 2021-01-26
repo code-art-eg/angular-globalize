@@ -14,6 +14,14 @@ export class CookieLocaleProviderService implements ILocaleProvider {
     private readonly _cookieDuration: number;
     private readonly _cookiePath: string;
 
+    constructor(@Inject(CANG_COOKIE_NAME) @Optional() cookieName?: string,
+                @Inject(CANG_COOKIE_DURATION_DAYS) @Optional() cookieDuration?: number,
+                @Inject(CANG_COOKIE_PATH) @Optional() cookiePath?: string) {
+        this._cookieName = cookieName || CANG_DEFAULT_COOKIE_NAME;
+        this._cookieDuration = cookieDuration || CANG_DEFAULT_COOKIE_DURATION_DAYS;
+        this._cookiePath = cookiePath || '/';
+    }
+
     private static createCookie(name: string, value: string | null, days: number, path: string): void {
         if (!document) {
             return;
@@ -52,14 +60,6 @@ export class CookieLocaleProviderService implements ILocaleProvider {
             }
         }
         return null;
-    }
-
-    constructor(@Inject(CANG_COOKIE_NAME) @Optional() cookieName?: string,
-                @Inject(CANG_COOKIE_DURATION_DAYS) @Optional() cookieDuration?: number,
-                @Inject(CANG_COOKIE_PATH) @Optional() cookiePath?: string) {
-        this._cookieName = cookieName || CANG_DEFAULT_COOKIE_NAME;
-        this._cookieDuration = cookieDuration || CANG_DEFAULT_COOKIE_DURATION_DAYS;
-        this._cookiePath = cookiePath || '/';
     }
 
     get locale(): string {

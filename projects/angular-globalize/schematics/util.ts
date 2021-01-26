@@ -56,7 +56,7 @@ function updateJsonFile<T>(tree: Tree, path: string, callback: UpdateJsonFn<T>):
   if (source) {
     const sourceText = source.toString('utf-8');
     const json = parseJson(sourceText, JsonParseMode.Loose);
-    callback(json as {} as T);
+    callback(json as unknown as T);
     tree.overwrite(path, JSON.stringify(json, null, 2));
   }
 
@@ -210,7 +210,7 @@ function getWorkspaceInfo(tree: Tree, options: ProjectOptions): WorkspaceInfo {
   const workspaceContent = workspaceConfig.toString();
 
   // parse workspace string into JSON object
-  const workspace: experimental.workspace.WorkspaceSchema = JSON.parse(workspaceContent);
+  const workspace = JSON.parse(workspaceContent);
   if (!options.project) {
     options.project = workspace.defaultProject;
   }
@@ -242,7 +242,7 @@ function updateAngularglobalizeForRoot(
   cultureName: string,
 ): Change[] {
   const nodes = getDecoratorMetadata(source, 'NgModule', '@angular/core');
-  let node: any = nodes[0];  // tslint:disable-line:no-any
+  let node: any = nodes[0];  // eslint-disable-line @typescript-eslint/no-explicit-any
 
   // Find the decorator declaration.
   if (!node) {
@@ -298,14 +298,14 @@ function updateAngularglobalizeForRoot(
   }
 
   if (!node) {
-    // tslint:disable-next-line: no-console
+    // eslint-disable-next-line no-console
     console.error('No app module found. Please add your new class to your component.');
 
     return [];
   }
 
   if (Array.isArray(node)) {
-    const nodeArray = node as {} as Array<ts.Node>;
+    const nodeArray = node as unknown as Array<ts.Node>;
     const symbolsArray = nodeArray.map((n) => n.getText());
     if (symbolsArray.includes(symbol)) {
       return [];

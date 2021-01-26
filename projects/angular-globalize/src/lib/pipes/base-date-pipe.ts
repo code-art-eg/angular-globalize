@@ -2,7 +2,7 @@ import type { DateFormatterOptions } from 'globalize';
 
 import { BaseGlobalizePipe } from './base-globalize-pipe';
 
-// tslint:disable-next-line: use-pipe-transform-interface
+// eslint-disable-next-line @angular-eslint/use-pipe-transform-interface
 export abstract class BaseDatePipe extends BaseGlobalizePipe<Date, DateFormatterOptions> {
 
   protected inputsEqual(v1: Date, v2: Date): boolean {
