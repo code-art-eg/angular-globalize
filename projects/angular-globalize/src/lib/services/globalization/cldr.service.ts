@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Dictionary, NumberFormatInfo, ICalendarService } from '../../models';
+import { NumberFormatInfo, ICalendarService } from '../../models';
 import { GregorianCalendarService } from './calendar.service';
 import Globalize from 'globalize';
 
@@ -11,8 +11,8 @@ export interface CalendarAccessor extends Globalize {
     providedIn: 'root',
 })
 export class CldrService {
-    private readonly globalizeInstances: Dictionary<Globalize> = {};
-    private readonly numberFormatInfos: Dictionary<NumberFormatInfo> = {};
+    private readonly globalizeInstances: Record<string, Globalize> = {};
+    private readonly numberFormatInfos: Record<string, NumberFormatInfo> = {};
 
     public getGlobalizeInstance(locale: string): Globalize {
         let instance = this.globalizeInstances[locale];

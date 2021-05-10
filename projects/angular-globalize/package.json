@@ -1,6 +1,6 @@
 {
   "name": "@code-art-eg/angular-globalize",
-  "version": "11.0.1",
+  "version": "11.0.2",
   "private": false,
   "schematics": "./schematics/collection.json",
   "description": "Angular 11 pipes for localizing numbers and dates using Globalize.",

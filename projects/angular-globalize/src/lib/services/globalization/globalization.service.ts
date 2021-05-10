@@ -3,7 +3,7 @@ import { dateParser, numberParser } from 'globalize';
 import type { DateFormatterOptions, NumberParserOptions, NumberFormatterOptions, CurrencyFormatterOptions } from 'globalize';
 
 import {
-  Dictionary, FormatterFactory, FormatterFunction,
+  FormatterFactory, FormatterFunction,
   ParserFactory, ParserFunction, DurationFormatOptions, MonthNameFormat, DayNameFormat
 } from '../../models';
 import { CldrService } from './cldr.service';
@@ -38,12 +38,12 @@ export function parseDuration(duration: string | null | undefined): number | nul
   providedIn: 'root',
 })
 export class GlobalizationService {
-  private readonly numberParsers: Dictionary<ParserFunction<number>> = {};
-  private readonly dateParsers: Dictionary<ParserFunction<Date>> = {};
-  private readonly numberFormatters: Dictionary<FormatterFunction<number>> = {};
-  private readonly durationFormatters: Dictionary<FormatterFunction<number>> = {};
-  private readonly currencyFormatters: Dictionary<Dictionary<FormatterFunction<number>>> = {};
-  private readonly dateFormatters: Dictionary<FormatterFunction<Date>> = {};
+  private readonly numberParsers: Record<string, ParserFunction<number>> = {};
+  private readonly dateParsers: Record<string, ParserFunction<Date>> = {};
+  private readonly numberFormatters: Record<string, FormatterFunction<number>> = {};
+  private readonly durationFormatters: Record<string, FormatterFunction<number>> = {};
+  private readonly currencyFormatters: Record<string, Record<string, FormatterFunction<number>>> = {};
+  private readonly dateFormatters: Record<string, FormatterFunction<Date>> = {};
 
   // using any for globaize parameter in the constructor
   // because the angular compiler complains about GlobalizeStatic type
@@ -231,7 +231,7 @@ export class GlobalizationService {
   }
 
   private format<TInput extends number | Date, TOptions>(
-    dictionary: Dictionary<FormatterFunction<TInput>>,
+    dictionary: Record<string, FormatterFunction<TInput>>,
     formatterFactory: FormatterFactory<TInput, TOptions>,
     val: TInput | null | undefined,
     localeOrOptions: string | TOptions | null | undefined,
@@ -252,7 +252,7 @@ export class GlobalizationService {
   }
 
   private parse<TOutput, TOptions>(
-    dictionary: Dictionary<ParserFunction<TOutput>>,
+    dictionary: Record<string, ParserFunction<TOutput>>,
     parserFactory: ParserFactory<TOutput, TOptions>,
     val: string | null | undefined,
     localeOrOptions: string | TOptions | undefined | null,

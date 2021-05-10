@@ -29,11 +29,6 @@ export interface ILocaleProvider {
     canWrite: boolean;
     locale: string;
 }
-
-export interface Dictionary<T> {
-    [key: string]: T|undefined;
-}
-
 export interface NumberFormatInfo {
     zeroChar: string;
     plusSign: string;
