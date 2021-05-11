@@ -142,7 +142,7 @@ export class CurrentCultureService {
     return CurrentCultureService.rtlLangs.indexOf(locale) >= 0;
   }
 
-  private getSupportedCulture(c: string): string {
+  public getSupportedCulture(c: string): string {
     let index = this._supportedCultures.findIndex((v) => v === c);
     if (index < 0) {
       index = this._supportedCultures.findIndex((v) => CurrentCultureService.isParent(v, c));
