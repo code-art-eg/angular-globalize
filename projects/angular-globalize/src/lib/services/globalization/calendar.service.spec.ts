@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 
 import { CANG_SUPPORTED_CULTURES, CANG_LOCALE_PROVIDER, CANG_LOCALE_STORAGE_KEY, CANG_DEFAULT_LOCALE_KEY } from '../../constants';
 import { StorageLocaleProviderService } from '../locale-provider/storage-locale-provider.service';
-import { throws } from 'assert';
 import { CldrService } from './cldr.service';
 import { GlobalizationService } from './globalization.service';
 import { loadGlobalizeData } from '../../../test/globalize-data-loader';
@@ -59,7 +58,7 @@ describe('CalendarService', () => {
 
     it('supports only gregorian calendar', () => {
         const cldrService: CldrService = TestBed.inject(CldrService);
-        throws(() => cldrService.getCalendar('de', 'hijri'));
+        expect(() => cldrService.getCalendar('de', 'hijri')).toThrow();
         expect(cldrService.getCalendar('de', 'Gregorian')).toBeTruthy();
     });
 
@@ -105,8 +104,8 @@ describe('CalendarService', () => {
         const cldrService: CldrService = TestBed.inject(CldrService);
         const calendar = cldrService.getCalendar('en-GB', 'Gregorian');
         expect(cldrService).toBeTruthy();
-        throws(() => calendar.getDaysInMonth(2000, -1));
-        throws(() => calendar.getDaysInMonth(2000, 12));
+        expect(() => calendar.getDaysInMonth(2000, -1)).toThrow();
+        expect(() => calendar.getDaysInMonth(2000, 12)).toThrow();
     });
 
     it('returns month name', () => {

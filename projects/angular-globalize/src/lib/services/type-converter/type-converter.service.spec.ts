@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 
 import { CANG_SUPPORTED_CULTURES, CANG_LOCALE_PROVIDER, CANG_LOCALE_STORAGE_KEY, CANG_DEFAULT_LOCALE_KEY } from '../../constants';
 import { StorageLocaleProviderService } from '../locale-provider/storage-locale-provider.service';
-import { throws } from 'assert';
 import { TypeConverterService } from './type-converter.service';
 import { loadGlobalizeData } from '../../../test/globalize-data-loader';
 
@@ -110,7 +109,7 @@ describe('TypeConverterService', () => {
     it('fails to converts object to boolean ', () => {
         const typeConverter: TypeConverterService = TestBed.inject(TypeConverterService);
         expect(typeConverter).toBeTruthy();
-        throws(() => typeConverter.convertToBoolean(new Date()));
+        expect(() => typeConverter.convertToBoolean(new Date())).toThrow();
     });
 
     it('converts null to number', () => {
@@ -172,7 +171,7 @@ describe('TypeConverterService', () => {
     it('fails to converts object to number ', () => {
         const typeConverter: TypeConverterService = TestBed.inject(TypeConverterService);
         expect(typeConverter).toBeTruthy();
-        throws(() => typeConverter.convertToBoolean({}));
+        expect(() => typeConverter.convertToBoolean({})).toThrow();
     });
 
     it('converts null to date', () => {
@@ -211,6 +210,6 @@ describe('TypeConverterService', () => {
     it('fails to convert object to date', () => {
         const typeConverter: TypeConverterService = TestBed.inject(TypeConverterService);
         expect(typeConverter).toBeTruthy();
-        throws(() => typeConverter.convertToDate({}));
+        expect(() => typeConverter.convertToDate({})).toThrow();
     });
 });
