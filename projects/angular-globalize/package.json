@@ -1,9 +1,9 @@
 {
   "name": "@code-art-eg/angular-globalize",
-  "version": "11.1.0",
+  "version": "12.0.0",
   "private": false,
   "schematics": "./schematics/collection.json",
-  "description": "Angular 11 pipes for localizing numbers and dates using Globalize.",
+  "description": "Angular 12 pipes for localizing numbers and dates using Globalize.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/code-art-eg/angular-globalize.git"
@@ -22,8 +22,8 @@
     "tslib": "^2.0.0"
   },
   "peerDependencies": {
-    "@angular/common": ">=11.0.0 < 12",
-    "@angular/core": ">=11.0.0 < 12",
+    "@angular/common": ">=12.0.0 < 13",
+    "@angular/core": ">=12.0.0 < 13",
     "cldr-data": ">=36.0.0",
     "globalize": "^1.6.0",
     "rxjs": "^6.6.0"
