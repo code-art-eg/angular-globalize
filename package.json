@@ -8,7 +8,6 @@
     "test": "ng test angular-globalize",
     "testapp": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e --port 4201",
     "build:schemas": "tsc -p ./projects/angular-globalize/tsconfig.schematics.json",
     "copy:schemas": "cpy schematics/**/schema.json ../../dist/angular-globalize/ --cwd projects/angular-globalize --parents",
     "copy:files": "cpy schematics/**/*.template ../../dist/angular-globalize/ --cwd projects/angular-globalize --parents",
