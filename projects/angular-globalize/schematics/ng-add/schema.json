@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "SchematicsAngularGlobalizeNgAdd",
+  "$id": "SchematicsAngularGlobalizeNgAdd",
   "title": "Angular Globalize ng-add Schema",
   "type": "object",
   "properties": {

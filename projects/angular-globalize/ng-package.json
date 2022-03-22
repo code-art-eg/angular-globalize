@@ -2,11 +2,6 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/angular-globalize",
   "lib": {
-    "entryFile": "src/public_api.ts",
-    "umdModuleIds": {
-      "globalize": "globalize"
-    },
-    "amdId": "@code-art-eg/angular-globalize",
-    "umdId": "codeArt.angularGlobalize"
+    "entryFile": "src/public_api.ts"
   }
 }

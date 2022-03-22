@@ -13,16 +13,15 @@ import {
   noop,
 } from '@angular-devkit/schematics';
 
-import { JsonParseMode, parseJson } from '@angular-devkit/core';
+import { parse as parseJson } from 'jsonc-parser';
 import { buildRelativePath } from '@schematics/angular/utility/find-module';
-import { applyLintFix } from '@schematics/angular/utility/lint-fix';
 import {
   addImportToModule,
   getMetadataField,
   getDecoratorMetadata,
 } from '@schematics/angular/utility/ast-utils';
 import { InsertChange, ReplaceChange, Change } from '@schematics/angular/utility/change';
-import { strings, normalize, experimental } from '@angular-devkit/core';
+import { strings, normalize } from '@angular-devkit/core';
 import { findModuleFromOptions } from '@schematics/angular/utility/find-module';
 
 export interface ImportModuleOptions {
@@ -55,7 +54,7 @@ function updateJsonFile<T>(tree: Tree, path: string, callback: UpdateJsonFn<T>):
   const source = tree.read(path);
   if (source) {
     const sourceText = source.toString('utf-8');
-    const json = parseJson(sourceText, JsonParseMode.Loose);
+    const json = parseJson(sourceText);
     callback(json as unknown as T);
     tree.overwrite(path, JSON.stringify(json, null, 2));
   }
@@ -417,7 +416,6 @@ export function addAngularGlobalize(options: DataModuleOptions): Rule {
             resolveJsonModule: true,
             importHelpers: true,
           })]) : noop(),
-      applyLintFix(),
     ]);
   };
 }

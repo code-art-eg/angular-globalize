@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "id": "SchematicsAngularGlobalizeCultureAdd",
+  "$id": "SchematicsAngularGlobalizeCultureAdd",
   "title": "Angular Globalize culture add Schema",
   "type": "object",
   "properties": {
