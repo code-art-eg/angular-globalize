@@ -16,22 +16,6 @@
         "createDefaultProgram": true
       },
       "rules": {
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "type": "element",
-            "prefix": "glb",
-            "style": "kebab-case"
-          }
-        ],
-        "@angular-eslint/directive-selector": [
-          "error",
-          {
-            "type": "attribute",
-            "prefix": "glb",
-            "style": "camelCase"
-          }
-        ],
         "@typescript-eslint/explicit-member-accessibility": [
           "off",
           {

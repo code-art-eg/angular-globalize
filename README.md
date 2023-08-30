@@ -2,7 +2,7 @@
 
 ## About the library
 
-The ```@code-art-eg/angular-globalize``` library is a javascript library that provides pipes for date, number and currency formatting for [Angular 15](https://angular.io).
+The ```@code-art-eg/angular-globalize``` library is a javascript library that provides pipes for date, number and currency formatting for [Angular 16](https://angular.io).
 It also provides services for parsing and formatting dates and numbers as well as setting the current culture. It depends on and leverages the [globalize](https://github.com/globalizejs) javascript library for performing this.
 
 ## Consuming the library

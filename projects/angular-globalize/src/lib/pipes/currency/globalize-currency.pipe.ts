@@ -5,7 +5,6 @@ import { BaseNumericPipe } from '../base-numeric-pipe';
 import type { CurrencyFormatterOptions } from 'globalize';
 
 @Pipe({ name: 'gcurrency', pure: false })
-// eslint-disable-next-line @angular-eslint/use-pipe-transform-interface
 export class GlobalizeCurrencyPipe extends BaseNumericPipe<CurrencyFormatterOptions> {
   private _currency!: string;
   public transform(

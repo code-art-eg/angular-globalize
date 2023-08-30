@@ -4,7 +4,6 @@ import { BaseNumericPipe } from '../base-numeric-pipe';
 import { DurationFormatOptions } from '../../models';
 
 @Pipe({ name: 'gduration', pure: false })
-// eslint-disable-next-line @angular-eslint/use-pipe-transform-interface
 export class GlobalizeDurationPipe extends BaseNumericPipe<DurationFormatOptions> {
 
     protected stringToOptions(optionsString: string): DurationFormatOptions {

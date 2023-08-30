@@ -4,7 +4,6 @@ import type { NumberFormatterOptions } from 'globalize';
 import { BaseNumericPipe } from '../base-numeric-pipe';
 
 @Pipe({ name: 'gnumber', pure: false })
-// eslint-disable-next-line @angular-eslint/use-pipe-transform-interface
 export class GlobalizeNumberPipe extends BaseNumericPipe<NumberFormatterOptions> {
 
     protected stringToOptions(optionsString: string): NumberFormatterOptions {

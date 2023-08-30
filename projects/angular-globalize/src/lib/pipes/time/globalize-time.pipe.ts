@@ -4,7 +4,6 @@ import type { DateFormatterOptions } from 'globalize';
 import { BaseDatePipe } from '../base-date-pipe';
 
 @Pipe({ name: 'gtime', pure: false })
-// eslint-disable-next-line @angular-eslint/use-pipe-transform-interface
 export class GlobalizeTimePipe extends BaseDatePipe {
 
     protected stringToOptions(optionsString: string): DateFormatterOptions {

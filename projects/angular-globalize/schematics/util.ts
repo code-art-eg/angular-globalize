@@ -241,7 +241,7 @@ function updateAngularglobalizeForRoot(
   cultureName: string,
 ): Change[] {
   const nodes = getDecoratorMetadata(source, 'NgModule', '@angular/core');
-  let node: any = nodes[0];  // eslint-disable-line @typescript-eslint/no-explicit-any
+  let node: any = nodes[0];
 
   // Find the decorator declaration.
   if (!node) {

@@ -4,7 +4,6 @@ import { BaseGlobalizePipe } from '../base-globalize-pipe';
 import { DayNameFormat } from '../../models';
 
 @Pipe({ name: 'gday', pure: false })
-// eslint-disable-next-line @angular-eslint/use-pipe-transform-interface
 export class GlobalizeDayPipe extends BaseGlobalizePipe<number, DayNameFormat> {
 
     protected inputsEqual(v1: number, v2: number): boolean {
