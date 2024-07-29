@@ -10,8 +10,8 @@
       ],
       "parserOptions": {
         "project": [
-          "projects/angular-globalize/tsconfig.lib.json",
-          "projects/angular-globalize/tsconfig.spec.json"
+          "tsconfig.lib.json",
+          "tsconfig.spec.json"
         ],
         "createDefaultProgram": true
       },
